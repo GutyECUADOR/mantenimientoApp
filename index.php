@@ -26,13 +26,17 @@
     $login->showAllDataBaseList(); */
 
     /* TEST AjaxModel */ 
-    /* $ajax = new models\ajaxModel();
-    $data = array('test' => 'ok');
+   /*  $ajaxModel = new models\ajaxModel(); */
+    /* $data = array('test' => 'ok');
     var_dump($ajax->insertNewMantenimiento($data,'modelo')); */
+    /* $datosEmpresa = $ajax->formatoNextNumDocWINFENIX('MODELO','2050');
+    var_dump($datosEmpresa); */
+
 
     /* TEST AjaxController */ 
    /*  $ajax = new controllers\ajaxController();
     var_dump($ajax->getAllEquiposSinMantenimiento('2017-10-10','2017-10-10',1,10)); */
+    
 
      /* TEST MantenimientosClass */ 
     /* $mantenimientos = new models\MantenimientosClass();
@@ -40,6 +44,7 @@
     $resulset = $mantenimientos->getCodeDBByName('KINDRED_V7')['Codigo'];
     $resulset = $mantenimientos->getDataMantenimiento('modelo','MNT00012');
     var_dump($resulset); */
+    
 
     $app = new controllers\mainController();
     $app->loadtemplate();

@@ -15,6 +15,8 @@
     $ajaxController = new controllers\ajaxController();
 
     $arrayMantenimiento = $mantenimiento->getMantenimientoByCod($codEmpresa, $codMantenimiento); //Devuelve array de mantenimientos
+    //$arrayMantenimiento = $mantenimiento->getRepuestosOfMantenimientoByCod($codEmpresa, $codMantenimiento);
+    
     $dateNow = $mantenimiento->getDateNow(); //Fecha actual determina si la tarjeta esta valida o no
     $arrayTecnicos = $ajaxController->getAllTecnicos();
    
@@ -115,6 +117,10 @@
                                 <div class="uk-grid uk-grid-divider uk-grid-medium" data-uk-grid-margin>
                                     <div class="uk-width-large-1-2">
                                         <div class="uk-form-row">
+                                            <input type="hidden" class="md-input" id="codMantenimiento" name="codMantenimiento" value="<?php echo trim($arrayMantenimiento["codMantenimiento"])?>" readonly/>
+                                        </div>
+                                   
+                                        <div class="uk-form-row">
                                             <label for="product_edit_name_control">Cliente</label>
                                             <input type="text" class="md-input" id="product_cliente_name" name="product_cliente_name" value="<?php echo trim($arrayMantenimiento["NombreCliente"])?>" readonly/>
                                         </div>
@@ -163,10 +169,24 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Card de repuestos ya ingresados -->
                         <div class="md-card">
                             <div class="md-card-toolbar">
                                 <h3 class="md-card-toolbar-heading-text">
-                                    Repuestos
+                                    Repuestos ya incluidos
+                                </h3>
+                            </div>
+                            <div class="md-card-content">
+                                
+                            </div>
+                        </div>
+
+                        <!-- Card de nuevos repuestos -->
+                        <div class="md-card">
+                            <div class="md-card-toolbar">
+                                <h3 class="md-card-toolbar-heading-text">
+                                    Nuevos Repuestos
                                 </h3>
                             </div>
                             <div class="md-card-content">
@@ -181,9 +201,9 @@
                                             <script id="field_template_a" type="text/x-handlebars-template">
                                                 <tr class="form_section">
                                                     <td class="uk-width-2-10"><input type="text" class="md-input codigos_prod" name="codigos_prod" placeholder="Codigo" /></td>
-                                                    <td class="uk-width-5-10"><input type="text" class="md-input" placeholder="Producto" readonly/></td>
-                                                    <td class="uk-width-1-10"><input type="number" class="md-input cants_prod" name="cants_prod" placeholder="Cant." /></td>
-                                                    <td class="uk-width-2-10"><input type="text" class="md-input" placeholder="Precio" readonly/></td>
+                                                    <td class="uk-width-5-10"><input type="text" class="md-input" name="nombres_prod" placeholder="Producto" readonly/></td>
+                                                    <td class="uk-width-1-10"><input type="number" class="md-input"  name="cants_prod" placeholder="Cant." /></td>
+                                                    <td class="uk-width-2-10"><input type="text" class="md-input" name="precios_prod" placeholder="Precio" readonly/></td>
                                                     
                                                     <td class="uk-width-1-10 uk-text-right uk-text-middle">
                                                         <a href="#" class="btnSectionClone"><i class="material-icons md-24">&#xE145;</i></a>

@@ -98,6 +98,36 @@ class ajaxController  {
         $response = $ajaxModel->getArrayProducto($dbEmpresa, $codProducto);
         return $response;
     }
+
+    /*Envia informacion al modelo para actualizar, ejecuta insert en WINFENIX, VEN_CAB y VEN_MOV */
+    public function updateMantenimientoByCod($formData){
+        $ajaxModel = new \models\ajaxModel();
+        $dbEmpresa = trim($_SESSION["empresaAUTH"]);
+
+        //Actualizacion a WSSP - MantenimientosEQ
+        $response_WSSP = $ajaxModel->updateMantenimientoEQ($formData);
+
+        //Obtenemos informacion de la empresa
+        $datosEmpresa = $ajaxModel->getDatosEmpresaFromWINFENIX($dbEmpresa);
+
+        //Creamos nuevo codigo de VEN_CAB
+        $newCodigo = $ajaxModel->getNextNumDocWINFENIX($dbEmpresa); // Recuperamos secuencial de SP de Winfenix
+        $newCodigo = $ajaxModel->formatoNextNumDocWINFENIX($dbEmpresa, $newCodigo); // Asignamos formato con 0000X
+        $tipoDOC = 'C02'; //Codigo de identificacion de Winfenix
+        $newIDWinFenix = $datosEmpresa['Oficina'].$datosEmpresa['Ejercicio'].$tipoDOC.$newCodigo;
+        
+        //Registro en VEN_CAB
+        //$response_VEN_CAB = $ajaxModel->insertVEN_CAB($formData);
+
+
+        if($response_WSSP){
+            return true;
+        }else{
+            return false;
+        }
+        
+        
+    }
     
     
 }

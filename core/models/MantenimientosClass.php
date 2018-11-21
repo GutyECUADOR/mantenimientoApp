@@ -167,6 +167,34 @@ class MantenimientosClass {
    
     }
 
+    /*
+        Recupera el registro en VEN_MOD de los productos asignados al ID de factura y eligo de mantenimiento
+    */
+    public function getRepuestosOfMantenimientoByCod($dataBaseName='KAO_wssp', $codMantenimiento) {
+
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
+        
+        $codEmpresa = $this->getCodeDBByName($dataBaseName)['Codigo']; // Usado para filtro de resultados. codigo de la DB
+
+        //Query de consulta con parametros para bindear si es necesario.
+        $query = "
+        
+
+        ";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+    
+            if($stmt->execute()){
+                $resulset = $stmt->fetch( \PDO::FETCH_ASSOC );
+            }else{
+                $resulset = false;
+            }
+        return $resulset;  
+
+   
+    }
+
     
     /* Retorna el nombre array con la clave NameDatabase y Codigo para el nombre de la DB, para ser usada en la conexion*/ 
     public function getCodeDBByName($nombreDB){

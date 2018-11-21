@@ -2,12 +2,12 @@ $(function() {
     config.date_range();
     altair_product_edit.init();
 
-    $(".repuestos_table").on('keyup', 'input.codigos_prod, input.cants_prod', function(e) {
+    $(".repuestos_table").on('keyup', 'input.codigos_prod', function(e) {
         e.preventDefault();
         let codProducto_Ingresado = e.target.value;
         console.log(codProducto_Ingresado);
 
-        validaProducto(codProducto_Ingresado);
+        validaProducto(codProducto_Ingresado, e.target);
 
     });
 
@@ -22,14 +22,40 @@ $(function() {
 
 /* Peticion al API retornara objeto con la informacion si existe el producto */
 
-function validaProducto(codProducto) {
+function validaProducto(codProducto, inputHTML) {
     $.ajax({
         type: 'get',
         url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=validaProducto',
         data: { codProducto: codProducto },
 
         success: function(response) {
-            console.log(JSON.parse(response));
+            let prodIdentificado = JSON.parse(response).producto;
+            console.log(prodIdentificado);
+
+            let rows = document.getElementsByName("codigos_prod");
+
+            for (i = 0, total = rows.length; i < total; i++) {
+                if (rows[i] === inputHTML) {
+                    position = i;
+                    if (prodIdentificado != null) {
+
+                        document.getElementsByName("nombres_prod")[position].value = prodIdentificado.Nombre;
+                        document.getElementsByName("cants_prod")[position].value = 1;
+                        document.getElementsByName("precios_prod")[position].value = Number(prodIdentificado.PrecA);
+
+                    } else {
+                        document.getElementsByName("nombres_prod")[position].value = "";
+                        document.getElementsByName("cants_prod")[position].value = 0;
+                        document.getElementsByName("precios_prod")[position].value = "";
+                    }
+
+                }
+
+
+            }
+
+
+
         },
         error: function(error) {
             console.error(error.statusText);
@@ -77,17 +103,24 @@ altair_product_edit = {
             e.preventDefault();
             let codigoMNT = document.getElementById("codMantenimiento").innerHTML;
             var form_serialized = JSON.stringify($product_edit_form.serializeObject(), null, 2);
-            UIkit.modal.alert('<p>Producto data:</p><pre>' + form_serialized + '</pre>');
-
-            UIkit.modal.confirm('Confirme, actualizar informacion de la orden de trabajo ' + codigoMNT + ' ?', function() {
+            //UIkit.modal.alert('<p>Producto data:</p><pre>' + form_serialized + '</pre>');
+            //console.log(form_serialized);
+            UIkit.modal.confirm('Confirme, actualizar informacion de la orden de trabajo y agregar los repuestos indicados a la orden ' + codigoMNT + ' ?', function() {
                 $.ajax({
-                    url: '',
+                    url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=updateOrden',
                     method: 'GET',
-                    data: form_serialized,
+                    data: { formData: form_serialized },
 
-                    success: function() {
-                        alert('Actualizado');
+                    success: function(response) {
+                        response = JSON.parse(response);
+                        if (response.status == 'OK') {
+                            UIkit.modal.alert(response.mensaje)
+                            location.reload();
 
+
+                        } else if (response.status == 'FAIL') {
+                            UIkit.modal.alert(response.mensaje);
+                        }
                     },
                     error: function(error) {
                         alert('No se pudo completar la operación. #' + error.status + ' ' + error.statusText);

@@ -43,6 +43,10 @@ class ajax{
       return $this->ajaxController->getProductoByCod($codProducto);
     }
 
+    public function updateMantenimiento($formData){
+      return $this->ajaxController->updateMantenimientoByCod($formData);
+    }
+
 
 }
 
@@ -230,6 +234,27 @@ class ajax{
       
       echo json_encode($response);
     
+
+    /* Actualiza la informacion de la orden y crea registros en VEN_CAB y VEN_MOV*/
+    }elseif ($_GET["action"] == "updateOrden") {
+      
+      if(isset($_GET["formData"])){
+        $dataDecode = json_decode($_GET["formData"]);
+
+        $updateCorrecto = $ajax->updateMantenimiento($dataDecode);
+     
+        if ($updateCorrecto) {
+          $rawdata = array('status' => 'OK', 'mensaje' =>'Se actualizo la orden');
+          echo json_encode($rawdata);
+        }else{
+          $rawdata = array('status' => 'FAIL', 'mensaje' =>'Ocurrio algo durante el proceso de actualizacion, recuerde que el codigo de orden fisica es unico y no se puede repetir.');
+          echo json_encode($rawdata);
+        }
+      }else{
+        $rawdata = array('status' => 'FAIL', 'mensaje' =>'No existe formData.');
+        echo json_encode($rawdata);
+      }
+      
 
     }else{
       $rawdata = array('status' => 'error', 'mensaje' =>'el API no ha podido responder la solicitud, revise el tipo de action');

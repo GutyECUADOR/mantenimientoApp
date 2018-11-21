@@ -1,5 +1,5 @@
 ### Current Version : v1.30
-![Pantalla de Login](screnshot.png)
+![Pantalla de Login](screenshot.png)
 
 ## SQL SERVER REQUERIMIENTOS:
 - Accesa a la carpeta SQL e importe los esquemas de las tablas y procedimientos almacenados necesarios.

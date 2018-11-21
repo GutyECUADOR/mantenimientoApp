@@ -255,7 +255,6 @@ class ajaxModel  {
    
     }
 
-
     public function getArrayProducto($dataBaseName='KAO_wssp', $codProducto) {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
@@ -279,6 +278,127 @@ class ajaxModel  {
    
     }
     
+    /* Actualiza tabla mantenimientosEQ con la informacion que llega del formulario editMantenimiento*/
+    public function updateMantenimientoEQ($formData, $dataBaseName='KAO_wssp'){
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+
+        $codEmpresa = trim($_SESSION["codEmpresaAUTH"]); //Codigo de la empresa seleccionada en login
+        $codMNT = $formData->codMantenimiento;
+        $codOrdenFisica = $formData->product_ordenFisica;
+        $responsable = $formData->product_edit_tecnico;
+        $fechaInicio = date('Ymd H:i:s', strtotime("$formData->uk_dp_fecha"));
+        $fechaFinal = date('Ymd H:i:s', strtotime("$formData->uk_dp_fecha"));
+
+        $query = "
+        UPDATE 
+            DBO.mantenimientosEQ
+        SET 
+            codOrdenFisica = '$codOrdenFisica',
+            responsable = '$responsable',
+            fechaInicio = '$fechaInicio',
+            fechaFin = '$fechaFinal'
+        WHERE 
+            codMantenimiento = '$codMNT' 
+            AND codEmpresa ='$codEmpresa'
+        ";
+
+        $stmt = $this->db->prepare($query); 
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /*Retorna array con informacion de la empresa que se indique*/
+    public function getDatosEmpresaFromWINFENIX ($dataBaseName='KAO_wssp'){
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+
+        $query = "SELECT NomCia, Oficina, Ejercicio FROM dbo.DatosEmpresa";
+        $stmt = $this->db->prepare($query); 
+
+        if($stmt->execute()){
+            return $stmt->fetch( \PDO::FETCH_ASSOC );
+        }else{
+            return false;
+        }
+    }
+
+    /*Retorna el siguiente secuencial del tipo de documento que se le indiqie - Winfenix*/
+    public function getNextNumDocWINFENIX ($dataBaseName='KAO_wssp'){
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+
+        $gestion = 'VEN';
+        $ofi = '99';
+        $eje = '';
+        $tipo = 'PEM';
+        $codigo = '';
+
+        $stmt = $this->db->prepare("exec SP_CONTADOR ?, ?, ?, ?, ?"); 
+        $stmt->bindValue(1, $gestion); 
+        $stmt->bindValue(2, $ofi); 
+        $stmt->bindValue(3, $eje); 
+        $stmt->bindValue(4, $tipo); 
+        $stmt->bindValue(5, $codigo); 
+
+        $stmt->execute();
+        $stmt->nextRowset(); 
+        
+        $newCodLimpio = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $newCodLimpio =  $newCodLimpio['NExtID'];
+
+        return $newCodLimpio;
+    }
+
+    /*Retorna el secuencial de WinFenix en formato 0000XXXX - Winfenix*/
+    public function formatoNextNumDocWINFENIX ($dataBaseName='KAO_wssp', $secuencialWinfenix){
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+
+        $newCod = $this->db->query("select RIGHT('00000000' + Ltrim(Rtrim('$secuencialWinfenix')),8) as newcod");
+        $codigoConFormato = $newCod->fetch(\PDO::FETCH_ASSOC);
+        $codigoConFormato = $codigoConFormato['newcod'];
+        return $codigoConFormato;
+    }
+
+    public function insertVEN_CAB($formData, $dataBaseName='KAO_wssp'){
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+
+        $query = "
+
+        ";
+
+        $stmt = $this->db->prepare($query); 
+        $sth->bindParam(1, $name);
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function insertVEN_MOV($formData, $dataBaseName='KAO_wssp'){
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+
+        
+
+        $query = "
+        
+        ";
+
+        $stmt = $this->db->prepare($query); 
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }
 
 
