@@ -103,7 +103,7 @@ altair_product_edit = {
             e.preventDefault();
             let codigoMNT = document.getElementById("codMantenimiento").innerHTML;
             var form_serialized = JSON.stringify($product_edit_form.serializeObject(), null, 2);
-            //UIkit.modal.alert('<p>Producto data:</p><pre>' + form_serialized + '</pre>');
+            UIkit.modal.alert('<p>Producto data:</p><pre>' + form_serialized + '</pre>');
             //console.log(form_serialized);
             UIkit.modal.confirm('Confirme, actualizar informacion de la orden de trabajo y agregar los repuestos indicados a la orden ' + codigoMNT + ' ?', function() {
                 $.ajax({

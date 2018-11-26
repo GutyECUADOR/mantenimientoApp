@@ -117,7 +117,7 @@ class ajaxController  {
         $newIDWinFenix = $datosEmpresa['Oficina'].$datosEmpresa['Ejercicio'].$tipoDOC.$newCodigo;
         
         //Registro en VEN_CAB
-        //$response_VEN_CAB = $ajaxModel->insertVEN_CAB($formData);
+        $response_VEN_CAB = $ajaxModel->insertVEN_CAB($formData);
 
 
         if($response_WSSP){

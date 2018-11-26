@@ -368,13 +368,27 @@ class ajaxModel  {
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX();
 
-        $query = "
+        $oficinaEmpresa = '99';
+        $ejercicioEmpresa = '2017';
+        $cod_tipodoc = 'C02';
+        $cod_sp_with0 = '00001717'; /*DEFINE FK clave unica*/
+        $cod_cliente = '00001823';
+        $facturaRef = '';
+        $bodega = 'B02'; 
+        $iva = '0';
+        $subtotal = '0';
+        $total = '0';
 
-        ";
+        $pcID = php_uname('n'); // Obtiene el nombre del PC
+        $fecha_now_SQL = date("Ymd");  //Elimina del formato -, para evitar error
+        $observa_valep = 'Generado por mantenimientosApp';
+        $serie_valep='001005';
 
-        $stmt = $this->db->prepare($query); 
+        $query = "exec dbo.SP_VENGRACAB 'I','ADMINWSSP','$pcID', '$oficinaEmpresa' , '$ejercicioEmpresa' , '$cod_tipodoc', '$cod_sp_with0','$facturaRef','$fecha_now_SQL','00001823','B02','DOL','1.00','0.00','10','0.00','0.00','0.00','0.00','0.00','10','0.00','2','0.00','12','CON','0','1','0','S','0','1','0','0','','','999',' ',' ','PRUEBAS','001005','00002050','','','','','0.00','0.00','0.00','','','','','','','','','','0','P','','','','','','0','','','','','0','2','0.00','0.00','0.00','0','999999999 ','0','','','','','','EFE','','','','','20181121','','',''";
+        
+        $rowsAfected = $this->db->exec($query);
         $sth->bindParam(1, $name);
-        if($stmt->execute()){
+        if($rowsAfected == 1){
             return true;
         }else{
             return false;

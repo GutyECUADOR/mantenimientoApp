@@ -155,7 +155,7 @@
                                             <label for="product_edit_tecnico" class="uk-form-label">Pago mantenimiento</label>
                                             <select id="product_edit_facturadoa" name="product_edit_facturadoa" data-md-selectize>
                                                 <option value="1">Facturado a cliente</option>
-                                                <option value="0">Sin facturación</option>
+                                                <option value="0">Facturado a KAO Importaciones</option>
                                             </select>
                                         </div>
 
