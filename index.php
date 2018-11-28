@@ -1,4 +1,5 @@
 <?php
+    date_default_timezone_set('America/Lima');
     @ob_start();
     session_start();
     require_once './config/global.php';
@@ -9,7 +10,8 @@
     require_once './core/controllers/ajaxController.php';
     require_once './core/models/ajaxModel.php';
     require_once './core/models/MantenimientosClass.php';
-
+    require_once './core/models/venCabClass.php';
+    
     /* TEST Conexion */    
     /* require_once './core/models/conexion.php';
     $conexion = new models\conexion();
@@ -25,13 +27,11 @@
    /*  $login = new controllers\loginController();
     $login->showAllDataBaseList(); */
 
-    /* TEST AjaxModel */ 
-   /*  $ajaxModel = new models\ajaxModel(); */
-    /* $data = array('test' => 'ok');
-    var_dump($ajax->insertNewMantenimiento($data,'modelo')); */
-    /* $datosEmpresa = $ajax->formatoNextNumDocWINFENIX('MODELO','2050');
-    var_dump($datosEmpresa); */
-
+    /* TEST AjaxModel  
+    $ajaxModel = new models\ajaxModel(); 
+    
+    $newCodigo = $ajaxModel->getNextNumDocWINFENIX('C02', 'FALVAREZ_V7'); // Recuperamos secuencial de SP de Winfenix
+    var_dump($newCodigo);*/
 
     /* TEST AjaxController */ 
    /*  $ajax = new controllers\ajaxController();

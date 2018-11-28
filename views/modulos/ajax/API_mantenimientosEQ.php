@@ -1,7 +1,9 @@
 <?php
+date_default_timezone_set('America/Lima');
 session_start();
 require_once '../../../core/controllers/ajaxController.php';
 require_once '../../../core/models/ajaxModel.php';
+require_once '../../../core/models/venCabClass.php';
 require_once '../../../config/global.php';
 
 class ajax{

@@ -1,12 +1,5 @@
 
 <?php
-
-require('../core/models/venCabClass.php');
-
-$VEN_CAB = new \models\VenCabClass(
-    'EQ-Progra',
-    '99',
-    '2014'
-);
-
-echo $VEN_CAB->getCode();
+date_default_timezone_set('America/Lima');
+$fechas = date('Y-m-d h:i:s');
+echo $fechas;

@@ -327,14 +327,14 @@ class ajaxModel  {
     }
 
     /*Retorna el siguiente secuencial del tipo de documento que se le indiqie - Winfenix*/
-    public function getNextNumDocWINFENIX ($dataBaseName='KAO_wssp'){
+    public function getNextNumDocWINFENIX ($tipoDoc, $dataBaseName='KAO_wssp'){
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX();
 
         $gestion = 'VEN';
         $ofi = '99';
         $eje = '';
-        $tipo = 'PEM';
+        $tipo = $tipoDoc;
         $codigo = '';
 
         $stmt = $this->db->prepare("exec SP_CONTADOR ?, ?, ?, ?, ?"); 
@@ -364,31 +364,19 @@ class ajaxModel  {
         return $codigoConFormato;
     }
 
-    public function insertVEN_CAB($formData, $dataBaseName='KAO_wssp'){
+    public function insertVEN_CAB($VEN_CAB_obj, $dataBaseName='KAO_wssp'){
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX();
 
-        $oficinaEmpresa = '99';
-        $ejercicioEmpresa = '2017';
-        $cod_tipodoc = 'C02';
-        $cod_sp_with0 = '00001717'; /*DEFINE FK clave unica*/
-        $cod_cliente = '00001823';
-        $facturaRef = '';
-        $bodega = 'B02'; 
-        $iva = '0';
-        $subtotal = '0';
-        $total = '0';
-
-        $pcID = php_uname('n'); // Obtiene el nombre del PC
-        $fecha_now_SQL = date("Ymd");  //Elimina del formato -, para evitar error
-        $observa_valep = 'Generado por mantenimientosApp';
-        $serie_valep='001005';
-
-        $query = "exec dbo.SP_VENGRACAB 'I','ADMINWSSP','$pcID', '$oficinaEmpresa' , '$ejercicioEmpresa' , '$cod_tipodoc', '$cod_sp_with0','$facturaRef','$fecha_now_SQL','00001823','B02','DOL','1.00','0.00','10','0.00','0.00','0.00','0.00','0.00','10','0.00','2','0.00','12','CON','0','1','0','S','0','1','0','0','','','999',' ',' ','PRUEBAS','001005','00002050','','','','','0.00','0.00','0.00','','','','','','','','','','0','P','','','','','','0','','','','','0','2','0.00','0.00','0.00','0','999999999 ','0','','','','','','EFE','','','','','20181121','','',''";
+        //$queryExample = "exec dbo.SP_VENGRACAB 'I','ADMINWSSP','TESTOK','99', '2014', 'C02', '00001721','','20181126','00054818','FAL','DOL','1.00','0.00','10','0.00','0.00','0.00','0.00','0.00','10','0.00','2','0.00','12','CON','0','1','0','S','0','1','0','0','','','999',' ',' ','PRUEBAS','001005','00002050','','','','','0.00','0.00','0.00','','','','','','','','','','0','P','','','','','','0','','','','','0','2','0.00','0.00','0.00','0','999999999 ','0','','','','','','EFE','','','','','20181126','',''";
+        $VEN_CAB = new \models\venCabClass();
+        $VEN_CAB = $VEN_CAB_obj;
+        
+        $query = "exec dbo.SP_VENGRACAB 'I','ADMINWSSP','$VEN_CAB->pcID','$VEN_CAB->oficina', '$VEN_CAB->ejercicio', '$VEN_CAB->tipoDoc', '$VEN_CAB->numeroDoc','','$VEN_CAB->fecha','00054818','$VEN_CAB->bodega','$VEN_CAB->divisa','1.00','0.00','10','0.00','0.00','0.00','0.00','0.00','10','0.00','2','0.00','12','CON','0','1','0','S','0','1','0','0','','','999',' ',' ','$VEN_CAB->observacion','001005','00002050','','','','','0.00','0.00','0.00','','','','','','','','','','0','P','','','','','','0','','','','','0','2','0.00','0.00','0.00','0','999999999 ','0','','','','','','EFE','','','','','20181126','',''";
         
         $rowsAfected = $this->db->exec($query);
-        $sth->bindParam(1, $name);
-        if($rowsAfected == 1){
+       
+        if($rowsAfected == '1'){
             return true;
         }else{
             return false;

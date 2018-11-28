@@ -101,7 +101,9 @@ class ajaxController  {
 
     /*Envia informacion al modelo para actualizar, ejecuta insert en WINFENIX, VEN_CAB y VEN_MOV */
     public function updateMantenimientoByCod($formData){
+        date_default_timezone_set('America/Lima');
         $ajaxModel = new \models\ajaxModel();
+        $VEN_CAB = new \models\venCabClass();
         $dbEmpresa = trim($_SESSION["empresaAUTH"]);
 
         //Actualizacion a WSSP - MantenimientosEQ
@@ -110,17 +112,35 @@ class ajaxController  {
         //Obtenemos informacion de la empresa
         $datosEmpresa = $ajaxModel->getDatosEmpresaFromWINFENIX($dbEmpresa);
 
-        //Creamos nuevo codigo de VEN_CAB
-        $newCodigo = $ajaxModel->getNextNumDocWINFENIX($dbEmpresa); // Recuperamos secuencial de SP de Winfenix
-        $newCodigo = $ajaxModel->formatoNextNumDocWINFENIX($dbEmpresa, $newCodigo); // Asignamos formato con 0000X
-        $tipoDOC = 'C02'; //Codigo de identificacion de Winfenix
-        $newIDWinFenix = $datosEmpresa['Oficina'].$datosEmpresa['Ejercicio'].$tipoDOC.$newCodigo;
+        //Creamos nuevo codigo de VEN_CAB (secuencial)
+        $newCodigo = $ajaxModel->getNextNumDocWINFENIX('C02', $dbEmpresa); // Recuperamos secuencial de SP de Winfenix
+        $newCodigoWith0 = $ajaxModel->formatoNextNumDocWINFENIX($dbEmpresa, $newCodigo); // Asignamos formato con 0000X
+      
+         /*Creacion y asignacion de valores a VEN_CAB*/
+       
+        $VEN_CAB->setPcID(php_uname('n'));
+        $VEN_CAB->setOficina($datosEmpresa['Oficina']);
+        $VEN_CAB->setEjercicio($datosEmpresa['Ejercicio']);
+        $VEN_CAB->setTipoDoc('C02');
+        $VEN_CAB->setNumeroDoc($newCodigoWith0);
+        $VEN_CAB->setFecha(date('Ymd h:i:s'));
+        $VEN_CAB->setBodega('FAL');
+        $VEN_CAB->setDivisa('DOL');
+        $VEN_CAB->setSubtotal(100);
+        $VEN_CAB->setImpuesto(12);
+        $VEN_CAB->setTotal(112);
+        $VEN_CAB->setFormaPago('EFE');
+        $VEN_CAB->setSerie('001005');
+        $VEN_CAB->setSecuencia('00002050');
+        $VEN_CAB->setObservacion('TEST OBJETOS');
+        $VEN_CAB->setProductos(NULL);
+        
+        //$newIDWinFenix = $datosEmpresa['Oficina'].$datosEmpresa['Ejercicio'].$tipoDOC.$newCodigoWith0;
         
         //Registro en VEN_CAB
-        $response_VEN_CAB = $ajaxModel->insertVEN_CAB($formData);
+        $response_VEN_CAB = $ajaxModel->insertVEN_CAB($VEN_CAB, $dbEmpresa);
 
-
-        if($response_WSSP){
+        if($response_WSSP && $response_VEN_CAB){
             return true;
         }else{
             return false;
