@@ -325,6 +325,21 @@ class ajaxModel  {
             return false;
         }
     }
+    
+    /*Retorna array asociativo con informacion del cliente que se indique*/
+    public function getDatosClienteWINFENIXByRUC ($clienteRUC, $dataBaseName='KAO_wssp'){
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+
+        $query = "SELECT * FROM COB_CLIENTES WHERE RUC = '$clienteRUC'";
+        $stmt = $this->db->prepare($query); 
+
+        if($stmt->execute()){
+            return $stmt->fetch( \PDO::FETCH_ASSOC );
+        }else{
+            return false;
+        }
+    }
 
     /*Retorna el siguiente secuencial del tipo de documento que se le indiqie - Winfenix*/
     public function getNextNumDocWINFENIX ($tipoDoc, $dataBaseName='KAO_wssp'){
@@ -372,7 +387,7 @@ class ajaxModel  {
         $VEN_CAB = new \models\venCabClass();
         $VEN_CAB = $VEN_CAB_obj;
         
-        $query = "exec dbo.SP_VENGRACAB 'I','ADMINWSSP','$VEN_CAB->pcID','$VEN_CAB->oficina', '$VEN_CAB->ejercicio', '$VEN_CAB->tipoDoc', '$VEN_CAB->numeroDoc','','$VEN_CAB->fecha','00054818','$VEN_CAB->bodega','$VEN_CAB->divisa','1.00','0.00','10','0.00','0.00','0.00','0.00','0.00','10','0.00','2','0.00','12','CON','0','1','0','S','0','1','0','0','','','999',' ',' ','$VEN_CAB->observacion','001005','00002050','','','','','0.00','0.00','0.00','','','','','','','','','','0','P','','','','','','0','','','','','0','2','0.00','0.00','0.00','0','999999999 ','0','','','','','','EFE','','','','','20181126','',''";
+        $query = "exec dbo.SP_VENGRACAB 'I','ADMINWSSP','$VEN_CAB->pcID','$VEN_CAB->oficina', '$VEN_CAB->ejercicio', '$VEN_CAB->tipoDoc', '$VEN_CAB->numeroDoc','','$VEN_CAB->fecha','$VEN_CAB->cliente','$VEN_CAB->bodega','$VEN_CAB->divisa','1.00','0.00','$VEN_CAB->subtotal','0.00','0.00','0.00','0.00','0.00','$VEN_CAB->subtotal','0.00','$VEN_CAB->impuesto','0.00','$VEN_CAB->total','CON','0','1','0','S','0','1','0','0','','','999',' ',' ','$VEN_CAB->observacion','001005','$VEN_CAB->secuencia','','','','','0.00','0.00','0.00','','','','','','','','','','0','P','','','','','','0','','','','','0','2','0.00','0.00','0.00','0','999999999 ','0','','','','','','$VEN_CAB->formaPago','','','','','$VEN_CAB->fecha','',''";
         
         $rowsAfected = $this->db->exec($query);
        
@@ -383,15 +398,14 @@ class ajaxModel  {
         }
     }
 
-    public function insertVEN_MOV($formData, $dataBaseName='KAO_wssp'){
+    public function insertVEN_MOV($VEN_MOV_obj, $dataBaseName='KAO_wssp'){
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX();
-
         
+        $VEN_MOV = new \models\venMovClass();
+        $VEN_MOV = $VEN_MOV_obj;
 
-        $query = "
-        
-        ";
+        $query = "exec dbo.SP_VENGRAMOV 'I','$VEN_MOV->oficina','$VEN_MOV->ejercicio','$VEN_MOV->tipoDoc','$VEN_MOV->numeroDoc','$VEN_MOV->fecha','$VEN_MOV->cliente','FAL','S','0','0','$VEN_MOV->codProducto','UND','1','A','$VEN_MOV->precioProducto','0','$VEN_MOV->porcentajeIVA','$VEN_MOV->precioTOTAL','$VEN_MOV->fecha','','0.00','0.0000000','0','1.01.11','$VEN_MOV->observacion','1','1','104','0.0000','0.0000','0','','0','$VEN_MOV->tipoIVA' ";
 
         $stmt = $this->db->prepare($query); 
         if($stmt->execute()){

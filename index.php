@@ -11,6 +11,7 @@
     require_once './core/models/ajaxModel.php';
     require_once './core/models/MantenimientosClass.php';
     require_once './core/models/venCabClass.php';
+     require_once './core/models/venMovClass.php';
     
     /* TEST Conexion */    
     /* require_once './core/models/conexion.php';

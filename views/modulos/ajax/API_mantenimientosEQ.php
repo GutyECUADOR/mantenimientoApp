@@ -4,6 +4,7 @@ session_start();
 require_once '../../../core/controllers/ajaxController.php';
 require_once '../../../core/models/ajaxModel.php';
 require_once '../../../core/models/venCabClass.php';
+require_once '../../../core/models/venMovClass.php';
 require_once '../../../config/global.php';
 
 class ajax{
@@ -45,8 +46,8 @@ class ajax{
       return $this->ajaxController->getProductoByCod($codProducto);
     }
 
-    public function updateMantenimiento($formData){
-      return $this->ajaxController->updateMantenimientoByCod($formData);
+    public function updateMantenimiento($formData, $productosArray){
+      return $this->ajaxController->updateMantenimientoByCod($formData, $productosArray);
     }
 
 
@@ -240,10 +241,11 @@ class ajax{
     /* Actualiza la informacion de la orden y crea registros en VEN_CAB y VEN_MOV*/
     }elseif ($_GET["action"] == "updateOrden") {
       
-      if(isset($_GET["formData"])){
+      if(isset($_GET["formData"]) && isset($_GET["productosArray"])){
         $dataDecode = json_decode($_GET["formData"]);
+        $productosArray = json_decode($_GET["productosArray"]);
 
-        $updateCorrecto = $ajax->updateMantenimiento($dataDecode);
+        $updateCorrecto = $ajax->updateMantenimiento($dataDecode, $productosArray);
      
         if ($updateCorrecto) {
           $rawdata = array('status' => 'OK', 'mensaje' =>'Se actualizo la orden');
@@ -257,6 +259,14 @@ class ajax{
         echo json_encode($rawdata);
       }
       
+
+    
+    
+    }elseif ($_GET["action"] == "test") {
+
+      $productos = $_GET["productosArray"];
+      $rawdata = array('status' => 'error', 'objeto' => $productos);
+      echo json_encode($rawdata);
 
     }else{
       $rawdata = array('status' => 'error', 'mensaje' =>'el API no ha podido responder la solicitud, revise el tipo de action');

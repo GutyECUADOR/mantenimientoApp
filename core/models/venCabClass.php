@@ -7,6 +7,7 @@ class venCabClass {
     public $tipoDoc;
     public $numeroDoc;
     public $fecha;
+    public $cliente;
     public $bodega;
     public $divisa;
     public $subtotal;
@@ -17,11 +18,14 @@ class venCabClass {
     public $secuencia;
     public $observacion;
     public $productos;
+    public $codigos_prod;
+    public $nombres_prod;
+    public $cants_prod;
+    public $precios_prod;
     
     public function __construct() {
         
     }
-    
     
     function getProductos() {
         return $this->productos;
@@ -31,6 +35,16 @@ class venCabClass {
         $this->productos = $productos;
     }
 
+        
+    function getCliente() {
+        return $this->cliente;
+    }
+
+    function setCliente($cliente) {
+        $this->cliente = $cliente;
+    }
+
+        
     function getPcID() {
         return $this->pcID;
     }
@@ -149,6 +163,38 @@ class venCabClass {
 
     function setObservacion($observacion) {
         $this->observacion = $observacion;
+    }
+
+    function getCodigos_prod() {
+        return $this->codigos_prod;
+    }
+
+    function getNombres_prod() {
+        return $this->nombres_prod;
+    }
+
+    function getCants_prod() {
+        return $this->cants_prod;
+    }
+
+    function getPrecios_prod() {
+        return $this->precios_prod;
+    }
+
+    function setCodigos_prod($codigos_prod) {
+        $this->codigos_prod = $codigos_prod;
+    }
+
+    function setNombres_prod($nombres_prod) {
+        $this->nombres_prod = $nombres_prod;
+    }
+
+    function setCants_prod($cants_prod) {
+        $this->cants_prod = $cants_prod;
+    }
+
+    function setPrecios_prod($precios_prod) {
+        $this->precios_prod = $precios_prod;
     }
 
 

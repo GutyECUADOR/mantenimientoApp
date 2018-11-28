@@ -118,6 +118,7 @@
                                     <div class="uk-width-large-1-2">
                                         <div class="uk-form-row">
                                             <input type="hidden" class="md-input" id="codMantenimiento" name="codMantenimiento" value="<?php echo trim($arrayMantenimiento["codMantenimiento"])?>" readonly/>
+                                            <input type="hidden" class="md-input" id="codCliente" name="codCliente" value="<?php echo trim($arrayMantenimiento["CodCliente"])?>" readonly/>
                                         </div>
                                    
                                         <div class="uk-form-row">

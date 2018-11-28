@@ -22,6 +22,16 @@ $(function() {
 
 /* Peticion al API retornara objeto con la informacion si existe el producto */
 
+class Producto {
+    constructor(codigo, nombre, cantidad, precio, descuento) {
+      this.codigo = codigo;
+      this.nombre = nombre;
+      this.cantidad = cantidad;
+      this.precio = precio;
+      this.descuento = descuento;
+    }
+  }
+
 function validaProducto(codProducto, inputHTML) {
     $.ajax({
         type: 'get',
@@ -67,6 +77,27 @@ function validaProducto(codProducto, inputHTML) {
 
 }
 
+function getProductos() {
+    
+    let ArrayProductos = [];
+
+    let rows = document.getElementsByName("codigos_prod");
+
+    for (i = 0, total = rows.length; i < total; i++) {
+    
+        let codigoProd = document.getElementsByName("codigos_prod")[i].value; 
+        let nombreProd = (document.getElementsByName("nombres_prod")[i].value).trim(); 
+        let cantProd = document.getElementsByName("cants_prod")[i].value;
+        let precioProd = document.getElementsByName("precios_prod")[i].value ;
+        let descuentoProd = 0;
+
+        let producto = new Producto(codigoProd, nombreProd, cantProd, precioProd, descuentoProd);
+        ArrayProductos.push(producto);
+    }
+
+    return ArrayProductos;
+}
+
 config = {
     // date range
     date_range: function() {
@@ -102,6 +133,7 @@ altair_product_edit = {
         $product_edit_submit_btn.on('click', function(e) {
             e.preventDefault();
             let codigoMNT = document.getElementById("codMantenimiento").innerHTML;
+            let productosArray = JSON.stringify(getProductos());
             var form_serialized = JSON.stringify($product_edit_form.serializeObject(), null, 2);
             UIkit.modal.alert('<p>Producto data:</p><pre>' + form_serialized + '</pre>');
             //console.log(form_serialized);
@@ -109,10 +141,12 @@ altair_product_edit = {
                 $.ajax({
                     url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=updateOrden',
                     method: 'GET',
-                    data: { formData: form_serialized },
+                    data: { formData: form_serialized, productosArray: productosArray },
 
                     success: function(response) {
+                        console.log(response);
                         response = JSON.parse(response);
+                       
                         if (response.status == 'OK') {
                             UIkit.modal.alert(response.mensaje)
                             location.reload();
