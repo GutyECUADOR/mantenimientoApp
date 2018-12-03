@@ -52,11 +52,13 @@ function validaProducto(codProducto, inputHTML) {
                         document.getElementsByName("nombres_prod")[position].value = prodIdentificado.Nombre;
                         document.getElementsByName("cants_prod")[position].value = 1;
                         document.getElementsByName("precios_prod")[position].value = Number(prodIdentificado.PrecA);
+                        document.getElementsByName("desc_prod")[position].value = getPorcentDescuento();
 
                     } else {
                         document.getElementsByName("nombres_prod")[position].value = "";
                         document.getElementsByName("cants_prod")[position].value = 0;
                         document.getElementsByName("precios_prod")[position].value = "";
+                        document.getElementsByName("desc_prod")[position].value = 0;
                     }
 
                 }
@@ -77,6 +79,15 @@ function validaProducto(codProducto, inputHTML) {
 
 }
 
+function getPorcentDescuento(){
+    let facturadoA = document.getElementById('product_edit_facturadoa').value;
+    if (facturadoA == '0'){
+        return 99;
+    }else{
+        return 0;
+    }
+}
+
 function getProductos() {
     
     let ArrayProductos = [];
@@ -89,7 +100,7 @@ function getProductos() {
         let nombreProd = (document.getElementsByName("nombres_prod")[i].value).trim(); 
         let cantProd = document.getElementsByName("cants_prod")[i].value;
         let precioProd = document.getElementsByName("precios_prod")[i].value ;
-        let descuentoProd = 0;
+        let descuentoProd = document.getElementsByName("desc_prod")[i].value ;
 
         let producto = new Producto(codigoProd, nombreProd, cantProd, precioProd, descuentoProd);
         ArrayProductos.push(producto);
@@ -136,6 +147,7 @@ altair_product_edit = {
             let productosArray = JSON.stringify(getProductos());
             var form_serialized = JSON.stringify($product_edit_form.serializeObject(), null, 2);
             UIkit.modal.alert('<p>Producto data:</p><pre>' + form_serialized + '</pre>');
+            console.log(getProductos());
             //console.log(form_serialized);
             UIkit.modal.confirm('Confirme, actualizar informacion de la orden de trabajo y agregar los repuestos indicados a la orden ' + codigoMNT + ' ?', function() {
                 $.ajax({
@@ -148,8 +160,11 @@ altair_product_edit = {
                         response = JSON.parse(response);
                        
                         if (response.status == 'OK') {
-                            UIkit.modal.alert(response.mensaje)
-                            location.reload();
+                            UIkit.modal.alert(response.mensaje);
+                            setTimeout(() => {
+                                location.reload();
+                            }, 3000);
+                            
 
 
                         } else if (response.status == 'FAIL') {

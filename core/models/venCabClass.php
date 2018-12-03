@@ -10,6 +10,7 @@ class venCabClass {
     public $cliente;
     public $bodega;
     public $divisa;
+    public $porcentDescuento;
     public $subtotal;
     public $impuesto;
     public $total;
@@ -27,6 +28,29 @@ class venCabClass {
         
     }
     
+    function calculaSubtotal(){
+        $subtotal = 0;
+        foreach ($this->productos as $producto) {
+            $subtotal += $producto->precio * $producto->cantidad;
+        }
+        $this->subtotal = $subtotal;
+        return $subtotal;
+         
+    }
+    
+    function calculaIVA(){
+        $totalIVA =  round($this->subtotal * .12, 2);
+        $this->impuesto = $totalIVA;
+        return $totalIVA;
+    }
+    
+    function calculaTOTAL(){
+        $descuento = ($this->subtotal * $this->porcentDescuento)/100;
+        $total = ($this->subtotal - $descuento ) + $this->impuesto ;
+        $this->total = round($total, 2);
+        return round($total, 2);
+    }
+            
     function getProductos() {
         return $this->productos;
     }
@@ -35,7 +59,15 @@ class venCabClass {
         $this->productos = $productos;
     }
 
-        
+    function getPorcentDescuento() {
+        return $this->porcentDescuento;
+    }
+
+    function setPorcentDescuento($porcentDescuento) {
+        $this->porcentDescuento = $porcentDescuento;
+    }
+
+            
     function getCliente() {
         return $this->cliente;
     }

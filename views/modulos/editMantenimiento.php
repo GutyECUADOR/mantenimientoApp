@@ -57,7 +57,7 @@
                             <div class="md-card-content">
                                 <div class="uk-margin-bottom uk-text-center uk-position-relative">
                                     <button type="button" class="uk-modal-close uk-close uk-close-alt uk-position-absolute"></button>
-                                    <img src="https://http2.mlstatic.com/maquina-multi-ejercicios-D_NQ_NP_742325-MLC25419002918_032017-F.jpg" alt="" class="img_medium"/>
+                                    <img src="assets/img/ecommerce/s6_edge.jpg" alt="" class="img_medium"/>
                                 </div>
                                
                             </div>
@@ -204,6 +204,7 @@
                                                     <td class="uk-width-2-10"><input type="text" class="md-input codigos_prod" name="codigos_prod" placeholder="Codigo" /></td>
                                                     <td class="uk-width-5-10"><input type="text" class="md-input" name="nombres_prod" placeholder="Producto" readonly/></td>
                                                     <td class="uk-width-1-10"><input type="number" class="md-input"  name="cants_prod" placeholder="Cant." /></td>
+                                                    <td class="uk-width-1-10"><input type="number" class="md-input"  name="desc_prod" placeholder="Desc." readonly /></td>
                                                     <td class="uk-width-2-10"><input type="text" class="md-input" name="precios_prod" placeholder="Precio" readonly/></td>
                                                     
                                                     <td class="uk-width-1-10 uk-text-right uk-text-middle">

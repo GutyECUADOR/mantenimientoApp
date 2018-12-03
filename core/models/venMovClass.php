@@ -9,6 +9,7 @@ class venMovClass {
     public $cliente;
     public $bodega;
     public $codProducto;
+    public $cantidad;
     public $precioProducto;
     public $porcentajeDescuentoProd;
     public $tipoIVA;
@@ -19,7 +20,14 @@ class venMovClass {
     function __construct() {
         
     }
-
+    
+    function calculaPrecioTOTAL(){
+        $precioTotal = $this->cantidad * $this->precioProducto;
+        
+        $this->precioTOTAL = $precioTotal;
+        return $precioTotal;
+    }
+    
     function getOficina() {
         return $this->oficina;
     }
@@ -130,6 +138,14 @@ class venMovClass {
 
     function setObservacion($observacion) {
         $this->observacion = $observacion;
+    }
+
+    function getCantidad() {
+        return $this->cantidad;
+    }
+
+    function setCantidad($cantidad) {
+        $this->cantidad = $cantidad;
     }
 
 
