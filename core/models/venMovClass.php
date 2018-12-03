@@ -23,6 +23,8 @@ class venMovClass {
     
     function calculaPrecioTOTAL(){
         $precioTotal = $this->cantidad * $this->precioProducto;
+        $descuento = ($precioTotal * $this->porcentajeDescuentoProd)/100;
+        $precioTotal = $precioTotal - $descuento;
         
         $this->precioTOTAL = $precioTotal;
         return $precioTotal;

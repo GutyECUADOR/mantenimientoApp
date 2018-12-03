@@ -148,10 +148,15 @@ class ajaxController  {
         //Registro en VEN_CAB
         $response_VEN_CAB = $ajaxModel->insertVEN_CAB($VEN_CAB, $dbEmpresa);
         
-        
             foreach ($VEN_CAB->getProductos() as $producto) {
-                
                 $VEN_MOV = new \models\venMovClass();
+                if ($formData->product_edit_facturadoa == 1) {
+                    $VEN_MOV->setCliente($formData->codCliente);
+                    
+                }else{
+                    $VEN_MOV->setCliente($codIMPORTKAO);
+                }
+                
                 $VEN_MOV->setOficina($datosEmpresa['Oficina']);
                 $VEN_MOV->setEjercicio($datosEmpresa['Ejercicio']);
                 $VEN_MOV->setTipoDoc($tipoDOC);

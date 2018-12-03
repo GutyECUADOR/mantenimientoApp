@@ -164,9 +164,7 @@ altair_product_edit = {
                             setTimeout(() => {
                                 location.reload();
                             }, 3000);
-                            
-
-
+                           
                         } else if (response.status == 'FAIL') {
                             UIkit.modal.alert(response.mensaje);
                         }
