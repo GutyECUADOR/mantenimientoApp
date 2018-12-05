@@ -92,6 +92,14 @@ class ajaxController  {
     }
 
     /* Retorna la respuesta del modelo ajax*/
+    public function getAllBodegas(){
+        $ajaxModel = new \models\ajaxModel();
+        $dbEmpresa = trim($_SESSION["empresaAUTH"]);
+        $response = $ajaxModel->getArraysBodegas($dbEmpresa);
+        return $response;
+    }
+
+    /* Retorna la respuesta del modelo ajax*/
     public function getProductoByCod($codProducto){
         $ajaxModel = new \models\ajaxModel();
         $dbEmpresa = trim($_SESSION["empresaAUTH"]);
@@ -108,61 +116,68 @@ class ajaxController  {
         $tipoDOC = 'C02';
         //Actualizacion a WSSP - MantenimientosEQ
         $response_WSSP = $ajaxModel->updateMantenimientoEQ($formData);
+        $response_VEN_CAB = true;
 
-        //Obtenemos informacion de la empresa
-        $datosEmpresa = $ajaxModel->getDatosEmpresaFromWINFENIX($dbEmpresa);
-        
-        $codIMPORTKAO = $ajaxModel->getDatosClienteWINFENIXByRUC('1790417581001', $dbEmpresa)['CODIGO'];
+        if (!empty($productosArray)) {
+            
+            //Obtenemos informacion de la empresa
+            $datosEmpresa = $ajaxModel->getDatosEmpresaFromWINFENIX($dbEmpresa);
+            
+            $codIMPORTKAO = $ajaxModel->getDatosClienteWINFENIXByRUC('1790417581001', $dbEmpresa)['CODIGO'];
 
-        //Creamos nuevo codigo de VEN_CAB (secuencial)
-        $newCodigo = $ajaxModel->getNextNumDocWINFENIX($tipoDOC, $dbEmpresa); // Recuperamos secuencial de SP de Winfenix
-        $newCodigoWith0 = $ajaxModel->formatoNextNumDocWINFENIX($dbEmpresa, $newCodigo); // Asignamos formato con 0000X
+            //Crea mos nuevo codigo de VEN_CAB (secuencial)
+            $newCodigo = $ajaxModel->getNextNumDocWINFENIX($tipoDOC, $dbEmpresa); // Recuperamos secuencial de SP de Winfenix
+            $newCodigoWith0 = $ajaxModel->formatoNextNumDocWINFENIX($dbEmpresa, $newCodigo); // Asignamos formato con 0000X
       
-         /*Creacion y asignacion de valores a VEN_CAB*/
-        if ($formData->product_edit_facturadoa == 1) {
-            $VEN_CAB->setCliente($formData->codCliente);
-            $VEN_CAB->setPorcentDescuento(0);
-        }else{
-            $VEN_CAB->setCliente($codIMPORTKAO);
-            $VEN_CAB->setPorcentDescuento(99);
-        }
-       
-        $VEN_CAB->setPcID(php_uname('n'));
-        $VEN_CAB->setOficina($datosEmpresa['Oficina']);
-        $VEN_CAB->setEjercicio($datosEmpresa['Ejercicio']);
-        $VEN_CAB->setTipoDoc($tipoDOC);
-        $VEN_CAB->setNumeroDoc($newCodigoWith0);
-        $VEN_CAB->setFecha(date('Ymd h:i:s'));
-        
-        $VEN_CAB->setBodega('FAL');
-        $VEN_CAB->setDivisa('DOL');
-        $VEN_CAB->setProductos($productosArray);
-        $VEN_CAB->setSubtotal($VEN_CAB->calculaSubtotal());
-        $VEN_CAB->setImpuesto($VEN_CAB->calculaIVA());
-        $VEN_CAB->setTotal($VEN_CAB->calculaTOTAL());
-        $VEN_CAB->setFormaPago('EFE');
-        $VEN_CAB->setSerie('001005');
-        $VEN_CAB->setSecuencia($newCodigoWith0);
-        $VEN_CAB->setObservacion('MantenimientosApp #'.$formData->codMantenimiento);
-        
-        //Registro en VEN_CAB
-        $response_VEN_CAB = $ajaxModel->insertVEN_CAB($VEN_CAB, $dbEmpresa);
-        
-            foreach ($VEN_CAB->getProductos() as $producto) {
+            $new_cod_VENCAB = $datosEmpresa['Oficina'].$datosEmpresa['Ejercicio'].$tipoDOC.$newCodigoWith0;
+
+            /*Creacion y asignacion de valores a VEN_CAB*/
+            if ($formData->product_edit_facturadoa == 1) {
+                $VEN_CAB->setCliente($formData->codCliente);
+                $VEN_CAB->setPorcentDescuento(0);
+            }else{
+                $VEN_CAB->setCliente($codIMPORTKAO);
+                $VEN_CAB->setPorcentDescuento(90);
+            }
+
+            $VEN_CAB->setPcID(php_uname('n'));
+            $VEN_CAB->setOficina($datosEmpresa['Oficina']);
+            $VEN_CAB->setEjercicio($datosEmpresa['Ejercicio']);
+            $VEN_CAB->setTipoDoc($tipoDOC);
+            $VEN_CAB->setNumeroDoc($newCodigoWith0);
+            $VEN_CAB->setFecha(date('Ymd h:i:s'));
+            
+            $VEN_CAB->setBodega($formData->product_edit_bodega);
+            $VEN_CAB->setDivisa('DOL');
+            $VEN_CAB->setProductos($productosArray);
+            $VEN_CAB->setSubtotal($VEN_CAB->calculaSubtotal());
+            $VEN_CAB->setImpuesto($VEN_CAB->calculaIVA());
+            $VEN_CAB->setTotal($VEN_CAB->calculaTOTAL());
+            $VEN_CAB->setFormaPago('EFE');
+            $VEN_CAB->setSerie('001005');
+            $VEN_CAB->setSecuencia($newCodigoWith0);
+            $VEN_CAB->setObservacion('MantenimientosApp #'.$formData->codMantenimiento);
+            
+             //Registro en VEN_CAB y MOV mantenimientosEQ
+            $response_VEN_CAB = $ajaxModel->insertVEN_CAB($VEN_CAB, $dbEmpresa);
+            $response_MOV_MNT = $ajaxModel->insertMOVMantenimientoEQ($formData, $new_cod_VENCAB);
+            
+             foreach ($VEN_CAB->getProductos() as $producto) {
                 $VEN_MOV = new \models\venMovClass();
                 if ($formData->product_edit_facturadoa == 1) {
-                    $VEN_MOV->setCliente($formData->codCliente);
-                    
-                }else{
-                    $VEN_MOV->setCliente($codIMPORTKAO);
-                }
-                
+                     $VEN_MOV->setCliente($formData->codCliente);
+                     
+                 }else{
+                     $VEN_MOV->setCliente($codIMPORTKAO);
+                 }
+ 
+               
                 $VEN_MOV->setOficina($datosEmpresa['Oficina']);
                 $VEN_MOV->setEjercicio($datosEmpresa['Ejercicio']);
                 $VEN_MOV->setTipoDoc($tipoDOC);
                 $VEN_MOV->setNumeroDoc($newCodigoWith0);
                 $VEN_MOV->setFecha(date('Ymd h:i:s'));
-                $VEN_MOV->setBodega('FAL');
+                $VEN_MOV->setBodega($formData->product_edit_bodega);
                 $VEN_MOV->setCodProducto($producto->codigo);
                 $VEN_MOV->setCantidad($producto->cantidad);
                 $VEN_MOV->setPrecioProducto($producto->precio);
@@ -173,7 +188,16 @@ class ajaxController  {
                 $VEN_MOV->setObservacion('');
                 
                 $ajaxModel->insertVEN_MOV($VEN_MOV, $dbEmpresa);
-            }
+                 
+                 
+                 
+             }
+         
+
+        }
+       
+           
+        
         
 
         if($response_WSSP && $response_VEN_CAB){

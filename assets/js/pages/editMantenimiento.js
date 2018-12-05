@@ -1,6 +1,9 @@
 $(function() {
+
     config.date_range();
     altair_product_edit.init();
+
+    UIkit.modal($('#modal_facturadoA'), {modal: false, keyboard: false, bgclose: false, center: true}).show();
 
     $(".repuestos_table").on('keyup', 'input.codigos_prod', function(e) {
         e.preventDefault();
@@ -11,6 +14,18 @@ $(function() {
 
     });
 
+    $('#modal_facturadoA_cancel').on('click', function(event) {
+        let $select = $("#product_edit_facturadoa").selectize();
+        let selectize = $select[0].selectize;
+        selectize.setValue(1); //Facturado a cliente 
+    });
+
+    $('#modal_facturadoA_confirm').on('click', function(event) {
+        let $select = $("#product_edit_facturadoa").selectize();
+        let selectize = $select[0].selectize;
+        selectize.setValue(0); //Facturado a cliente 
+    });
+
     /* Evita problema de doble calendario en firefox*/
     $('input[type=date]').on('click', function(event) {
         var isFirefox = typeof InstallTrigger !== 'undefined';
@@ -18,6 +33,9 @@ $(function() {
             event.preventDefault();
         }
     });
+
+
+    
 });
 
 /* Peticion al API retornara objeto con la informacion si existe el producto */
@@ -82,7 +100,7 @@ function validaProducto(codProducto, inputHTML) {
 function getPorcentDescuento(){
     let facturadoA = document.getElementById('product_edit_facturadoa').value;
     if (facturadoA == '0'){
-        return 99;
+        return 90;
     }else{
         return 0;
     }
@@ -102,8 +120,15 @@ function getProductos() {
         let precioProd = document.getElementsByName("precios_prod")[i].value ;
         let descuentoProd = document.getElementsByName("desc_prod")[i].value ;
 
-        let producto = new Producto(codigoProd, nombreProd, cantProd, precioProd, descuentoProd);
-        ArrayProductos.push(producto);
+        if (codigoProd.length != 0 
+            && nombreProd.length != 0 
+            && cantProd.length != 0 
+            && precioProd.length != 0 
+            && descuentoProd.length != 0 ) {
+                let producto = new Producto(codigoProd, nombreProd, cantProd, precioProd, descuentoProd);
+                ArrayProductos.push(producto);
+        }
+        
     }
 
     return ArrayProductos;
@@ -146,7 +171,7 @@ altair_product_edit = {
             let codigoMNT = document.getElementById("codMantenimiento").innerHTML;
             let productosArray = JSON.stringify(getProductos());
             var form_serialized = JSON.stringify($product_edit_form.serializeObject(), null, 2);
-            UIkit.modal.alert('<p>Producto data:</p><pre>' + form_serialized + '</pre>');
+            //UIkit.modal.alert('<p>Producto data:</p><pre>' + form_serialized + '</pre>');
             console.log(getProductos());
             //console.log(form_serialized);
             UIkit.modal.confirm('Confirme, actualizar informacion de la orden de trabajo y agregar los repuestos indicados a la orden ' + codigoMNT + ' ?', function() {
@@ -162,7 +187,7 @@ altair_product_edit = {
                         if (response.status == 'OK') {
                             UIkit.modal.alert(response.mensaje);
                             setTimeout(() => {
-                                location.reload();
+                                location.assign('index.php?&action=mantenimientosAG');
                             }, 3000);
                            
                         } else if (response.status == 'FAIL') {

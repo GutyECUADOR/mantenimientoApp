@@ -251,6 +251,30 @@ class ajaxModel  {
                 $resulset = false;
             }
         return $resulset;  
+    }
+
+    public function getArraysBodegas($dataBaseName='KAO_wssp') {
+
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
+        
+        //Query de consulta con parametros para bindear si es necesario.
+        $query = "SELECT CODIGO as Value, NOMBRE as DisplayText FROM INV_BODEGAS";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+    
+        $arrayResultados = array();
+
+            if($stmt->execute()){
+                while ($row = $stmt->fetch( \PDO::FETCH_ASSOC )) {
+                    array_push($arrayResultados, $row);
+                }
+                return $arrayResultados;
+                
+            }else{
+                $resulset = false;
+            }
+        return $resulset;  
 
    
     }
@@ -310,6 +334,28 @@ class ajaxModel  {
             return false;
         }
     }
+
+    /* Actualiza tabla mantenimientosEQ con la informacion que llega del formulario editMantenimiento*/
+    public function insertMOVMantenimientoEQ($formData, $codVENCAB, $dataBaseName='KAO_wssp'){
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+
+        $codEmpresa = trim($_SESSION["codEmpresaAUTH"]); //Codigo de la empresa seleccionada en login
+        $codMNT = $formData->codMantenimiento;
+        $codOrdenFisica = $formData->product_ordenFisica;
+     
+        $query = "
+            INSERT INTO mov_mantenimientosEQ VALUES ('$codMNT','$codVENCAB');
+        ";
+
+        $stmt = $this->db->prepare($query); 
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
     /*Retorna array con informacion de la empresa que se indique*/
     public function getDatosEmpresaFromWINFENIX ($dataBaseName='KAO_wssp'){

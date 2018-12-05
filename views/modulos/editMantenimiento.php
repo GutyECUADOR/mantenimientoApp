@@ -10,16 +10,19 @@
     }
         
     /* CREACION DE INSTANCIA USADA PARA ESTA VISTA*/  
+    
     $codEmpresa = trim($_SESSION["empresaAUTH"]);  // Nombre de la db asiganda en el login
     $mantenimiento = new models\MantenimientosClass();
     $ajaxController = new controllers\ajaxController();
 
     $arrayMantenimiento = $mantenimiento->getMantenimientoByCod($codEmpresa, $codMantenimiento); //Devuelve array de mantenimientos
     //$arrayMantenimiento = $mantenimiento->getRepuestosOfMantenimientoByCod($codEmpresa, $codMantenimiento);
-    
+    $arrayRepuestos = $mantenimiento->getRepuestosOfMantenimientoByCod($codMantenimiento, $codEmpresa);
+ 
     $dateNow = $mantenimiento->getDateNow(); //Fecha actual determina si la tarjeta esta valida o no
     $arrayTecnicos = $ajaxController->getAllTecnicos();
-   
+    $arrayBodegas = $ajaxController->getAllBodegas();
+
 ?>
 
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
@@ -152,6 +155,19 @@
                                                 
                                             </select>
                                         </div>
+
+                                         <div class="uk-form-row">
+                                            <label for="product_edit_bodega" class="uk-form-label">Bodega</label>
+                                            <select id="product_edit_bodega" name="product_edit_bodega" data-md-selectize>
+                                                <?php
+                                                     foreach ($arrayBodegas as $opcion) {
+                                                        echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
+                                                     }
+                                                ?>
+                                                
+                                            </select>
+                                        </div>               
+
                                         <div class="uk-form-row">
                                             <label for="product_edit_tecnico" class="uk-form-label">Pago mantenimiento</label>
                                             <select id="product_edit_facturadoa" name="product_edit_facturadoa" data-md-selectize>
@@ -164,7 +180,8 @@
                                     <div class="uk-width-large-1-2">
                                         <div class="uk-form-row">
                                             <label for="product_edit_description_control">Observaciones</label>
-                                            <textarea class="md-input" name="product_edit_description_control" id="product_edit_description_control" cols="30" rows="4">- No data - </textarea>
+                                            <textarea class="md-input" name="product_edit_description_control" id="product_edit_description_control" cols="30" rows="4"><?php echo trim($arrayMantenimiento['comentario']);?></textarea>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -175,11 +192,73 @@
                         <div class="md-card">
                             <div class="md-card-toolbar">
                                 <h3 class="md-card-toolbar-heading-text">
-                                    Repuestos ya incluidos
+                                    Ordenes ya registradas
                                 </h3>
                             </div>
                             <div class="md-card-content">
-                                
+                                <div class="uk-overflow-container">
+                                    <table class="uk-table uk-table-nowrap uk-table-hover table_check">
+                                        <thead>
+                                        <tr>
+                                            <th class="uk-width-1-10 uk-text-center">ID</th>
+                                            <th class="uk-width-2-10">Facturado A</th>
+                                            <th class="uk-width-2-10 uk-text-center">Fecha</th>
+                                            <th class="uk-width-1-10 uk-text-center">Bodega</th>
+                                            <th class="uk-width-1-10 uk-text-center">Monto</th>
+                                            <th class="uk-width-2-10 uk-text-center">Acciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                foreach ($arrayRepuestos as $repuesto) {
+                                                    $fecha = date_create($repuesto['FECHA']);
+                                                    $bodegaName = $repuesto['bodegaName'];
+                                                    $RUCCliente = trim($repuesto['RUC']);
+                                                    if ( $RUCCliente == '1790417581001' ) {
+                                                        $style = 'uk-badge uk-badge-primary';
+                                                    }else{
+                                                        $style = 'uk-badge uk-badge-success';
+                                                    }
+                                            ?>      
+                                                    <tr>
+                                                        <td class="uk-text-center"><?php echo $repuesto['ID']?></td>
+                                                        <td class="uk-text-center">
+                                                            <span class="<?php echo $style ?>">
+                                                                <?php echo $repuesto['facturadoA'] ?>
+                                                            </span>
+                                                        </td>
+                                                        <td class="uk-text-center"><?php echo date_format($fecha, 'Y-m-d H:i:s')?></td>
+                                                        <td class="uk-text-center"><?php echo $bodegaName ?></td>
+                                                        <td><?php echo number_format($repuesto['TOTAL'], 2)?></td>
+                                                        <td class="uk-text-center">
+                                                            <a><i class="md-icon material-icons" data-uk-modal="{target:'#modal_full'}" data-mantenimiento="<?php echo $repuesto['ID']?> ">&#xE88F;</i></a>
+                                                        </td>
+                                                    </tr>
+                                               
+                                                <?php
+                                                 }
+                                            ?>
+                                            
+                                            <div class="uk-modal uk-modal-card-fullscreen" id="modal_full">
+                                                <div class="uk-modal-dialog uk-modal-dialog-blank">
+                                                    <div class="md-card uk-height-viewport">
+                                                        <div class="md-card-toolbar">
+                                                            
+                                                            <span class="md-icon material-icons uk-modal-close">&#xE5C4;</span>
+                                                            <h3 class="md-card-toolbar-heading-text">
+                                                                Detalle del documento: 
+                                                            </h3>
+                                                        </div>
+                                                        <div class="md-card-content">
+                                                        Sin contenido
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
 
@@ -222,7 +301,21 @@
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
 
+
+    <div class="uk-modal" id="modal_facturadoA">
+        <div class="uk-modal-dialog ">
+            <div class="uk-modal-header">
+                <h3 class="uk-modal-title">Defina recargo <i class="material-icons">&#xE8FD;</i></h3>
+            </div>
+            <p>Los productos que registre serán facturados a Importaciones KAO?</p>
+            
+            <div class="uk-modal-footer uk-text-right">
+                <button type="button" id="modal_facturadoA_cancel" class="md-btn md-btn-flat uk-modal-close">No, AL CLIENTE</button>
+                <button type="button" id="modal_facturadoA_confirm" class="md-btn md-btn-flat md-btn-flat-primary uk-modal-close">Si, a IMPORTACIONES KAO</button>
+            </div>
         </div>
     </div>
 

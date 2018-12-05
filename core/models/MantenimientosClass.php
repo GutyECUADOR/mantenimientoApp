@@ -115,11 +115,12 @@ class MantenimientosClass {
             Cliente.DIRECCION1 as Direccion,
             Cliente.EMAIL as Email,
             Bodega.NOMBRE as Bodega,
-            SBIO.Apellido + SBIO.Nombre as Encargado,
+            SBIO.Nombre + SBIO.Apellido as Encargado,
             WSSP.codMantenimiento,
             WSSP.codOrdenFisica,
             WSSP.fechaInicio,
-            WSSP.fechaFin
+            WSSP.fechaFin,
+            WSSP.comentario
             
         FROM dbo.VEN_MOV as Compra 
             INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE = Cliente.CODIGO 
@@ -149,7 +150,8 @@ class MantenimientosClass {
             WSSP.codMantenimiento,
             WSSP.codOrdenFisica,
             WSSP.fechaInicio,
-            WSSP.fechaFin
+            WSSP.fechaFin,
+            WSSP.comentario
             
         ORDER BY NombreCliente ASC 
 
@@ -170,7 +172,7 @@ class MantenimientosClass {
     /*
         Recupera el registro en VEN_MOD de los productos asignados al ID de factura y eligo de mantenimiento
     */
-    public function getRepuestosOfMantenimientoByCod($dataBaseName='KAO_wssp', $codMantenimiento) {
+    public function getRepuestosOfMantenimientoByCod($codMantenimiento, $dataBaseName='KAO_wssp') {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
@@ -180,13 +182,35 @@ class MantenimientosClass {
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
         
+        SELECT
+            VEN_CAB.ID,
+            VEN_CAB.FECHA,
+            VEN_CAB.CLIENTE as codCliente,
+            CLIENTE.NOMBRE as facturadoA,
+            CLIENTE.RUC,
+            VEN_CAB.BODEGA as codBodega,
+            BODEGA.NOMBRE  as bodegaName,
+            VEN_CAB.TOTAL 
+        FROM 
+            dbo.VEN_CAB as VEN_CAB
+            INNER JOIN dbo.COB_CLIENTES as CLIENTE on CLIENTE.CODIGO = VEN_CAB.CLIENTE
+            INNER JOIN dbo.INV_BODEGAS as BODEGA on BODEGA.CODIGO = VEN_CAB.BODEGA
+
+        WHERE 
+            ID COLLATE Modern_Spanish_CI_AS IN (SELECT codVENCAB FROM KAO_wssp.dbo.mov_mantenimientosEQ WHERE codMantenimiento = '$codMantenimiento')
 
         ";  // Final del Query SQL 
 
         $stmt = $this->db->prepare($query); 
     
+        $arrayResultados = array();
+
             if($stmt->execute()){
-                $resulset = $stmt->fetch( \PDO::FETCH_ASSOC );
+                while ($row = $stmt->fetch( \PDO::FETCH_ASSOC )) {
+                    array_push($arrayResultados, $row);
+                }
+                return $arrayResultados;
+                
             }else{
                 $resulset = false;
             }
