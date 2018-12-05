@@ -40,7 +40,7 @@
             <h1 id="product_edit_name"><?php echo $arrayMantenimiento["Producto"]?></h1>
             <span class="uk-text-muted uk-text-upper uk-text-small" id="product_edit_sn">
                 <strong id="codMantenimiento"><?php echo $arrayMantenimiento["codMantenimiento"]?></strong>
-                a cargo de  <strong><?php echo $arrayMantenimiento["Encargado"]?></strong>
+                , técnico asignado <strong><?php echo $arrayMantenimiento["Encargado"]?></strong>, orden fisica <strong><?php echo $arrayMantenimiento["codOrdenFisica"]?></strong>
             </span>
         </div>
         <div id="page_content_inner">

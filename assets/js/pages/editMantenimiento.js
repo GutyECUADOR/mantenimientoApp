@@ -185,13 +185,13 @@ altair_product_edit = {
                         response = JSON.parse(response);
                        
                         if (response.status == 'OK') {
-                            UIkit.modal.alert(response.mensaje);
+                            UIkit.modal.alert(response.mensaje, {labels: {'Ok': 'Listo'}} );
                             setTimeout(() => {
                                 location.assign('index.php?&action=mantenimientosAG');
                             }, 3000);
                            
                         } else if (response.status == 'FAIL') {
-                            UIkit.modal.alert(response.mensaje);
+                            UIkit.modal.alert(response.mensaje, {labels: {'Ok': 'Ok'}});
                         }
                     },
                     error: function(error) {
@@ -199,7 +199,7 @@ altair_product_edit = {
                     }
 
                 });
-            });
+            }, {labels: {'Ok': 'Si, actualizar y registrar', 'Cancel': 'No'}});
         })
     },
     product_tags: function() {
