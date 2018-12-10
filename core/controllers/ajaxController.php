@@ -56,9 +56,30 @@ class ajaxController  {
     }
 
     /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
-    public function agendarExtraMantenimiento($data){
+    public function agendarExtraMantenimiento($formData){
         $ajaxModel = new \models\ajaxModel();
+        $mantenimiento = new \models\MantenimientosClass();
+        $dataBaseName = trim($_SESSION["empresaAUTH"]);
+        $codMNT = $formData->codMantenimientoModal;
+        $fechaMNT = $formData->uk_dp_proxMant;
+       
+        $arrayMantenimiento  = $mantenimiento->getMantenimientoByCod($dataBaseName, $codMNT);
         
+        $fechaHoraINI = date('Ymd H:i:s', strtotime("$fechaMNT"));
+        $fechaHoraFIN = date('Ymd H:i:s', strtotime("$fechaMNT"));
+        
+            $data = array(
+            'CodigoFac' => $arrayMantenimiento['CodigoFac'],
+            'CodProducto' => $arrayMantenimiento['CodProducto'],
+            'OrdenTrabajo' => NULL,
+            'CantitadProd' => 1,
+            'Comentario' => 'Mantenimiento programado, segun mantenimiento: '.$codMNT,
+            'fechaHoraINI' => $fechaHoraINI,
+            'fechaHoraFIN' => $fechaHoraFIN,
+            'TipoMantenimiento' => 'MNO',
+            'Tecnico' => $arrayMantenimiento['CIEncargado']
+            );
+
         $response = $ajaxModel->insertNewMantenimiento($data);
         return $response;
     }

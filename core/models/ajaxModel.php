@@ -119,7 +119,7 @@ class ajaxModel  {
         }
         
     }
-    
+   
     public function anulaMantenimientoByCod($codMNT, $dataBaseName='KAO_wssp'){
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX();

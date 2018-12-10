@@ -3,6 +3,7 @@ date_default_timezone_set('America/Lima');
 session_start();
 require_once '../../../core/controllers/ajaxController.php';
 require_once '../../../core/models/ajaxModel.php';
+require_once '../../../core/models/MantenimientosClass.php';
 require_once '../../../core/models/venCabClass.php';
 require_once '../../../core/models/venMovClass.php';
 require_once '../../../config/global.php';
@@ -266,9 +267,17 @@ class ajax{
     }elseif ($_GET["action"] == "extraAgendamiento") {
       
       if(isset($_GET["formData"])){
-        
-        $rawdata = array('status' => 'OK', 'mensaje' => 'Realizado, se ha registrado un nuevo mantenimiento');
-        echo json_encode($rawdata);
+        $formData = json_decode($_GET["formData"]);
+        $respuesta = $ajax->insertExtraMantenimiento($formData);
+
+        if ($respuesta) {
+          $rawdata = array('status' => 'OK', 'mensaje' => 'Realizado, se ha registrado un nuevo mantenimiento');
+          echo json_encode($rawdata);
+        }else{
+          $rawdata = array('status' => 'FAIL', 'mensaje' => 'El proceso no se completo, reintente; si el problema persiste informe a sistemas.');
+          echo json_encode($rawdata);
+        }
+       
 
       }else{
         $rawdata = array('status' => 'FAIL', 'mensaje' =>'No existe formData requerido, informe a sistemas.');
