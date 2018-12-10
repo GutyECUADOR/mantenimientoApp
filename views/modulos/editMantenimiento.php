@@ -308,7 +308,7 @@
     <div class="uk-modal" id="modal_facturadoA">
         <div class="uk-modal-dialog ">
             <div class="uk-modal-header">
-                <h3 class="uk-modal-title">Defina recargo <i class="material-icons">&#xE8FD;</i></h3>
+                <h3 class="uk-modal-title">Indique a quien será facturado. <i class="material-icons">&#xE8FD;</i></h3>
             </div>
             <p>Los productos que registre serán facturados a Importaciones KAO?</p>
             

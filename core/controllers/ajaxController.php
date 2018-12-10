@@ -56,6 +56,14 @@ class ajaxController  {
     }
 
     /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
+    public function agendarExtraMantenimiento($data){
+        $ajaxModel = new \models\ajaxModel();
+        
+        $response = $ajaxModel->insertNewMantenimiento($data);
+        return $response;
+    }
+
+    /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
      public function anularMantenimiento($data){
         $ajaxModel = new \models\ajaxModel();
         $response = $ajaxModel->anulaMantenimientoByCod($data);

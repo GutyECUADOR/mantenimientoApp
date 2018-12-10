@@ -50,6 +50,9 @@ class ajax{
       return $this->ajaxController->updateMantenimientoByCod($formData, $productosArray);
     }
 
+    public function insertExtraMantenimiento($formData){
+      return $this->ajaxController->agendarExtraMantenimiento($formData);
+    }
 
 }
 
@@ -260,12 +263,22 @@ class ajax{
       }
       
 
-    
-    
+    }elseif ($_GET["action"] == "extraAgendamiento") {
+      
+      if(isset($_GET["formData"])){
+        
+        $rawdata = array('status' => 'OK', 'mensaje' => 'Realizado, se ha registrado un nuevo mantenimiento');
+        echo json_encode($rawdata);
+
+      }else{
+        $rawdata = array('status' => 'FAIL', 'mensaje' =>'No existe formData requerido, informe a sistemas.');
+        echo json_encode($rawdata);
+      }
+      
+     
     }elseif ($_GET["action"] == "test") {
 
-      $productos = $_GET["productosArray"];
-      $rawdata = array('status' => 'error', 'objeto' => $productos);
+      $rawdata = array('status' => 'OK', 'Mensaje' => 'respuesta correcta');
       echo json_encode($rawdata);
 
     }else{

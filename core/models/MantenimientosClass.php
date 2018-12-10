@@ -198,7 +198,7 @@ class MantenimientosClass {
 
         WHERE 
             ID COLLATE Modern_Spanish_CI_AS IN (SELECT codVENCAB FROM KAO_wssp.dbo.mov_mantenimientosEQ WHERE codMantenimiento = '$codMantenimiento')
-
+            ORDER BY VEN_CAB.ID
         ";  // Final del Query SQL 
 
         $stmt = $this->db->prepare($query); 
