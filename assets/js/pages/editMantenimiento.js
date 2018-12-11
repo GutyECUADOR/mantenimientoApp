@@ -27,12 +27,12 @@ $(function() {
     });
 
     /* Evita problema de doble calendario en firefox*/
-    $('input[type=date]').on('click', function(event) {
+    /* $('input[type=date]').on('click', function(event) {
         var isFirefox = typeof InstallTrigger !== 'undefined';
         if (isFirefox) {
             event.preventDefault();
         }
-    });
+    }); */
 
 
     
@@ -156,8 +156,7 @@ altair_product_edit = {
     init: function() {
         // product edit form
         altair_product_edit.edit_form();
-        // product tags
-        altair_product_edit.product_tags();
+       
     },
     edit_form: function() {
         // form variables
@@ -173,87 +172,75 @@ altair_product_edit = {
             var form_serialized = JSON.stringify($product_edit_form.serializeObject(), null, 2);
             //UIkit.modal.alert('<p>Producto data:</p><pre>' + form_serialized + '</pre>');
             console.log(getProductos());
-            //console.log(form_serialized);
-            UIkit.modal.confirm('Confirme, actualizar informacion de la orden de trabajo y agregar los repuestos indicados a la orden ' + codigoMNT + ' ?', function() {
-                $.ajax({
-                    url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=updateOrden',
-                    method: 'GET',
-                    data: { formData: form_serialized, productosArray: productosArray },
+            
+            let objectForm = JSON.parse(form_serialized);
+            let product_ordenFisica = objectForm.product_ordenFisica;
+            console.log(product_ordenFisica);
 
-                    success: function(response) {
-                        console.log(response);
-                        response = JSON.parse(response);
-                       
-                        if (response.status == 'OK') {
-                            UIkit.modal.alert(response.mensaje, {labels: {'Ok': 'Listo'}} );
-                            setTimeout(() => {
-                                location.assign('index.php?&action=mantenimientosAG');
-                            }, 3000);
-                           
-                        } else if (response.status == 'FAIL') {
-                            UIkit.modal.alert(response.mensaje, {labels: {'Ok': 'Ok'}});
-                        }
-                    },
-                    error: function(error) {
-                        alert('No se pudo completar la operación. #' + error.status + ' ' + error.statusText);
+            var isOrdenFisicaValida = false;
+
+            /*Validacion de codigo de mantenimiento fisico sea unico*/
+            $.ajax({
+                url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=validaOrdenFisica',
+                method: 'GET',
+                data: { product_ordenFisica: product_ordenFisica },
+
+                success: function(response) {
+                    console.log(response);
+                    response = JSON.parse(response);
+                   
+                    if (response.status == 'OK') {
+                        isOrdenFisicaValida = true;
+                        UIkit.modal.alert(response.mensaje, {labels: {'Ok': 'Listo'}} );
+                        saveData();
+
+                    } else if (response.status == 'FAIL') {
+                        UIkit.modal.alert(response.mensaje, {labels: {'Ok': 'Ok'}});
+                    } else {
+                        console.error(response);
                     }
-
-                });
-            }, {labels: {'Ok': 'Si, actualizar y registrar', 'Cancel': 'No'}});
-        })
-    },
-    product_tags: function() {
-
-        $('#product_edit_tags_control').selectize({
-            plugins: {
-                'remove_button': {
-                    label: ''
-                }
-            },
-            placeholder: 'Select product tag(s)',
-            options: [
-                { id: 1, title: 'LTE', value: 'lte' },
-                { id: 2, title: 'Quad HD', value: 'quad_hd' },
-                { id: 3, title: 'Android™ 5.0', value: 'android_5' },
-                { id: 4, title: '64GB', value: '64gb' }
-            ],
-            render: {
-                option: function(data, escape) {
-                    return '<div class="option">' +
-                        '<span>' + escape(data.title) + '</span>' +
-                        '</div>';
                 },
-                item: function(data, escape) {
-                    return '<div class="item">' + escape(data.title) + '</div>';
+                error: function(error) {
+                    alert('No se pudo completar la operación. #' + error.status + ' ' + error.statusText);
                 }
-            },
-            maxItems: null,
-            valueField: 'value',
-            labelField: 'title',
-            searchField: 'title',
-            create: true,
-            onDropdownOpen: function($dropdown) {
-                $dropdown
-                    .hide()
-                    .velocity('slideDown', {
-                        begin: function() {
-                            $dropdown.css({ 'margin-top': '0' })
+
+            });
+
+            /* Evia Fourmulario Serializado y el array de productos al API para ser guardados en las tablas*/
+            function saveData(){
+                UIkit.modal.confirm('Confirme, actualizar informacion de la orden de trabajo y agregar los repuestos indicados a la orden ' + codigoMNT + ' ?', function() {
+                    $.ajax({
+                        url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=updateOrden',
+                        method: 'GET',
+                        data: { formData: form_serialized, productosArray: productosArray },
+    
+                        success: function(response) {
+                            console.log(response);
+                            response = JSON.parse(response);
+                           
+                            if (response.status == 'OK') {
+                                UIkit.modal.alert(response.mensaje, {labels: {'Ok': 'Listo'}} );
+                                setTimeout(() => {
+                                    location.assign('index.php?&action=mantenimientosAG');
+                                }, 3000);
+                               
+                            } else if (response.status == 'FAIL') {
+                                UIkit.modal.alert(response.mensaje, {labels: {'Ok': 'Ok'}});
+                            } else{
+                                console.error(response);
+                            }
                         },
-                        duration: 200,
-                        easing: easing_swiftOut
-                    })
-            },
-            onDropdownClose: function($dropdown) {
-                $dropdown
-                    .show()
-                    .velocity('slideUp', {
-                        complete: function() {
-                            $dropdown.css({ 'margin-top': '' })
-                        },
-                        duration: 200,
-                        easing: easing_swiftOut
-                    })
+                        error: function(error) {
+                            alert('No se pudo completar la operación. #' + error.status + ' ' + error.statusText);
+                        }
+    
+                    });
+                }, {labels: {'Ok': 'Si, actualizar y registrar', 'Cancel': 'No'}});
             }
-        });
+            
+
+            
+        })
     }
+    
 };

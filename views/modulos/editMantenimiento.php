@@ -65,7 +65,8 @@
                                
                             </div>
                         </div>
-                        <div class="md-card">
+
+                        <!-- <div class="md-card">
                             <div class="md-card-toolbar">
                                 <h3 class="md-card-toolbar-heading-text">
                                     Información del producto
@@ -107,7 +108,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="uk-width-xLarge-8-10  uk-width-large-7-10">
                         <div class="md-card">

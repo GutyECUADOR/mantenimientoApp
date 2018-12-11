@@ -144,6 +144,24 @@ class ajaxModel  {
         }
     }
 
+    /*Retorna string con el numero de columnas encontradas*/
+    public function isDisponibleOrdenFisica($codOrdenFisica, $dataBaseName='KAO_wssp'){
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+
+        $query = "
+            SELECT count(*) FROM dbo.mantenimientosEQ WHERE codOrdenFisica = '$codOrdenFisica'
+        ";
+
+        $stmt = $this->db->prepare($query); 
+        if($stmt->execute()){
+            $number_of_rows = $stmt->fetchColumn(); 
+            return $number_of_rows;
+        }else{
+            return false;
+        }
+    }
+
 
     public function aprobarMantenimientoByCod($codMNT, $dataBaseName='KAO_wssp'){
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp

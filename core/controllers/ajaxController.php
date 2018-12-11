@@ -84,6 +84,19 @@ class ajaxController  {
         return $response;
     }
 
+    /* Verifica si existe el codigo de ordenfisica en mantenimientosEQ*/
+    public function isValidOrdenFisica ($codOrdenFisica){
+        $ajaxModel = new \models\ajaxModel();
+        $response = $ajaxModel->isDisponibleOrdenFisica($codOrdenFisica);
+
+        if ($response <= 0) {
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
     /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
      public function anularMantenimiento($data){
         $ajaxModel = new \models\ajaxModel();
@@ -153,6 +166,10 @@ class ajaxController  {
             $datosEmpresa = $ajaxModel->getDatosEmpresaFromWINFENIX($dbEmpresa);
             
             $codIMPORTKAO = $ajaxModel->getDatosClienteWINFENIXByRUC('1790417581001', $dbEmpresa)['CODIGO'];
+
+            if (!$codIMPORTKAO || is_null($codIMPORTKAO)) {
+                $codIMPORTKAO = '9999999999999';
+            }
 
             //Crea mos nuevo codigo de VEN_CAB (secuencial)
             $newCodigo = $ajaxModel->getNextNumDocWINFENIX($tipoDOC, $dbEmpresa); // Recuperamos secuencial de SP de Winfenix

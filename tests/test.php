@@ -1,13 +1,14 @@
 
 <?php
+require_once '../core/models/ajaxModel.php';
+$ajaxModel = new models\ajaxModel(); 
 
-$data = '[{"codigo":"MK-5N","nombre":"BALON FUTBOL CUERO SINT PU #5 NEGRO","cantidad":"1","precio":"40.09","descuento":"0"},{"codigo":"MK-5A","nombre":"BALON FUTBOL CUERO SINT PU #5 AZUL","cantidad":"1","precio":"40.09","descuento":"0"}]';
-$descodificada = json_decode($data);
+$resultado = $ajaxModel->isDisponibleOrdenFisica('7855');
 
-var_dump($descodificada);
+var_dump($resultado);
 
-foreach ($descodificada as $producto) {
-
-    echo $producto->codigo;
-
+if ($resultado <= 0) {
+    echo 'Esta disponible';
+}else{
+    echo 'No disponible, ya existe';
 }

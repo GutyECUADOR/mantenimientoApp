@@ -258,7 +258,7 @@ class MantenimientosClass {
             Cliente.DIRECCION1 as Direccion,
             Cliente.EMAIL as Email,
             Bodega.NOMBRE as Bodega,
-            SBIO.Apellido as Encargado,
+            SBIO.Apellido + SBIO.Nombre as Encargado,
             WSSP.fechaInicio,
             WSSP.fechaFin
             
@@ -285,6 +285,7 @@ class MantenimientosClass {
             Cliente.EMAIL,
             Bodega.NOMBRE,
             SBIO.Apellido,
+            SBIO.Nombre,
             WSSP.fechaInicio,
             WSSP.fechaFin
 	

@@ -14,16 +14,29 @@ $(function() {
                 method: 'GET',
                 data: 'codigoMNT=' + codigoMNT,
 
-                success: function() {
-                    alert('Mantenimiento anulado: ' + codigoMNT + 'agende nuevo mantenimiento desde la sección mantenimientos.');
-                    location.reload();
+                success: function( response ) {
+                    response = JSON.parse(response);
+                    if (response.status == 'OK') {
+
+                        UIkit.modal.alert(response.mensaje, {center: true, labels: {'Ok': 'Ok'}}).on('hide.uk.modal', function() {
+                            modalAgendar.hide();
+                            location.reload();
+                        });
+                       
+                    }else{
+                        UIkit.modal.alert(response.mensaje, {center: true, labels: {'Ok': 'Ok'}}).on('hide.uk.modal', function() {
+                            modalAgendar.hide();
+                            location.reload();
+                        });
+                    }
+                    
                 },
                 error: function(error) {
                     alert('No se pudo completar la operación. #' + error.status + ' ' + error.statusText);
                 }
 
             });
-        });
+        },  {labels: {'Ok': 'Si', 'Cancel': 'Cancelar'}});
 
 
     });
@@ -39,13 +52,19 @@ $(function() {
 
             //aprobar
             $.ajax({
-                url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=test',
+                url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=aprobar',
                 method: 'GET',
                 data: 'codigoMNT=' + codigoMNT,
 
                 success: function(response) {
                     modalBlocked.hide();
-                    UIkit.modal.alert('Mantenimiento finalizado: ' + codigoMNT,  {labels: {'Ok': 'Listo'}});
+                    response = JSON.parse(response);
+                    if (response.status == 'OK') {
+                        UIkit.modal.alert(response.mensaje + ' :' + codigoMNT,  {labels: {'Ok': 'Listo'}});
+                    }else{
+                        UIkit.modal.alert(response.mensaje + codigoMNT,  {labels: {'Ok': 'Listo'}});
+                    }
+                    
                     console.log('finalizado: ' + codigoMNT );
                     console.log(response);
  

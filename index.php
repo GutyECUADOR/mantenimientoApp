@@ -28,11 +28,13 @@
    /*  $login = new controllers\loginController();
     $login->showAllDataBaseList(); */
 
-    /* TEST AjaxModel  
+    /*   
     $ajaxModel = new models\ajaxModel(); 
     
-    $newCodigo = $ajaxModel->getNextNumDocWINFENIX('C02', 'FALVAREZ_V7'); // Recuperamos secuencial de SP de Winfenix
-    var_dump($newCodigo);*/
+    $test = $ajaxModel->getDatosClienteWINFENIXByRUC('1790417581001', $dbEmpresa)['CODIGO'];
+    var_dump($test); */
+    /* $newCodigo = $ajaxModel->getNextNumDocWINFENIX('C02', 'FALVAREZ_V7'); // Recuperamos secuencial de SP de Winfenix
+    var_dump($newCodigo);*/ 
 
     /* TEST AjaxController */ 
    /*  $ajax = new controllers\ajaxController();

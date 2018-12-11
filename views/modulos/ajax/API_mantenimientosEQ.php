@@ -55,6 +55,12 @@ class ajax{
       return $this->ajaxController->agendarExtraMantenimiento($formData);
     }
 
+    public function validaOrdenFisica($codOrdenFisica){
+      return $this->ajaxController->isValidOrdenFisica($codOrdenFisica);
+    }
+
+    
+
 }
 
   try{
@@ -284,8 +290,29 @@ class ajax{
         echo json_encode($rawdata);
       }
       
-     
-    }elseif ($_GET["action"] == "test") {
+    
+    }elseif ($_GET["action"] == "validaOrdenFisica") {
+      
+        if(isset($_GET["product_ordenFisica"])){
+          $codOrdenFisica = json_decode($_GET["product_ordenFisica"]);
+          $respuesta = $ajax->validaOrdenFisica($codOrdenFisica);
+  
+          if ($respuesta) {
+            $rawdata = array('status' => 'OK', 'mensaje' => 'La orden fisica, es correcta.');
+            echo json_encode($rawdata);
+          }else{
+            $rawdata = array('status' => 'FAIL', 'mensaje' => 'La orden fisica ya existe o no se ha ingresado, escriba una diferente.');
+            echo json_encode($rawdata);
+          }
+         
+  
+        }else{
+          $rawdata = array('status' => 'FAIL', 'mensaje' =>'No existe codigo de orden fisica requerida.');
+          echo json_encode($rawdata);
+        }
+        
+       
+      }elseif ($_GET["action"] == "test") {
 
       $rawdata = array('status' => 'OK', 'Mensaje' => 'respuesta correcta');
       echo json_encode($rawdata);

@@ -47,7 +47,6 @@
               <div><span>CLIENTE: </span> '. $arrayMantenimiento[0]['NombreCliente'] .'</div>
               <div><span>TÈCNICO KAO: </span> '. $arrayMantenimiento[0]['Encargado'] .'</div>
               <div><span>DIRECCION: </span> '. $arrayMantenimiento[0]['Direccion'] .'  </div>
-              <div><span>TIEMPO ESTIMADO: </span> De '. $horaINI .' a  '. $horaFIN .'</div>
             </div>
       </div>    
     </header>
