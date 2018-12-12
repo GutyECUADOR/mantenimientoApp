@@ -55,8 +55,8 @@ class ajax{
       return $this->ajaxController->agendarExtraMantenimiento($formData);
     }
 
-    public function validaOrdenFisica($codOrdenFisica){
-      return $this->ajaxController->isValidOrdenFisica($codOrdenFisica);
+    public function validaOrdenFisica($formData){
+      return $this->ajaxController->isValidOrdenFisica($formData);
     }
 
     
@@ -293,9 +293,9 @@ class ajax{
     
     }elseif ($_GET["action"] == "validaOrdenFisica") {
       
-        if(isset($_GET["product_ordenFisica"])){
-          $codOrdenFisica = json_decode($_GET["product_ordenFisica"]);
-          $respuesta = $ajax->validaOrdenFisica($codOrdenFisica);
+        if(isset($_GET["formData"])){
+          $formData = json_decode($_GET["formData"]);
+          $respuesta = $ajax->validaOrdenFisica($formData);
   
           if ($respuesta) {
             $rawdata = array('status' => 'OK', 'mensaje' => 'La orden fisica, es correcta.');

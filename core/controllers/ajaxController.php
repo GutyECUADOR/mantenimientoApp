@@ -85,9 +85,9 @@ class ajaxController  {
     }
 
     /* Verifica si existe el codigo de ordenfisica en mantenimientosEQ*/
-    public function isValidOrdenFisica ($codOrdenFisica){
+    public function isValidOrdenFisica ($formData){
         $ajaxModel = new \models\ajaxModel();
-        $response = $ajaxModel->isDisponibleOrdenFisica($codOrdenFisica);
+        $response = $ajaxModel->isDisponibleOrdenFisica($formData);
 
         if ($response <= 0) {
             return true;

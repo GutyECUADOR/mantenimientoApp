@@ -95,7 +95,7 @@ class ajaxModel  {
 
         $codFactura = $data['CodigoFac'];
         $codProducto = $data['CodProducto'];
-        $OrdenTrabajo = $data['OrdenTrabajo'];
+        $OrdenTrabajo = str_pad($data['OrdenTrabajo'], 8, "0", STR_PAD_LEFT);
         $CantitadProd = $data['CantitadProd'];
         $Comentario = $data['Comentario'];
         $fechaHoraINI = $data['fechaHoraINI'];
@@ -145,12 +145,16 @@ class ajaxModel  {
     }
 
     /*Retorna string con el numero de columnas encontradas*/
-    public function isDisponibleOrdenFisica($codOrdenFisica, $dataBaseName='KAO_wssp'){
+    public function isDisponibleOrdenFisica($formData, $dataBaseName='KAO_wssp'){
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX();
+        $codMNT = $formData->codMantenimiento;
+        $codOrdenFisica = str_pad($formData->product_ordenFisica, 8, "0", STR_PAD_LEFT); 
 
         $query = "
-            SELECT count(*) FROM dbo.mantenimientosEQ WHERE codOrdenFisica = '$codOrdenFisica'
+            SELECT count(*) as totalRows FROM dbo.mantenimientosEQ WHERE codOrdenFisica = '$codOrdenFisica' AND codOrdenFisica IN 
+            (SELECT codOrdenFisica FROM dbo.mantenimientosEQ WHERE codMantenimiento != '$codMNT' )
+
         ";
 
         $stmt = $this->db->prepare($query); 
@@ -327,7 +331,7 @@ class ajaxModel  {
 
         $codEmpresa = trim($_SESSION["codEmpresaAUTH"]); //Codigo de la empresa seleccionada en login
         $codMNT = $formData->codMantenimiento;
-        $codOrdenFisica = $formData->product_ordenFisica;
+        $codOrdenFisica = str_pad($formData->product_ordenFisica, 8, "0", STR_PAD_LEFT);
         $responsable = $formData->product_edit_tecnico;
         $fechaInicio = date('Ymd H:i:s', strtotime("$formData->uk_dp_fecha"));
         $fechaFinal = date('Ymd H:i:s', strtotime("$formData->uk_dp_fecha"));

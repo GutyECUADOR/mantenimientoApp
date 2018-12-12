@@ -23,6 +23,10 @@
     $arrayTecnicos = $ajaxController->getAllTecnicos();
     $arrayBodegas = $ajaxController->getAllBodegas();
 
+    if (empty($arrayMantenimiento)){
+        header("Location:index.php?&action=inicio"); 
+    }
+
 ?>
 
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
@@ -139,7 +143,7 @@
                                         </div>
                                          <div class="uk-form-row">
                                             <label for="product_edit_sn_control">Orden Fisica</label>
-                                            <input type="number" class="md-input" id="product_ordenFisica" name="product_ordenFisica" value="<?php echo trim($arrayMantenimiento["codOrdenFisica"])?>"/>
+                                            <input type="number" class="md-input" id="product_ordenFisica" name="product_ordenFisica" min="1" max="99999999" maxlength="8" value="<?php echo trim($arrayMantenimiento["codOrdenFisica"])?>"/>
                                         </div>
                                         <div class="uk-form-row">
                                             <label for="uk_dp_start">Fecha del Mantenimiento</label>

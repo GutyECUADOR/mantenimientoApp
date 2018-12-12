@@ -173,17 +173,11 @@ altair_product_edit = {
             //UIkit.modal.alert('<p>Producto data:</p><pre>' + form_serialized + '</pre>');
             console.log(getProductos());
             
-            let objectForm = JSON.parse(form_serialized);
-            let product_ordenFisica = objectForm.product_ordenFisica;
-            console.log(product_ordenFisica);
-
-            var isOrdenFisicaValida = false;
-
             /*Validacion de codigo de mantenimiento fisico sea unico*/
             $.ajax({
                 url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=validaOrdenFisica',
                 method: 'GET',
-                data: { product_ordenFisica: product_ordenFisica },
+                data: { formData: form_serialized },
 
                 success: function(response) {
                     console.log(response);
