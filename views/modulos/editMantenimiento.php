@@ -23,10 +23,15 @@
     $arrayTecnicos = $ajaxController->getAllTecnicos();
     $arrayBodegas = $ajaxController->getAllBodegas();
 
-    if (empty($arrayMantenimiento)){
+    if (empty($arrayMantenimiento )){
         header("Location:index.php?&action=inicio"); 
     }
 
+    if (trim($arrayMantenimiento["estado"]) != 0) {
+        header("Location:index.php?&action=inicio"); 
+    }
+
+    
 ?>
 
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">

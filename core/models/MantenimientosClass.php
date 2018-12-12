@@ -121,7 +121,8 @@ class MantenimientosClass {
             WSSP.codOrdenFisica,
             WSSP.fechaInicio,
             WSSP.fechaFin,
-            WSSP.comentario
+            WSSP.comentario,
+            WSSP.estado
             
         FROM dbo.VEN_MOV as Compra 
             INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE = Cliente.CODIGO 
@@ -153,8 +154,8 @@ class MantenimientosClass {
             WSSP.codOrdenFisica,
             WSSP.fechaInicio,
             WSSP.fechaFin,
-            WSSP.comentario
-            
+            WSSP.comentario,
+            WSSP.estado
         ORDER BY NombreCliente ASC 
 
         ";  // Final del Query SQL 
