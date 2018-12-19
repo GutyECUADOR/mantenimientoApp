@@ -12,12 +12,12 @@ $('#btn_searchEquipos').click(function() {
 });
 
 /* Evita problema de doble calendario en firefox*/
-/* $('input[type=date]').on('click', function(event) {
+$('input[type=date]').on('click', function(event) {
     var isFirefox = typeof InstallTrigger !== 'undefined';
     if (isFirefox) {
         event.preventDefault();
     }
-}); */
+});
 
 altair_crud_table = {
     init: function() {

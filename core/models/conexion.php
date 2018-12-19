@@ -23,13 +23,13 @@ class conexion {
     public function __construct() {
         
         /*CONEXION PARA DESAROLLO*/
-        $this->driver = 'sqlsrv';
+        /* $this->driver = 'sqlsrv';
         $this->host = "S1-W202";
         $this->dbname = "KAO_wssp";
         $this->port = "1433";
         $this->user = "sfb";
         $this->pass = "Sud2017$";
-        $this->charset = "utf8";
+        $this->charset = "utf8"; */
 
         /*CONEXION DEL SERVIDOR LOCAL*/
         /* $this->driver = 'sqlsrv';
@@ -41,13 +41,13 @@ class conexion {
         $this->charset = "utf8"; */
         
         /*CONEXION PARA KAO PRODUCCION*/
-        /* $this->driver = 'sqlsrv';
+        $this->driver = 'sqlsrv';
         $this->host = "196.168.1.201";
         $this->dbname = "KAO_wssp";
         $this->port = "1433";
         $this->user = "sfb";
         $this->pass = "sfb123";
-        $this->charset = "utf8"; */
+        $this->charset = "utf8";
     }
     
     /** Retorna una instancia PDO**/

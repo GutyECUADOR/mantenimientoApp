@@ -1,7 +1,7 @@
 <?php
 
     try {
-        $cnx = new PDO("sqlsrv:Server=S1-W202,1433;Database=SBIOKAO", "sfb", "Sud2017$");
+        $cnx = new PDO("sqlsrv:Server=196.168.1.201,1433;Database=MODELOIMPK_V7", "sfb", "sfb123");
     }
     catch(PDOException $e) {
         die("Error connecting to SQL Server: " . $e->getMessage());
@@ -11,7 +11,7 @@
         var_dump($cnx);
 
         try{
-            $query = 'SELECT TOP 1 * FROM dbo.Empleados';  
+            $query = 'SELECT TOP 1 * FROM dbo.COB_CLIENTES';  
 
             // simple query  
             $stmt = $cnx->query( $query );  

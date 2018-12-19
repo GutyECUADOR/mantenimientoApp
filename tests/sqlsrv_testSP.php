@@ -1,36 +1,19 @@
 <?php
 
-    try {
-        $cnx = new PDO("sqlsrv:Server=S1-W202,1433;Database=KAO_wssp", "sfb", "Sud2017$");
-    }
-    catch(PDOException $e) {
-        die("Error connecting to SQL Server: " . $e->getMessage());
-    }
+require_once '../core/models/ajaxModel.php';
+$ajaxModel = new \models\ajaxModel();
 
-        $gestion = 'VEN';
-        $ofi = '99';
-        $eje = '';
-        $tipo = 'PEM';
-        $codigo = '';
+$codIMPORTKAO = $ajaxModel->getDatosClienteWINFENIXByRUC('1790417581001', 'MODELOKIND_V7')['CODIGO'];
 
-        $query = "exec SP_CONTADOR VEN, 99, '', PEM, ''";
+$serieDocs = $ajaxModel->getDatosDocumentsWINFENIXByTypo('C02', 'MODELOKIND_V7')['Serie'];
 
-        try{
+$newCodigoWith0 = $ajaxModel->formatoNextNumDocWINFENIX('MODELOKIND_V7','00000799');
 
-            $stmt = $cnx->prepare("exec sp_genera_codMantenimiento ?");
-            $cnx->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
-            $value = 'MNT';
-            $stmt->bindValue(1, $value, \PDO::PARAM_STR); 
+var_dump($serieDocs);
+var_dump($codIMPORTKAO);
+var_dump($newCodigoWith0);
 
-            // call the stored procedure
-            $res->nextRowset (); 
-            $stmt->execute();
 
-            var_dump($stmt->fetch());
-            
-        }catch(Exception $e){
-           echo $e;
-        }
 
-    
+
 

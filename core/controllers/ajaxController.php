@@ -166,6 +166,7 @@ class ajaxController  {
             $datosEmpresa = $ajaxModel->getDatosEmpresaFromWINFENIX($dbEmpresa);
             
             $codIMPORTKAO = $ajaxModel->getDatosClienteWINFENIXByRUC('1790417581001', $dbEmpresa)['CODIGO'];
+            $serieDocs = $ajaxModel->getDatosDocumentsWINFENIXByTypo($tipoDOC, $dbEmpresa)['Serie'];
 
             if (!$codIMPORTKAO || is_null($codIMPORTKAO)) {
                 $codIMPORTKAO = '9999999999999';
@@ -174,7 +175,8 @@ class ajaxController  {
             //Crea mos nuevo codigo de VEN_CAB (secuencial)
             $newCodigo = $ajaxModel->getNextNumDocWINFENIX($tipoDOC, $dbEmpresa); // Recuperamos secuencial de SP de Winfenix
             $newCodigoWith0 = $ajaxModel->formatoNextNumDocWINFENIX($dbEmpresa, $newCodigo); // Asignamos formato con 0000X
-      
+            
+
             $new_cod_VENCAB = $datosEmpresa['Oficina'].$datosEmpresa['Ejercicio'].$tipoDOC.$newCodigoWith0;
 
             /*Creacion y asignacion de valores a VEN_CAB*/
@@ -200,8 +202,8 @@ class ajaxController  {
             $VEN_CAB->setImpuesto($VEN_CAB->calculaIVA());
             $VEN_CAB->setTotal($VEN_CAB->calculaTOTAL());
             $VEN_CAB->setFormaPago('EFE');
-            $VEN_CAB->setSerie('001005');
-            $VEN_CAB->setSecuencia($newCodigoWith0);
+            $VEN_CAB->setSerie($serieDocs); 
+            $VEN_CAB->setSecuencia('0'.$newCodigoWith0); //Agregar 0 extra segun winfenix
             $VEN_CAB->setObservacion('MantenimientosApp #'.$formData->codMantenimiento);
             
              //Registro en VEN_CAB y MOV mantenimientosEQ
@@ -224,7 +226,7 @@ class ajaxController  {
                 $VEN_MOV->setNumeroDoc($newCodigoWith0);
                 $VEN_MOV->setFecha(date('Ymd h:i:s'));
                 $VEN_MOV->setBodega($formData->product_edit_bodega);
-                $VEN_MOV->setCodProducto($producto->codigo);
+                $VEN_MOV->setCodProducto(strtoupper($producto->codigo));
                 $VEN_MOV->setCantidad($producto->cantidad);
                 $VEN_MOV->setPrecioProducto($producto->precio);
                 $VEN_MOV->setPorcentajeDescuentoProd($producto->descuento);
