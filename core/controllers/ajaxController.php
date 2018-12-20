@@ -164,10 +164,9 @@ class ajaxController  {
             
             //Obtenemos informacion de la empresa
             $datosEmpresa = $ajaxModel->getDatosEmpresaFromWINFENIX($dbEmpresa);
-            
-            $codIMPORTKAO = $ajaxModel->getDatosClienteWINFENIXByRUC('1790417581001', $dbEmpresa)['CODIGO'];
+            $codIMPORTKAO = trim($ajaxModel->getDatosClienteWINFENIXByRUC('1790417581001', $dbEmpresa)['CODIGO']);
             $serieDocs = $ajaxModel->getDatosDocumentsWINFENIXByTypo($tipoDOC, $dbEmpresa)['Serie'];
-
+            
             if (!$codIMPORTKAO || is_null($codIMPORTKAO)) {
                 $codIMPORTKAO = '9999999999999';
             }
@@ -175,11 +174,10 @@ class ajaxController  {
             //Crea mos nuevo codigo de VEN_CAB (secuencial)
             $newCodigo = $ajaxModel->getNextNumDocWINFENIX($tipoDOC, $dbEmpresa); // Recuperamos secuencial de SP de Winfenix
             $newCodigoWith0 = $ajaxModel->formatoNextNumDocWINFENIX($dbEmpresa, $newCodigo); // Asignamos formato con 0000X
-            
 
             $new_cod_VENCAB = $datosEmpresa['Oficina'].$datosEmpresa['Ejercicio'].$tipoDOC.$newCodigoWith0;
-
-            /*Creacion y asignacion de valores a VEN_CAB*/
+            
+            //Creacion y asignacion de valores a VEN_CAB
             if ($formData->product_edit_facturadoa == 1) {
                 $VEN_CAB->setCliente($formData->codCliente);
                 $VEN_CAB->setPorcentDescuento(0);
@@ -208,9 +206,11 @@ class ajaxController  {
             
              //Registro en VEN_CAB y MOV mantenimientosEQ
             $response_VEN_CAB = $ajaxModel->insertVEN_CAB($VEN_CAB, $dbEmpresa);
+
             $response_MOV_MNT = $ajaxModel->insertMOVMantenimientoEQ($formData, $new_cod_VENCAB);
             
-             foreach ($VEN_CAB->getProductos() as $producto) {
+            
+             /* foreach ($VEN_CAB->getProductos() as $producto) {
                 $VEN_MOV = new \models\venMovClass();
                 if ($formData->product_edit_facturadoa == 1) {
                      $VEN_MOV->setCliente($formData->codCliente);
@@ -239,20 +239,13 @@ class ajaxController  {
                  
                  
                  
-             }
+             } */
          
 
         }
        
            
-        
-        
-
-        if($response_WSSP && $response_VEN_CAB){
-            return true;
-        }else{
-            return false;
-        }
+        return $response_VEN_CAB;
         
         
     }

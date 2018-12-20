@@ -349,12 +349,19 @@ class ajaxModel  {
             AND codEmpresa ='$codEmpresa'
         ";
 
-        $stmt = $this->db->prepare($query); 
-        if($stmt->execute()){
-            return true;
-        }else{
-            return false;
+
+        try{
+            $stmt = $this->db->prepare($query); 
+            $stmt->execute();
+            
+            return array('status' => 'ok', 'mensaje' => '1 fila actualizada' ); 
+            
+        }catch(PDOException $exception){
+            return array('status' => 'error', 'mensaje' => $exception->getMessage() );
         }
+
+
+        
     }
 
     /* Actualiza tabla mantenimientosEQ con la informacion que llega del formulario editMantenimiento*/
@@ -370,12 +377,16 @@ class ajaxModel  {
             INSERT INTO mov_mantenimientosEQ VALUES ('$codMNT','$codVENCAB');
         ";
 
-        $stmt = $this->db->prepare($query); 
-        if($stmt->execute()){
-            return true;
-        }else{
-            return false;
+        
+        try{
+            $stmt = $this->db->prepare($query); 
+            $stmt->execute();
+            return array('status' => 'ok', 'mensaje' => 'Agregado registro a mov_mantenimientosEQ' ); 
+            
+        }catch(PDOException $exception){
+            return array('status' => 'error', 'mensaje' => $exception->getMessage() );
         }
+
     }
 
 
@@ -387,11 +398,13 @@ class ajaxModel  {
         $query = "SELECT NomCia, Oficina, Ejercicio FROM dbo.DatosEmpresa";
         $stmt = $this->db->prepare($query); 
 
-        if($stmt->execute()){
+        try{
+            $stmt->execute();
             return $stmt->fetch( \PDO::FETCH_ASSOC );
-        }else{
-            return false;
+        }catch(PDOException $exception){
+            return array('status' => 'error', 'mensaje' => $exception->getMessage() );
         }
+
     }
     
     /*Retorna array asociativo con informacion del cliente que se indique*/
@@ -402,10 +415,11 @@ class ajaxModel  {
         $query = "SELECT * FROM COB_CLIENTES WHERE RUC = '$clienteRUC'";
         $stmt = $this->db->prepare($query); 
 
-        if($stmt->execute()){
+        try{
+            $stmt->execute();
             return $stmt->fetch( \PDO::FETCH_ASSOC );
-        }else{
-            return false;
+        }catch(PDOException $exception){
+            return array('status' => 'error', 'mensaje' => $exception->getMessage() );
         }
     }
 
@@ -435,20 +449,25 @@ class ajaxModel  {
         $tipo = $tipoDoc;
         $codigo = '';
 
-        $stmt = $this->db->prepare("exec SP_CONTADOR ?, ?, ?, ?, ?"); 
-        $stmt->bindValue(1, $gestion); 
-        $stmt->bindValue(2, $ofi); 
-        $stmt->bindValue(3, $eje); 
-        $stmt->bindValue(4, $tipo); 
-        $stmt->bindValue(5, $codigo); 
+        try{
+            $stmt = $this->db->prepare("exec SP_CONTADOR ?, ?, ?, ?, ?"); 
+            $stmt->bindValue(1, $gestion); 
+            $stmt->bindValue(2, $ofi); 
+            $stmt->bindValue(3, $eje); 
+            $stmt->bindValue(4, $tipo); 
+            $stmt->bindValue(5, $codigo); 
+            $stmt->execute();
+            
+            $newCodLimpio = $stmt->fetch(\PDO::FETCH_ASSOC);
+            $newCodLimpio =  $newCodLimpio['NExtID'];
 
-        $stmt->execute();
-        $stmt->nextRowset(); 
+            return $newCodLimpio;
+
+        }catch(PDOException $exception){
+            return array('status' => 'error', 'mensaje' => $exception->getMessage() );
+        }
+
         
-        $newCodLimpio = $stmt->fetch(\PDO::FETCH_ASSOC);
-        $newCodLimpio =  $newCodLimpio['NExtID'];
-
-        return $newCodLimpio;
     }
 
     /*Retorna el secuencial de WinFenix en formato 0000XXXX - Winfenix*/
@@ -472,13 +491,15 @@ class ajaxModel  {
         
         $query = "exec dbo.SP_VENGRACAB 'I','ADMINWSSP','$VEN_CAB->pcID','$VEN_CAB->oficina', '$VEN_CAB->ejercicio', '$VEN_CAB->tipoDoc', '$VEN_CAB->numeroDoc','','$VEN_CAB->fecha','$VEN_CAB->cliente','$VEN_CAB->bodega','$VEN_CAB->divisa','1.00','0.00','$VEN_CAB->subtotal','0.00','0.00','0.00','0.00','0.00','$VEN_CAB->subtotal','0.00','$VEN_CAB->impuesto','0.00','$VEN_CAB->total','CON','0','1','0','S','0','1','0','0','','','999',' ',' ','$VEN_CAB->observacion','$VEN_CAB->serie','$VEN_CAB->secuencia','','','','','0.00','0.00','0.00','','','','','','','','','','0','P','','','','','','0','','','','','0','2','0.00','0.00','0.00','0','999999999 ','0','','','','','','$VEN_CAB->formaPago','','','','','$VEN_CAB->fecha','',''";
         
-        $rowsAfected = $this->db->exec($query);
-       
-        if($rowsAfected == '1'){
-            return true;
-        }else{
-            return false;
+        try{
+            $rowsAfected = $this->db->exec($query);
+           return array('status' => 'ok', 'mensaje' => '1 fila afectada' ); //true;
+           
+        }catch(PDOException $exception){
+            return array('status' => 'error', 'mensaje' => $exception->getMessage() );
         }
+
+        
     }
 
     public function insertVEN_MOV($VEN_MOV_obj, $dataBaseName='KAO_wssp'){

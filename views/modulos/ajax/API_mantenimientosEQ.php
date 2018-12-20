@@ -257,13 +257,8 @@ class ajax{
 
         $updateCorrecto = $ajax->updateMantenimiento($dataDecode, $productosArray);
      
-        if ($updateCorrecto) {
-          $rawdata = array('status' => 'OK', 'mensaje' =>'Se actualizo la orden y registraron productos indicados.');
-          echo json_encode($rawdata);
-        }else{
-          $rawdata = array('status' => 'FAIL', 'mensaje' =>'Ocurrio algo durante el proceso de actualizacion, recuerde que el codigo de orden fisica es unico y no se puede repetir, si el problema persiste contacte a sistemas.');
-          echo json_encode($rawdata);
-        }
+        echo json_encode($updateCorrecto);
+       
       }else{
         $rawdata = array('status' => 'FAIL', 'mensaje' =>'No existe formData.');
         echo json_encode($rawdata);

@@ -42,12 +42,13 @@ class MantenimientosClass {
             WSSP.fechaFin
             
         FROM dbo.VEN_MOV as Compra 
-            INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE = Cliente.CODIGO 
-            INNER JOIN dbo.INV_ARTICULOS as Producto on Compra.CODIGO = Producto.CODIGO 
-            INNER JOIN dbo.INV_BODEGAS as Bodega on Compra.BODEGA = Bodega.CODIGO
-            INNER JOIN KAO_wssp.dbo.mantenimientosEQ as WSSP on Compra.ID COLLATE Modern_Spanish_CI_AS = WSSP.codFactura
-            INNER JOIN KAO_wssp.dbo.mantenimientosEQ as WSSP2 on Compra.CODIGO COLLATE Modern_Spanish_CI_AS  = WSSP.codEquipo  
-            INNER JOIN SBIOKAO.dbo.Empleados as SBIO on WSSP.responsable = SBIO.Cedula
+            INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE COLLATE DATABASE_DEFAULT = Cliente.CODIGO 
+            INNER JOIN dbo.INV_ARTICULOS as Producto on Compra.CODIGO COLLATE DATABASE_DEFAULT = Producto.CODIGO 
+            INNER JOIN dbo.INV_BODEGAS as Bodega on Compra.BODEGA COLLATE DATABASE_DEFAULT = Bodega.CODIGO
+            INNER JOIN KAO_wssp.dbo.mantenimientosEQ as WSSP on Compra.ID COLLATE DATABASE_DEFAULT = WSSP.codFactura 
+            INNER JOIN KAO_wssp.dbo.mantenimientosEQ as WSSP2 on Compra.CODIGO COLLATE DATABASE_DEFAULT  = WSSP.codEquipo  
+            INNER JOIN SBIOKAO.dbo.Empleados as SBIO on WSSP.responsable COLLATE DATABASE_DEFAULT = SBIO.Cedula
+
 
         WHERE 
             WSSP.codEmpresa = '$codEmpresa'
@@ -125,12 +126,12 @@ class MantenimientosClass {
             WSSP.estado
             
         FROM dbo.VEN_MOV as Compra 
-            INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE = Cliente.CODIGO 
-            INNER JOIN dbo.INV_ARTICULOS as Producto on Compra.CODIGO = Producto.CODIGO 
-            INNER JOIN dbo.INV_BODEGAS as Bodega on Compra.BODEGA = Bodega.CODIGO
-            INNER JOIN KAO_wssp.dbo.mantenimientosEQ as WSSP on Compra.ID COLLATE Modern_Spanish_CI_AS = WSSP.codFactura
-            INNER JOIN KAO_wssp.dbo.mantenimientosEQ as WSSP2 on Compra.CODIGO COLLATE Modern_Spanish_CI_AS  = WSSP.codEquipo  
-            INNER JOIN SBIOKAO.dbo.Empleados as SBIO on WSSP.responsable = SBIO.Cedula
+            INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE COLLATE DATABASE_DEFAULT = Cliente.CODIGO 
+            INNER JOIN dbo.INV_ARTICULOS as Producto on Compra.CODIGO COLLATE DATABASE_DEFAULT = Producto.CODIGO 
+            INNER JOIN dbo.INV_BODEGAS as Bodega on Compra.BODEGA COLLATE DATABASE_DEFAULT = Bodega.CODIGO
+            INNER JOIN KAO_wssp.dbo.mantenimientosEQ as WSSP on Compra.ID COLLATE DATABASE_DEFAULT = WSSP.codFactura
+            INNER JOIN KAO_wssp.dbo.mantenimientosEQ as WSSP2 on Compra.CODIGO COLLATE DATABASE_DEFAULT  = WSSP.codEquipo  
+            INNER JOIN SBIOKAO.dbo.Empleados as SBIO on WSSP.responsable COLLATE DATABASE_DEFAULT = SBIO.Cedula
 
         WHERE 
             WSSP.codEmpresa = '$codEmpresa'
