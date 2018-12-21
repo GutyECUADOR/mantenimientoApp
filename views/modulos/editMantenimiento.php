@@ -147,7 +147,7 @@
                                             <input type="text" class="md-input" id="product_cliente_direccion" name="product_cliente_direccion" value="<?php echo trim($arrayMantenimiento["Direccion"])?>" readonly/>
                                         </div>
                                          <div class="uk-form-row">
-                                            <label for="product_edit_sn_control">Orden Fisica</label>
+                                            <label for="product_edit_sn_control">Orden Fisica <span class="uk-badge uk-badge-danger uk-badge-notification">Obligatorio</span></label>
                                             <input type="number" class="md-input" id="product_ordenFisica" name="product_ordenFisica" min="1" max="99999999" maxlength="8" value="<?php echo trim($arrayMantenimiento["codOrdenFisica"])?>"/>
                                         </div>
                                         <div class="uk-form-row">
@@ -329,6 +329,29 @@
         </div>
     </div>
 
+    <div id="modal_AgendarNuevo" class="uk-modal">
+            <div class="uk-modal-dialog">
+                <h2 class="heading_a">Agendar mantenimiento al equipo <i class="material-icons">&#xE8FD;</i></h2>
+                <p>Indique la fecha estimada para el proximo mantenimiento.</p>
+                <div class="uk-overflow-container">
+                    <form action="" class="uk-form-stacked" id="extraAgendar_form">
+                        <input type="hidden" class="md-input" id="codMantenimientoModal" name="codMantenimientoModal" readonly/>
+                        <div class="uk-form-row">
+                            <label for="uk_dp_proxMant">Fecha del Mantenimiento</label>
+                            <input class="md-input label-fixed" type="date" id="uk_dp_proxMant" name="uk_dp_proxMant" value="<?php echo date("Y-m-d")?>">
+                        </div>
+                    </form>
+                    
+                   
+                </div>
+
+                <div class="uk-modal-footer uk-text-right">
+                    <button type="button" id="btnGeneraExtraAgendamiento" class="md-btn md-btn-flat md-btn-flat-primary">Registrar</button>
+                </div>
+            </div>
+    </div>
+
+    
     <!-- Boton de submit -->    
     <div class="md-fab-wrapper">
             <a class="md-fab md-fab-primary" href="#" id="product_edit_submit">

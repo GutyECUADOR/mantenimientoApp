@@ -33,6 +33,7 @@
                     <ul>
                         <li><a href="?&action=mantenimientosEQ">Agendar mantenimiento</a></li>
                         <li><a href="?&action=mantenimientosAG">Mantenimientos Agendados</a></li>
+                        <li><a href="?&action=mantenimientosHistorico">Historico</a></li>
                     </ul>
                 
                 </li>

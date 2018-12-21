@@ -22,6 +22,8 @@ class MantenimientosClass {
         
         $codEmpresa = $this->getCodeDBByName($dataBaseName)['Codigo']; // Usado para filtro de resultados. codigo de la DB
 
+        $primerDia = $this->getPrimerDiaMes()['StartOfMonth'];
+        $ultimoDia = $this->getUltimoDiaMes()['EndOfMonth'];
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
         SELECT TOP $cantidad
@@ -53,6 +55,7 @@ class MantenimientosClass {
         WHERE 
             WSSP.codEmpresa = '$codEmpresa'
             AND WSSP.estado = '0'
+            AND WSSP.fechaInicio BETWEEN '$primerDia' AND '$ultimoDia'
         GROUP BY 
             Producto.Codigo,
             Compra.ID,
@@ -230,6 +233,30 @@ class MantenimientosClass {
         $stmt = $this->db->prepare($query); 
         $stmt->bindParam(':NameDatabase', $nombreDB); 
     
+            if($stmt->execute()){
+                $resulset = $stmt->fetch( \PDO::FETCH_ASSOC );
+            }else{
+                $resulset = false;
+            }
+        return $resulset;  
+    }
+
+    public function getPrimerDiaMes(){
+        $query = "SELECT FORMAT( DATEADD(month, DATEDIFF(month, 0, GETDATE()), 0), 'yyyyMMdd')  AS StartOfMonth"; 
+        $stmt = $this->db->prepare($query); 
+       
+            if($stmt->execute()){
+                $resulset = $stmt->fetch( \PDO::FETCH_ASSOC );
+            }else{
+                $resulset = false;
+            }
+        return $resulset;  
+    }
+
+    public function getUltimoDiaMes(){
+        $query = "SELECT FORMAT( DATEADD(month, ((YEAR(GETDATE()) - 1900) * 12) + MONTH(GETDATE()), -1), 'yyyyMMdd', 'en-US' ) AS EndOfMonth"; 
+        $stmt = $this->db->prepare($query); 
+       
             if($stmt->execute()){
                 $resulset = $stmt->fetch( \PDO::FETCH_ASSOC );
             }else{

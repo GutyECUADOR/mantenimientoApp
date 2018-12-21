@@ -67,16 +67,7 @@ $(function() {
                     
                     console.log('finalizado: ' + codigoMNT );
                     console.log(response);
- 
-                    UIkit.modal.confirm('Desea agendar proximo mantenimiento al equipo?', function() {
-                    
-                        $('#codMantenimientoModal').val(codigoMNT) ;
-                        modalAgendar.show();
-                        
-                    } , function () {
-                        console.log('Rejected.');
-                        location.reload();
-                    }, {labels: {'Ok': 'Si, agendar.', 'Cancel': 'No, ya no requiere.'}});
+                    location.reload();
 
                 },
                 error: function(error) {

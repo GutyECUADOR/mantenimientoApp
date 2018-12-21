@@ -149,7 +149,7 @@ class ajaxModel  {
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX();
         $codMNT = $formData->codMantenimiento;
-        $codOrdenFisica = str_pad($formData->product_ordenFisica, 8, "0", STR_PAD_LEFT); 
+        $codOrdenFisica = str_pad(abs($formData->product_ordenFisica), 8, "0", STR_PAD_LEFT); 
 
         $query = "
             SELECT count(*) as totalRows FROM dbo.mantenimientosEQ WHERE codOrdenFisica = '$codOrdenFisica' AND codOrdenFisica IN 
@@ -354,10 +354,10 @@ class ajaxModel  {
             $stmt = $this->db->prepare($query); 
             $stmt->execute();
             
-            return array('status' => 'ok', 'mensaje' => '1 fila actualizada' ); 
+            return array('status' => 'ok', 'mensaje' => $codMNT. ' actualizada' ); 
             
         }catch(PDOException $exception){
-            return array('status' => 'error', 'mensaje' => $exception->getMessage() );
+            return array('status' => 'error', 'mensaje' => 'Error en mantenimientosEQ' . $exception->getMessage() );
         }
 
 
@@ -493,7 +493,7 @@ class ajaxModel  {
         
         try{
             $rowsAfected = $this->db->exec($query);
-           return array('status' => 'ok', 'mensaje' => '1 fila afectada' ); //true;
+           return array('status' => 'ok', 'mensaje' => $rowsAfected. ' fila afectada(s)' ); //true;
            
         }catch(PDOException $exception){
             return array('status' => 'error', 'mensaje' => $exception->getMessage() );
@@ -512,11 +512,16 @@ class ajaxModel  {
         $query = "exec dbo.SP_VENGRAMOV 'I','$VEN_MOV->oficina','$VEN_MOV->ejercicio','$VEN_MOV->tipoDoc','$VEN_MOV->numeroDoc','$VEN_MOV->fecha','$VEN_MOV->cliente','$VEN_MOV->bodega','S','0','0','$VEN_MOV->codProducto','UND','$VEN_MOV->cantidad','A','$VEN_MOV->precioProducto','$VEN_MOV->porcentajeDescuentoProd','$VEN_MOV->porcentajeIVA','$VEN_MOV->precioTOTAL','$VEN_MOV->fecha','','0.00','0.0000000','0','1.01.11','','1','1','104','0.0000','0.0000','0','','0','$VEN_MOV->tipoIVA' ";
 
         $stmt = $this->db->prepare($query); 
-        if($stmt->execute()){
-            return true;
-        }else{
-            return false;
+       
+        try{
+            $rowsAfected = $this->db->exec($query);
+           return array('status' => 'ok', 'mensaje' => $rowsAfected. ' fila afectada(s)' ); //true;
+           
+        }catch(PDOException $exception){
+            return array('status' => 'error', 'mensaje' => $exception->getMessage() );
         }
+
+
     }
 
 }

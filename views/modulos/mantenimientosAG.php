@@ -6,6 +6,16 @@
     /* CREACION DE INSTANCIA USADA PARA ESTA VISTA*/  
     $codEmpresa = trim($_SESSION["empresaAUTH"]);  // Nombre de la db asiganda en el login
     $mantenimientos = new models\MantenimientosClass();
+
+    $primerDiaMes = $mantenimientos->getPrimerDiaMes()['StartOfMonth'];
+    $ultimoDiaMes = $mantenimientos->getUltimoDiaMes()['EndOfMonth'];
+
+    $primerDiaMesSPAM = new DateTime($primerDiaMes);
+    $primerDiaMesSPAM = date_format($primerDiaMesSPAM, "Y-m-d");
+
+    $ultimoDiaMesSPAM = new DateTime($ultimoDiaMes);
+    $ultimoDiaMesSPAM = date_format($ultimoDiaMesSPAM, "Y-m-d");
+
     $arrayMantenimientos = $mantenimientos->getMantenimientosAgendados($codEmpresa, 100); //Devuelve array de mantenimientos
     $dateNow = $mantenimientos->getDateNow(); //Fecha actual determina si la tarjeta esta valida o no
    
@@ -24,7 +34,7 @@
     <div id="page_content">
         <div id="page_content_inner">
 
-            <h3 class="heading_a uk-margin-bottom">Equipos agendados:</h3>
+            <h3 class="heading_a uk-margin-bottom">Equipos agendados del mes: <?php echo $primerDiaMesSPAM .' hasta '. $ultimoDiaMesSPAM?></h3>
 
             <ul id="products_sort" class="uk-subnav uk-subnav-pill">
                 <li data-uk-sort="product-name:asc"><a href="#">Acendente</a></li>

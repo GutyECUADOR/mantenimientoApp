@@ -34,6 +34,40 @@ $(function() {
         }
     });
 
+    /* Funcion genera insert a tabla de mantenimientos con el codigo de MNT actual*/
+    $('#btnGeneraExtraAgendamiento').on('click', function (event) {
+        let selectFecha = $("#uk_dp_proxMant").val();
+        console.log(selectFecha);
+        var $extraAgen_form = $('#extraAgendar_form');
+        var form_serializedModal = JSON.stringify($extraAgen_form.serializeObject(), null, 2);
+
+        //UIkit.modal.alert('<p>Form data:</p><pre>' + form_serializedModal + '</pre>');
+
+        $.ajax({
+            url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=extraAgendamiento',
+            method: 'GET',
+            data: { formData: form_serializedModal },
+
+            success: function (response) {
+                console.log(response);
+                response = JSON.parse(response);
+                if (response.status == 'OK') {
+
+                    UIkit.modal.alert(response.mensaje, { center: true, labels: { 'Ok': 'Ok' } }).on('hide.uk.modal', function () {
+                        location.href = "index.php?&action=mantenimientosAG";
+                    });
+
+                } else {
+                    UIkit.modal.alert(response.mensaje, { labels: { 'Ok': 'Ok' } });
+                }
+
+            }, error: function (error) {
+                alert('No se pudo completar la operación, informe a sistemas. #' + error.status + ' ' + error.statusText);
+            }
+
+        });
+
+    });
 
     
 });
@@ -174,6 +208,7 @@ altair_product_edit = {
             console.log(getProductos());
             
             /*Validacion de codigo de mantenimiento fisico sea unico*/
+            /* Verificamos que el codigo de la orden fisica este disponible*/
             $.ajax({
                 url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=validaOrdenFisica',
                 method: 'GET',
@@ -184,12 +219,13 @@ altair_product_edit = {
                     response = JSON.parse(response);
                    
                     if (response.status == 'OK') {
-                        isOrdenFisicaValida = true;
-                        UIkit.modal.alert(response.mensaje, {labels: {'Ok': 'Listo'}} );
+                        /*Si es correcta ejecutamos actualizacion*/
+                        //UIkit.modal.alert(response.mensaje, {labels: {'Ok': 'Listo'}} );
                         saveData();
 
                     } else if (response.status == 'FAIL') {
                         UIkit.modal.alert(response.mensaje, {labels: {'Ok': 'Ok'}});
+                        $("#product_ordenFisica").focus();
                     } else {
                         console.error(response);
                     }
@@ -202,27 +238,40 @@ altair_product_edit = {
 
             /* Evia Fourmulario Serializado y el array de productos al API para ser guardados en las tablas*/
             function saveData(){
-                UIkit.modal.confirm('Confirme, actualizar informacion de la orden de trabajo y agregar los repuestos indicados a la orden ' + codigoMNT + ' ?', function() {
+                $product_edit_submit_btn.prop("disabled", true);
+                let mensajeModal;
+                if (getProductos().length > 0) {
+                    mensajeModal = 'Confirme, actualizar informacion de la orden de trabajo y agregar los repuestos indicados a la orden ';
+                }else{
+                    mensajeModal = 'Confirme, actualizar informacion de la orden de trabajo ';
+                }
+
+                UIkit.modal.confirm(mensajeModal + codigoMNT + ' ?', function() {
                     $.ajax({
                         url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=updateOrden',
                         method: 'GET',
                         data: { formData: form_serialized, productosArray: productosArray },
     
                         success: function(response) {
-                            console.log(response);
+                            
                             response = JSON.parse(response);
+                            console.log(response);
+                            console.log(getProductos().length + ' productos');
                            
-                            if (response.status == 'OK') {
-                                UIkit.modal.alert(response.mensaje, {labels: {'Ok': 'Listo'}} );
-                                setTimeout(() => {
-                                    location.assign('index.php?&action=mantenimientosAG');
-                                }, 3000);
-                               
-                            } else if (response.status == 'FAIL') {
-                                UIkit.modal.alert(response.mensaje, {labels: {'Ok': 'Ok'}});
-                            } else{
-                                console.error(response);
+                            if (response.status === 'OK' && getProductos().length === 0) {
+                                
+                                UIkit.modal.alert(response.mensaje, { center: true, labels: { 'Ok': 'Ok' } }).on('hide.uk.modal', function () {
+                                    location.href = "index.php?&action=mantenimientosAG";
+                                });
+
+                            } else if (response.status === 'OK' && getProductos().length >= 1 ) {
+                                UIkit.modal.alert(response.mensaje, { labels: { 'Ok': 'Ok' } });
+                                extraMantenimiento();
+                            } else if (response.Result) {
+                                UIkit.modal.alert("Error: " + response.Message, { labels: { 'Ok': 'Ok' } });
                             }
+                            
+                            
                         },
                         error: function(error) {
                             alert('No se pudo completar la operación. #' + error.status + ' ' + error.statusText);
@@ -232,6 +281,20 @@ altair_product_edit = {
                 }, {labels: {'Ok': 'Si, actualizar y registrar', 'Cancel': 'No'}});
             }
             
+
+            function extraMantenimiento(){
+                var modalAgendar = UIkit.modal($('#modal_AgendarNuevo'), { modal: false, keyboard: false, bgclose: false, center: true });
+               
+                UIkit.modal.confirm('Desea agendar proximo mantenimiento al equipo?', function () {
+
+                    $('#codMantenimientoModal').val(codigoMNT);
+                    modalAgendar.show();
+
+                }, function () {
+                    console.log('Rejected.');
+                    location.href = "index.php?&action=mantenimientosAG";
+                }, { labels: { 'Ok': 'Si, agendar.', 'Cancel': 'No, ya no requiere.' } });
+            }
 
             
         })
