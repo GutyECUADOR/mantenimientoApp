@@ -41,13 +41,13 @@ $(function() {
 
     });
 
-    $('.aprobarCita').on('click', function(event) {
+    $('.aprobarCita').on('click', function (event) {
         let htmlElement = event.currentTarget;
         let codigoMNT = htmlElement.getAttribute("data-mantenimiento").trim();
 
-        UIkit.modal.confirm('Dar por culminado el mantenimiento ' + codigoMNT + ' ?', function() {
-        
-            var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Realizando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>'); 
+        UIkit.modal.confirm('Dar por culminado el mantenimiento ' + codigoMNT + ' ?', function () {
+
+            var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Realizando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
             modalBlocked.show();
 
             //aprobar
@@ -56,26 +56,35 @@ $(function() {
                 method: 'GET',
                 data: 'codigoMNT=' + codigoMNT,
 
-                success: function(response) {
+                success: function (response) {
                     modalBlocked.hide();
                     response = JSON.parse(response);
                     if (response.status == 'OK') {
-                        UIkit.modal.alert(response.mensaje + ' :' + codigoMNT,  {labels: {'Ok': 'Listo'}});
-                    }else{
-                        UIkit.modal.alert(response.mensaje + codigoMNT,  {labels: {'Ok': 'Listo'}});
+                        UIkit.modal.alert(response.mensaje + ' :' + codigoMNT, { labels: { 'Ok': 'Listo' } });
+                    } else {
+                        UIkit.modal.alert(response.mensaje + codigoMNT, { labels: { 'Ok': 'Listo' } });
                     }
-                    
-                    console.log('finalizado: ' + codigoMNT );
+
+                    console.log('finalizado: ' + codigoMNT);
                     console.log(response);
-                    location.reload();
+
+                    UIkit.modal.confirm('Desea agendar proximo mantenimiento al equipo?', function () {
+
+                        $('#codMantenimientoModal').val(codigoMNT);
+                        modalAgendar.show();
+
+                    }, function () {
+                        console.log('Rejected.');
+                        location.reload();
+                    }, { labels: { 'Ok': 'Si, agendar.', 'Cancel': 'No, ya no requiere.' } });
 
                 },
-                error: function(error) {
+                error: function (error) {
                     alert('No se pudo completar la operación, informe a sistemas. #' + error.status + ' ' + error.statusText);
                 }
 
             });
-        }, {labels: {'Ok': 'Si', 'Cancel': 'Cancelar'}});
+        }, { labels: { 'Ok': 'Si', 'Cancel': 'Cancelar' } });
 
 
     });
