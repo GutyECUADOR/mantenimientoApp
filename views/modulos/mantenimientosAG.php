@@ -7,8 +7,8 @@
     $codEmpresa = trim($_SESSION["empresaAUTH"]);  // Nombre de la db asiganda en el login
     $mantenimientos = new models\MantenimientosClass();
 
-    $primerDiaMes = $mantenimientos->getPrimerDiaMes()['StartOfMonth'];
-    $ultimoDiaMes = $mantenimientos->getUltimoDiaMes()['EndOfMonth'];
+    $primerDiaMes = $mantenimientos->first_month_day(); //$mantenimientos->getPrimerDiaMes()['StartOfMonth'];
+    $ultimoDiaMes = $mantenimientos->last_month_day(); //$mantenimientos->getUltimoDiaMes()['EndOfMonth'];
 
     $primerDiaMesSPAM = new DateTime($primerDiaMes);
     $primerDiaMesSPAM = date_format($primerDiaMesSPAM, "Y-m-d");

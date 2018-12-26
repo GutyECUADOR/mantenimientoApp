@@ -23,22 +23,22 @@ class conexion {
     public function __construct() {
         
         /*CONEXION PARA DESAROLLO*/
-        /* $this->driver = 'sqlsrv';
+        $this->driver = 'sqlsrv';
         $this->host = "S1-W202";
         $this->dbname = "KAO_wssp";
         $this->port = "1433";
         $this->user = "sfb";
         $this->pass = "Sud2017$";
-        $this->charset = "utf8"; */
+        $this->charset = "utf8";
 
         /*CONEXION DEL SERVIDOR LOCAL*/
-        $this->driver = 'sqlsrv';
+        /* $this->driver = 'sqlsrv';
         $this->host = "ASUS-GUTYECUADO";
         $this->dbname = "KAO_wssp";
         $this->port = "1433";
         $this->user = "sa";
         $this->pass = "adminguty";
-        $this->charset = "utf8";
+        $this->charset = "utf8"; */
         
         /*CONEXION PARA KAO PRODUCCION*/
         /* $this->driver = 'sqlsrv';

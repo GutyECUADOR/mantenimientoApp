@@ -22,8 +22,8 @@ class MantenimientosClass {
         
         $codEmpresa = $this->getCodeDBByName($dataBaseName)['Codigo']; // Usado para filtro de resultados. codigo de la DB
 
-        $primerDia = $this->getPrimerDiaMes()['StartOfMonth'];
-        $ultimoDia = $this->getUltimoDiaMes()['EndOfMonth'];
+        $primerDia = $this->first_month_day(); //$this->getPrimerDiaMes()['StartOfMonth'];
+        $ultimoDia = $this->last_month_day(); //$this->getUltimoDiaMes()['EndOfMonth'];
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
         SELECT TOP $cantidad
@@ -241,7 +241,22 @@ class MantenimientosClass {
         return $resulset;  
     }
 
-    public function getPrimerDiaMes(){
+    public function last_month_day() { 
+        $month = date('m');
+        $year = date('Y');
+        $day = date("d", mktime(0,0,0, $month+1, 0, $year));
+   
+        return date('Ymd', mktime(0,0,0, $month, $day, $year));
+    }
+   
+    /** Actual month first day **/
+    public function first_month_day() {
+        $month = date('m');
+        $year = date('Y');
+        return date('Ymd', mktime(0,0,0, $month, 1, $year));
+    }
+
+    /* public function getPrimerDiaMes(){
         $query = "SELECT FORMAT( DATEADD(month, DATEDIFF(month, 0, GETDATE()), 0), 'yyyyMMdd')  AS StartOfMonth"; 
         $stmt = $this->db->prepare($query); 
        
@@ -263,7 +278,7 @@ class MantenimientosClass {
                 $resulset = false;
             }
         return $resulset;  
-    }
+    } */
 
 
     public function getDataMantenimiento($dataBaseName='KAO_wssp', $codMantenimiento=null) {
