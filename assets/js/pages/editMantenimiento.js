@@ -278,10 +278,11 @@ altair_product_edit = {
                                 });
 
                             } else if (response.status === 'OK' && getProductos().length >= 1 ) {
-                                modalBlocked.hide();
+                               
                                 UIkit.modal.alert(response.mensaje, { labels: { 'Ok': 'Ok' } });
                                 extraMantenimiento();
                             } else if (response.Result) {
+                               
                                 UIkit.modal.alert("Error: " + response.Message, { labels: { 'Ok': 'Ok' } });
                             }
                             
@@ -289,6 +290,8 @@ altair_product_edit = {
                         },
                         error: function(error) {
                             alert('No se pudo completar la operación. #' + error.status + ' ' + error.statusText);
+                        },complete: function(data) {
+                            modalBlocked.hide();
                         }
     
                     });

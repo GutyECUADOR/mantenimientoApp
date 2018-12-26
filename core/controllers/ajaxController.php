@@ -206,16 +206,13 @@ class ajaxController  {
             $VEN_CAB->setObservacion('MantenimientosApp #'.$formData->codMantenimiento);
             
              //Registro en VEN_CAB y MOV mantenimientosEQ
-            //$response_VEN_CAB = $ajaxModel->insertVEN_CAB($VEN_CAB, $dbEmpresa);
+            $response_VEN_CAB = $ajaxModel->insertVEN_CAB($VEN_CAB, $dbEmpresa);
 
-            // Establecer como aprobada
-           
-
-            //$response_MOV_MNT = $ajaxModel->insertMOVMantenimientoEQ($formData, $new_cod_VENCAB);
+            $response_MOV_MNT = $ajaxModel->insertMOVMantenimientoEQ($formData, $new_cod_VENCAB);
             
             $arrayVEN_MOVinsets = array();
 
-               /*  foreach ($VEN_CAB->getProductos() as $producto) {
+                foreach ($VEN_CAB->getProductos() as $producto) {
                     $VEN_MOV = new \models\venMovClass();
                     if ($formData->product_edit_facturadoa == 1) {
                         $VEN_MOV->setCliente($formData->codCliente);
@@ -244,7 +241,7 @@ class ajaxController  {
                     
                     array_push($arrayVEN_MOVinsets, $response_VEN_MOV);
                     
-                } */
+                }
          
             $response_Aprobada = $this->aprobarMantenimiento($formData->codMantenimiento);
             

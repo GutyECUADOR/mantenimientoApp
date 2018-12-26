@@ -457,10 +457,11 @@ class ajaxModel  {
             $stmt->bindValue(4, $tipo); 
             $stmt->bindValue(5, $codigo); 
             $stmt->execute();
+            $stmt->nextRowset();
             
             $newCodLimpio = $stmt->fetch(\PDO::FETCH_ASSOC);
             $newCodLimpio =  $newCodLimpio['NExtID'];
-
+            
             return $newCodLimpio;
 
         }catch(PDOException $exception){
