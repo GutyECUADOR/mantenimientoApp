@@ -235,7 +235,6 @@ altair_crud_table = {
                     edit: true,
                     input: function(data) {
                         return '<input class="md-input" type="number" name="ordenTrabajo" placeholder="Ingrese el codigo sin 0 delante, ejem. 3050" required"/>';
-                    
                     }
                 },
                 FechaMantenimiento: {
@@ -245,11 +244,9 @@ altair_crud_table = {
                     type: 'date',
                     list: false,
                     input: function(data) {
-                        if (data.record) {
-                            return '<input class="md-input" type="date" name="mantenimientoDate" required value="' + data.value + '" data-uk-datepicker="{format:\'YYYY-MM-DD\', i18n:{ months: [\'Enero\', \'Febrero\', \'Marzo\', \'Abril\', \'Mayo\', \'Junio\', \'Julio\', \'Agosto\', \'Septiembre\', \'Octubre\', \'Noviembre\', \'Diciembre\'],  weekdays: [\'DOM\', \'LUN\', \'MAR\', \'MIE\', \'JUE\', \'VIE\', \'SAB\'] }}"/>';
-                        } else {
-                            return '<input class="md-input" type="date" name="mantenimientoDate" required value="" data-uk-datepicker="{format:\'YYYY-MM-DD\'}"/>';
-                        }
+                       
+                        return '<input class="md-input md-bg-red-100" type="date" name="mantenimientoDate" required value="' + data.value + '" data-uk-datepicker="{format:\'YYYY-MM-DD\', i18n:{ months: [\'Enero\', \'Febrero\', \'Marzo\', \'Abril\', \'Mayo\', \'Junio\', \'Julio\', \'Agosto\', \'Septiembre\', \'Octubre\', \'Noviembre\', \'Diciembre\'],  weekdays: [\'DOM\', \'LUN\', \'MAR\', \'MIE\', \'JUE\', \'VIE\', \'SAB\'] }}"/>';
+                        
                     }
                 },
                 Tecnico: {
@@ -263,11 +260,9 @@ altair_crud_table = {
                     list: false,
                     type: 'time',
                     input: function(data) {
-                        if (data.record) {
-                            return '<input class="md-input" type="time" name="mantenimientoTimeINI" id="uk_tp_1" data-uk-timepicker="" autocomplete="off">';
-                        } else {
-                            return '<input class="md-input" type="time" name="mantenimientoTimeINI" id="uk_tp_1" data-uk-timepicker="" autocomplete="off">';
-                        }
+                        let min = '08'
+                        return '<input class="md-input" type="time" name="mantenimientoTimeINI" id="uk_tp_1" data-uk-timepicker="{start:'+min+',end:\'17\'}" autocomplete="off">';
+                      
                     }
                 },
                 HoraFin: {
@@ -275,11 +270,9 @@ altair_crud_table = {
                     list: false,
                     type: 'time',
                     input: function(data) {
-                        if (data.record) {
-                            return '<input class="md-input" type="time" name="mantenimientoTimeFIN" id="uk_tp_1" data-uk-timepicker="" autocomplete="off">';
-                        } else {
-                            return '<input class="md-input" type="time" name="mantenimientoTimeFIN" id="uk_tp_1" data-uk-timepicker="" autocomplete="off">';
-                        }
+                        let min = '08'
+                        return '<input class="md-input" type="time" name="mantenimientoTimeFIN" id="uk_tp_1" data-uk-timepicker="{start:'+min+',end:\'17\'}" autocomplete="off">';
+                        
                     }
                 },
                 Comentario: {

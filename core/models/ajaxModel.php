@@ -95,7 +95,7 @@ class ajaxModel  {
 
         $codFactura = $data['CodigoFac'];
         $codProducto = $data['CodProducto'];
-        $OrdenTrabajo = str_pad($data['OrdenTrabajo'], 8, "0", STR_PAD_LEFT);
+        $OrdenTrabajo = str_pad(abs($data['OrdenTrabajo']), 8, "0", STR_PAD_LEFT);
         $CantitadProd = $data['CantitadProd'];
         $Comentario = $data['Comentario'];
         $fechaHoraINI = $data['fechaHoraINI'];

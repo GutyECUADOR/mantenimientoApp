@@ -1,5 +1,13 @@
 $(function() {
 
+    /* Evita problema de doble calendario en firefox*/
+    $('input[type=date]').on('click', function(event) {
+        var isFirefox = typeof InstallTrigger !== 'undefined';
+        if (isFirefox) {
+            event.preventDefault();
+        }
+    });
+
     var modalAgendar = UIkit.modal($('#modal_AgendarNuevo'),  {modal: false, keyboard: false, bgclose: false, center: true});
             
     config.date_range();

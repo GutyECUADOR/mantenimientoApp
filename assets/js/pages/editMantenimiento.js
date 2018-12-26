@@ -36,6 +36,8 @@ $(function() {
 
     /* Funcion genera insert a tabla de mantenimientos con el codigo de MNT actual*/
     $('#btnGeneraExtraAgendamiento').on('click', function (event) {
+        var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Realizando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
+        modalBlocked.show();
         let selectFecha = $("#uk_dp_proxMant").val();
         console.log(selectFecha);
         var $extraAgen_form = $('#extraAgendar_form');
@@ -172,9 +174,17 @@ config = {
     // date range
     date_range: function() {
         var $dp_start = $('#uk_dp_start'),
-            $dp_end = $('#uk_dp_end');
+            $dp_end = $('#uk_dp_proxMant');
 
         var start_date = UIkit.datepicker($dp_start, {
+            format: 'YYYY-MM-DD',
+            i18n: {
+                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                weekdays: ['DOM', 'LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB']
+            }
+        });
+
+        UIkit.datepicker($dp_end, {
             format: 'YYYY-MM-DD',
             i18n: {
                 months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -197,7 +207,7 @@ altair_product_edit = {
         var $product_edit_form = $('#product_edit_form'),
             $product_edit_submit_btn = $('#product_edit_submit');
 
-
+           
         // submit form
         $product_edit_submit_btn.on('click', function(e) {
             e.preventDefault();
@@ -221,6 +231,7 @@ altair_product_edit = {
                     if (response.status == 'OK') {
                         /*Si es correcta ejecutamos actualizacion*/
                         //UIkit.modal.alert(response.mensaje, {labels: {'Ok': 'Listo'}} );
+                        $product_edit_submit_btn.prop("disabled", true);
                         saveData();
 
                     } else if (response.status == 'FAIL') {
@@ -238,7 +249,7 @@ altair_product_edit = {
 
             /* Evia Fourmulario Serializado y el array de productos al API para ser guardados en las tablas*/
             function saveData(){
-                $product_edit_submit_btn.prop("disabled", true);
+                
                 let mensajeModal;
                 if (getProductos().length > 0) {
                     mensajeModal = 'Confirme, actualizar informacion de la orden de trabajo y agregar los repuestos indicados a la orden ';
@@ -247,6 +258,8 @@ altair_product_edit = {
                 }
 
                 UIkit.modal.confirm(mensajeModal + codigoMNT + ' ?', function() {
+                    var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Realizando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
+                        modalBlocked.show();
                     $.ajax({
                         url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=updateOrden',
                         method: 'GET',
@@ -265,6 +278,7 @@ altair_product_edit = {
                                 });
 
                             } else if (response.status === 'OK' && getProductos().length >= 1 ) {
+                                modalBlocked.hide();
                                 UIkit.modal.alert(response.mensaje, { labels: { 'Ok': 'Ok' } });
                                 extraMantenimiento();
                             } else if (response.Result) {
@@ -286,7 +300,7 @@ altair_product_edit = {
                 var modalAgendar = UIkit.modal($('#modal_AgendarNuevo'), { modal: false, keyboard: false, bgclose: false, center: true });
                
                 UIkit.modal.confirm('Desea agendar proximo mantenimiento al equipo?', function () {
-
+                    
                     $('#codMantenimientoModal').val(codigoMNT);
                     modalAgendar.show();
 
