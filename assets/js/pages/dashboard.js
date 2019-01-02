@@ -6,25 +6,51 @@ $(function() {
 altair_dashboard = {
     init: function () {
         'use strict';
-
-        // small charts
-        altair_dashboard.peity_charts();
-        // large graph
-        altair_dashboard.metrics_charts();
-        // large graph
-        altair_dashboard.chartist_charts();
-        // video player
-        altair_dashboard.video_player();
-        // calendar
-        altair_dashboard.clndr_calendar();
-        // google maps
-        altair_dashboard.maplace_maps();
-
         // run animations after page is fully loaded
         $window.on('load',function(){
+        
+            altair_dashboard.loadEstadisticsFetch();
             altair_dashboard.circular_statistics();
-            altair_dashboard.count_animated();
+            
         });
+    },
+    // ajax con jquery
+    loadEstadistics: function () {
+       
+        $.ajax({
+            url: 'views/modulos/ajax/API_estadisticas.php?action=getConteoMantenimientos',
+            method: 'GET',
+            success: function( response ) {
+                console.log(response);
+                let responseJSON = JSON.parse(response);
+                let cantidad = responseJSON.data[0].MantPendientes;
+                $('#countUpMeMantenimientos').text(cantidad);
+                altair_dashboard.count_animated();
+            },
+            error: function(error) {
+                alert('No se pudo completar la operación. #' + error.status + ' ' + error.statusText);
+            }
+
+        });
+        
+    },
+    // ajax con fetch
+    loadEstadisticsFetch: function () {
+       fetch('views/modulos/ajax/API_estadisticas.php?action=getConteoMantenimientos')
+        .then( response =>  response.json())
+        .then( responseJSON => {
+            let cantidadPendientes = responseJSON.data[0].MantPendientes;
+            let porcentFinalizados = responseJSON.data[0].PorcentMantFinalizados;
+            
+            document.getElementById('countUpMeMantenimientos').innerHTML = cantidadPendientes;
+            document.getElementById('countUpMePorcentFinish').innerHTML = porcentFinalizados;
+            altair_dashboard.count_animated();
+        })
+        .catch( error => console.log(error))
+    },
+    // ajax con VUE
+    loadEstadisticsVue: function () {
+       
     },
     // metrics-graphics
     metrics_charts: function () {

@@ -97,6 +97,57 @@ class MantenimientosClass {
     }
 
     /*
+        Recupera los registros de la tabla mantenimientosEQ en KAO_wssp
+        - Indicar base de datos (empresa) de la cual realizar la consulta o retornara false de encontrar dicho nombre de DB
+    */
+    public function getMantenimientosHistorico($cantidad=100, $dataBaseName='KAO_wssp') {
+
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
+        
+        $codEmpresa = $this->getCodeDBByName($dataBaseName)['Codigo']; // Usado para filtro de resultados. codigo de la DB
+
+        //Query de consulta con parametros para bindear si es necesario.
+        $query = "
+            SELECT 
+                Compra.ID as CodigoFac,
+                Mant.codMantenimiento as CodMNT,
+                Mant.codEquipo as CodProducto,
+                Producto.NOMBRE as Producto,
+                Cliente.NOMBRE as Cliente,
+                Mant.tipo as TipoMant,
+                Mant.fechaInicio as FechaINI,
+                Mant.estado as Estado
+
+            FROM
+            dbo.VEN_MOV as Compra
+            INNER JOIN KAO_wssp.dbo.mantenimientosEQ as Mant ON Mant.codFactura COLLATE Modern_Spanish_CI_AS = Compra.ID
+            INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE = Cliente.CODIGO 
+            INNER JOIN dbo.INV_ARTICULOS as Producto on Compra.CODIGO = Producto.CODIGO 
+
+            WHERE codEmpresa = '$codEmpresa'
+            ORDER BY CodMNT ASC
+        ";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+    
+        $arrayResultados = array();
+
+            if($stmt->execute()){
+                while ($row = $stmt->fetch( \PDO::FETCH_ASSOC )) {
+                    array_push($arrayResultados, $row);
+                }
+                return $arrayResultados;
+                
+            }else{
+                $resulset = false;
+            }
+        return $resulset;  
+
+   
+    }
+
+    /*
         Recupera el registro con el codigo indicado tabla mantenimientosEQ en KAO_wssp
     */
     public function getMantenimientoByCod($dataBaseName='KAO_wssp', $codMantenimiento) {
@@ -254,6 +305,60 @@ class MantenimientosClass {
         $month = date('m');
         $year = date('Y');
         return date('Ymd', mktime(0,0,0, $month, 1, $year));
+    }
+
+    public function getDescStatus($codigo) {
+        
+        switch ($codigo) {
+            case 0:
+            return 'Pendiente';
+            break;
+            
+            case 1:
+            return 'Finalizada';
+            break;
+
+            case 2:
+            return 'Anulada';
+            break;
+            
+            case 3:
+            return 'Omitida';
+            break;
+
+            default:
+            return 'No difinida';
+            
+            break;
+        }
+       
+    }
+
+    public function getColorBadge($codigo) {
+        
+        switch ($codigo) {
+            case 0:
+            return 'uk-badge-primary';
+            break;
+            
+            case 1:
+            return 'uk-badge-success';
+            break;
+
+            case 2:
+            return 'uk-badge-danger';
+            break;
+            
+            case 3:
+            return 'uk-badge-warning';
+            break;
+
+            default:
+            return '';
+            
+            break;
+        }
+       
     }
 
     /* public function getPrimerDiaMes(){

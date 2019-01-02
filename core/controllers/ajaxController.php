@@ -263,6 +263,14 @@ class ajaxController  {
         
         
     }
+
+    /* AJAX ESTADISTICAS - Get conteo de mantenimientos */
+    public function getCountMantenimientosController(){
+        $ajaxModel = new \models\ajaxModel();
+        $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
+        $response = $ajaxModel->getCountMantenimientos();
+        return $response;
+    }
     
     
 }

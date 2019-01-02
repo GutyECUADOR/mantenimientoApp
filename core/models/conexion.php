@@ -48,6 +48,8 @@ class conexion {
         $this->user = "sfb";
         $this->pass = "sfb123";
         $this->charset = "utf8"; */
+
+        $this->instancia = $this->getInstanciaCNX();
     }
     
     /** Retorna una instancia PDO**/

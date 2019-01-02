@@ -525,6 +525,40 @@ class ajaxModel  {
 
     }
 
+
+    /*
+       - Realiza conteo de mantenimientos pendientes 
+    */
+    public function getCountMantenimientos($dataBaseName='KAO_wssp') {
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+        //Query de consulta con parametros para bindear si es necesario.
+        $query = "
+            SELECT 
+                MantPendientes = (SELECT COUNT (*) FROM dbo.mantenimientosEQ WHERE codEmpresa = '004' AND estado = 0),
+                PorcentMantFinalizados = (SELECT COUNT( * ) FROM dbo.mantenimientosEQ  WHERE estado != 0) * 100 / (SELECT COUNT( * ) FROM dbo.mantenimientosEQ) 
+        
+        ";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+    
+        $arrayResultados = array();
+
+            if($stmt->execute()){
+
+                while ($row = $stmt->fetch( \PDO::FETCH_ASSOC )) {
+                    array_push($arrayResultados, $row);
+                }
+               
+                return $arrayResultados;
+            }else{
+                return false;
+                
+            }
+        return $resulset;  
+
+   
+    }
 }
 
 

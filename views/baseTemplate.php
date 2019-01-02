@@ -84,8 +84,7 @@
         <!-- CLNDR -->
         <script src="<?php echo ROOT_PATH; ?>assets/bower_components/clndr/clndr.min.js"></script>
 
-        <!--  dashbord functions -->
-        <script src="<?php echo ROOT_PATH; ?>assets/js/pages/dashboard.js"></script>
+       
   
   </body>
 </html>

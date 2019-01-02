@@ -1,10 +1,11 @@
-<?php
+<?php 
 
-    require_once '../core/models/MantenimientosClass.php';
+    require_once '../core/models/EstadisticasClass.php';
+    require_once '../core/models/conexion.php';
 
-    $model = new models\MantenimientosClass();
+
+    $model = new models\EstadisticasClass();
     
-    $result = $model->getPrimerDiaMes()['StartOfMonth'];
+    $result = $model->getCountMantenimientos();
     var_dump($result);
     
-

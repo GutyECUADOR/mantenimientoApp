@@ -26,7 +26,11 @@ class mainModel {
 
             case 'mantenimientosAG':
             $contenido = "views/modulos/mantenimientosAG.php";
-            break;    
+            break;   
+            
+            case 'mantenimientosHistorico':
+            $contenido = "views/modulos/mantenimientosHistorico.php";
+            break;   
 
             case 'userconfig':
             $contenido = "views/modulos/userConfig.php";
