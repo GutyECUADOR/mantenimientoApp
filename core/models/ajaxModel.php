@@ -559,6 +559,54 @@ class ajaxModel  {
 
    
     }
+
+
+    /*
+       - Retorna todos los mantenimientos de la tabla 
+    */
+    public function getHistorico($dataBaseName='KAO_wssp') {
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+        //Query de consulta con parametros para bindear si es necesario.
+        $query = "
+            SELECT 
+                Compra.ID as CodigoFac,
+                Mant.codMantenimiento as CodMNT,
+                Mant.codEquipo as CodProducto,
+                Cliente.NOMBRE as Cliente,
+                Mant.tipo as TipoMant,
+                Mant.fechaInicio as FechaINI,
+                Mant.estado as Estado
+            
+            FROM
+                dbo.VEN_CAB as Compra
+                INNER JOIN KAO_wssp.dbo.mantenimientosEQ as Mant ON Mant.codFactura COLLATE Modern_Spanish_CI_AS = Compra.ID
+                INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE = Cliente.CODIGO 
+                
+                WHERE codEmpresa = '004'
+            
+            ORDER BY CodMNT ASC
+        ";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+    
+        $arrayResultados = array();
+
+            if($stmt->execute()){
+
+                while ($row = $stmt->fetch( \PDO::FETCH_ASSOC )) {
+                    array_push($arrayResultados, $row);
+                }
+               
+                return $arrayResultados;
+            }else{
+                return false;
+                
+            }
+        return $resulset;  
+
+   
+    }
 }
 
 

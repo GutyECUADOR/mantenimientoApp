@@ -33,7 +33,7 @@
                 <div class="md-card-content">
                     <h3 class="heading_a">Filtros de busqueda</h3>
                     <div class="uk-grid" data-uk-grid-margin="">
-                        <div class="uk-width-large-2-10 uk-row-first">
+                        <div class="uk-width-large-3-10 uk-row-first">
                             <div class="uk-input-group">
                                 <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
                                 <div class="md-input-wrapper md-input-filled">
@@ -43,7 +43,7 @@
 
                             </div>
                         </div>
-                        <div class="uk-width-medium-2-10">
+                        <div class="uk-width-medium-3-10">
                             <div class="uk-input-group">
                                 <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
                                 <div class="md-input-wrapper md-input-filled">
@@ -55,7 +55,20 @@
                         </div>
 
                         <div class="uk-width-medium-2-10">
-                            <a id="btn_searchEquipos" class="md-btn md-btn-primary md-btn-wave-light md-btn-icon waves-effect waves-button waves-light md-btn-block">
+                            <div class="md-input-wrapper md-input-filled">
+                                <label>Tipos</label>
+                                <select id="select_demo_4" data-md-selectize>
+                                        <option value="ALL">Todos</option>
+                                        <option value="PND">Pendientes</option>
+                                        <option value="ANUL">Aulados/Omitidos</option>
+                                </select>
+                                </span></div>
+                        </div>
+
+                        <div class="uk-width-medium-2-10">
+                            <a 
+                                v-on:click="searchMant()"
+                                id="btn_search" class="md-btn md-btn-primary md-btn-wave-light md-btn-icon waves-effect waves-button waves-light md-btn-block">
                                 <i class="uk-icon-search"></i> Buscar
                             </a>
                         </div>
@@ -80,8 +93,17 @@
                             </thead>
                             <tbody>
 
+                            <tr v-for="mantenimiento in mantenimientos">
+                                <td class="uk-text-center">.</td>
+                                <td class="uk-text-center">{{ mantenimiento.CodigoFac }}</td>
+                                <td class="uk-text-center">{{ mantenimiento.CodMNT }}</td>
+                                <td class="uk-text-center">{{ mantenimiento.Cliente }}</td>
+                                <td class="uk-text-center">{{ mantenimiento.CodProducto }}</td>
+                                <td class="uk-text-center">{{ mantenimiento.FechaINI }}</td>
+                                <td class="uk-text-center"> sin estado </td>
+                            </tr>
                              
-                            <?php
+                            <!-- <?php
                                 if (is_array($arrayMantenimientos)) {
                                     $contador = 0;
                                 foreach ($arrayMantenimientos as $equipo) {
@@ -100,7 +122,7 @@
                                     <td class="uk-text-center"><?php echo $equipo['CodigoFac']?></td>
                                     <td class="uk-text-center"><?php echo $equipo['CodMNT']?></td>
                                     <td class="uk-text-center"><?php echo $equipo['Cliente']?></td>
-                                    <td class="uk-text-center"><?php echo $equipo['Producto']?></td>
+                                    <td class="uk-text-center"><?php echo $equipo['CodProducto']?></td>
                                     <td class="uk-text-center"><?php echo $fechaFormat?></td>
                                     <td class="uk-text-center"><span class="uk-badge <?php echo $colorBadge?>"><?php echo $status ?></span></td>
                                 </tr>
@@ -117,7 +139,7 @@
                                         ';
                                     }
                                     // FIN DEL IF
-                            ?>   
+                            ?>    -->
                                 
                             </tbody>
                         </table>
@@ -155,6 +177,11 @@
 <script src="<?php echo ROOT_PATH; ?>assets/js/uikit_custom.js"></script>
 <!-- altair common functions/helpers -->
 <script src="<?php echo ROOT_PATH; ?>assets/js/altair_admin_common.min.js"></script>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+
+<script src="<?php echo ROOT_PATH; ?>assets/js/pages/mantenimientosHistorico.js"></script>
 
 
 </body>

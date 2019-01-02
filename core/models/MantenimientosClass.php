@@ -109,23 +109,22 @@ class MantenimientosClass {
 
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
-            SELECT 
+                SELECT 
                 Compra.ID as CodigoFac,
                 Mant.codMantenimiento as CodMNT,
                 Mant.codEquipo as CodProducto,
-                Producto.NOMBRE as Producto,
                 Cliente.NOMBRE as Cliente,
                 Mant.tipo as TipoMant,
                 Mant.fechaInicio as FechaINI,
                 Mant.estado as Estado
-
+            
             FROM
-            dbo.VEN_MOV as Compra
-            INNER JOIN KAO_wssp.dbo.mantenimientosEQ as Mant ON Mant.codFactura COLLATE Modern_Spanish_CI_AS = Compra.ID
-            INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE = Cliente.CODIGO 
-            INNER JOIN dbo.INV_ARTICULOS as Producto on Compra.CODIGO = Producto.CODIGO 
-
-            WHERE codEmpresa = '$codEmpresa'
+                dbo.VEN_CAB as Compra
+                INNER JOIN KAO_wssp.dbo.mantenimientosEQ as Mant ON Mant.codFactura COLLATE Modern_Spanish_CI_AS = Compra.ID
+                INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE = Cliente.CODIGO 
+                
+                WHERE codEmpresa = '$codEmpresa'
+            
             ORDER BY CodMNT ASC
         ";  // Final del Query SQL 
 

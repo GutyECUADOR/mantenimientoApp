@@ -15,6 +15,10 @@ class ajax{
         return $this->ajaxController->getCountMantenimientosController();
     }
 
+    public function getHistorico() {
+      return $this->ajaxController->getHistoricoController();
+  }
+
 }
 
   try{
@@ -25,6 +29,13 @@ class ajax{
         case 'getConteoMantenimientos':
         $respuesta = $ajax->getConteoMantenimientos();
         $rawdata = array('status' => 'OK', 'mensaje' => 'respuesta correcta', 'data' => $respuesta);
+        echo json_encode($rawdata);
+
+        break;
+
+        case 'getHistorico':
+        $respuesta = $ajax->getHistorico();
+        $rawdata = array('status' => 'OK', 'mensaje' => 'recuperado historico', 'data' => $respuesta);
         echo json_encode($rawdata);
 
         break;
