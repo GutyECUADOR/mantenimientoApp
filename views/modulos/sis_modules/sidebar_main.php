@@ -27,7 +27,7 @@
                 
                 <li title="Mantenimiento de Equipos">
                     <a href="#">
-                        <span class="menu_icon"><i class="material-icons">&#xE8C0;</i></span>
+                        <span class="menu_icon"><i class="material-icons">build</i></span>
                         <span class="menu_title">Mantenimientos</span>
                     </a>
                     <ul>

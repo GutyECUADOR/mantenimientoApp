@@ -17,7 +17,7 @@
     <div id="page_content">
         <div id="page_content_inner">
 
-            <h3 class="heading_b uk-margin-bottom">Mantenimientos del mes</h3>
+            <h3 class="heading_b uk-margin-bottom">Busqueda de equipos sin mentanimiento asignado</h3>
 
 
             <div class="md-card">
@@ -93,6 +93,7 @@
     <!-- altair common functions/helpers -->
     <script src="<?php echo ROOT_PATH; ?>assets/js/altair_admin_common.min.js"></script>
 
+
     <!-- page specific plugins -->
     <!-- jquery ui -->
     <script src="<?php echo ROOT_PATH; ?>assets/bower_components/jquery-ui/jquery-ui.min.js"></script>
@@ -102,7 +103,9 @@
     <!--  crud table functions -->
     <script src="<?php echo ROOT_PATH; ?>assets/js/pages/mantenimientosEQ.js"></script>
 
-     <!--  traduccion es crud table  -->
-     <script src="<?php echo ROOT_PATH; ?>assets/js/pages/jquery.jtable.es.js"></script>
+    <!--  traduccion es crud table  -->
+    <script src="<?php echo ROOT_PATH; ?>assets/js/pages/jquery.jtable.es.js"></script>
 
+    <!--  theme color functions -->
+    <script src="<?php echo ROOT_PATH; ?>assets/js/configTheme.js"></script>
 </body>

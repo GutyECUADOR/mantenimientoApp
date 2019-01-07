@@ -390,4 +390,7 @@
 <!-- scripts de la pagina -->
 <script src="<?php echo ROOT_PATH; ?>assets/js/pages/editMantenimiento.js"></script>
 
+<!--  theme color functions -->
+<script src="<?php echo ROOT_PATH; ?>assets/js/configTheme.js"></script>
+
 </body>

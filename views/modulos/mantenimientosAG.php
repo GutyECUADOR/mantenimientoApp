@@ -257,5 +257,7 @@
 <!-- Scripts de la página -->
 <script src="<?php echo ROOT_PATH; ?>assets/js/pages/mantenimientosAG.js"></script>
 
+<!--  theme color functions -->
+<script src="<?php echo ROOT_PATH; ?>assets/js/configTheme.js"></script>
 
 </body>

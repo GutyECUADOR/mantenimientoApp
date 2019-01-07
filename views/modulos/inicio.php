@@ -17,9 +17,7 @@
     <?php include 'sis_modules/secondary_sidebar.php'?>
     <!-- secondary sidebar end -->
 
-    <!-- secondary sidebar -->
-    <?php include 'sis_modules/style_switcher.php'?>
-    <!-- secondary sidebar end -->
+
 
     <!-- CONTENIDO DE LA SECCION -->    
     <div id="page_content">
@@ -59,10 +57,6 @@
 
     </div>
 
-    
-
-
-  
     <!-- google web fonts -->
     <script>
         WebFontConfig = {
@@ -91,8 +85,11 @@
     <!-- altair common functions/helpers -->
     <script src="<?php echo ROOT_PATH; ?>assets/js/altair_admin_common.min.js"></script>
 
-     <!--  dashbord functions -->
-     <script src="<?php echo ROOT_PATH; ?>assets/js/pages/dashboard.js"></script>
+    <!--  dashbord functions -->
+    <script src="<?php echo ROOT_PATH; ?>assets/js/pages/dashboard.js"></script>
+
+    <!--  theme color functions -->
+    <script src="<?php echo ROOT_PATH; ?>assets/js/configTheme.js"></script>
 
     <script>
         $(function() {
@@ -139,52 +136,7 @@
                 }
               }
               
-            });
-
-
-            var $switcher = $('#style_switcher'),
-                $switcher_toggle = $('#style_switcher_toggle'),
-                $theme_switcher = $('#theme_switcher'),
-               
-                $html = $('html'),
-                $body = $('body');
-
-
-            $switcher_toggle.click(function(e) {
-                e.preventDefault();
-                $switcher.toggleClass('switcher_active');
-            });
-
-            $theme_switcher.children('li').click(function(e) {
-                e.preventDefault();
-                var $this = $(this),
-                    this_theme = $this.attr('data-app-theme');
-
-                $theme_switcher.children('li').removeClass('active_theme');
-                $(this).addClass('active_theme');
-                $html
-                    .removeClass('app_theme_a app_theme_b app_theme_c app_theme_d app_theme_e app_theme_f app_theme_g app_theme_h app_theme_i app_theme_dark')
-                    .addClass(this_theme);
-
-                if(this_theme == '') {
-                    localStorage.removeItem('altair_theme');
-                    $('#kendoCSS').attr('href','bower_components/kendo-ui/styles/kendo.material.min.css');
-                } else {
-                    localStorage.setItem("altair_theme", this_theme);
-                    if(this_theme == 'app_theme_dark') {
-                        $('#kendoCSS').attr('href','bower_components/kendo-ui/styles/kendo.materialblack.min.css')
-                    } else {
-                        $('#kendoCSS').attr('href','bower_components/kendo-ui/styles/kendo.material.min.css');
-                    }
-                }
-
-            });
-
-            
-            // get theme from local storage
-            if(localStorage.getItem("altair_theme") !== null) {
-                $theme_switcher.children('li[data-app-theme='+localStorage.getItem("altair_theme")+']').click();
-            }
+            }); 
 
 
         });

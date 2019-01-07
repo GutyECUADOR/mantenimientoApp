@@ -38,7 +38,7 @@
                                 <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
                                 <div class="md-input-wrapper md-input-filled">
                                   <label for="uk_dp_start">Fecha Inicial</label>
-                                  <input class="md-input label-fixed" type="date" id="uk_dp_start" value="2018-12-26">
+                                  <input class="md-input label-fixed" type="date" id="uk_dp_start">
                                   <span class="md-input-bar"></span></div>
 
                             </div>
@@ -48,7 +48,7 @@
                                 <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
                                 <div class="md-input-wrapper md-input-filled">
                                   <label for="uk_dp_end">Fecha Final</label>
-                                  <input class="md-input label-fixed" type="date" id="uk_dp_end" value="2018-12-26">
+                                  <input class="md-input label-fixed" type="date" id="uk_dp_end">
                                   <span class="md-input-bar"></span></div>
 
                             </div>
@@ -66,9 +66,7 @@
                         </div>
 
                         <div class="uk-width-medium-2-10">
-                            <a 
-                                v-on:click="searchMant()"
-                                id="btn_search" class="md-btn md-btn-primary md-btn-wave-light md-btn-icon waves-effect waves-button waves-light md-btn-block">
+                            <a id="btn_search" class="md-btn md-btn-primary md-btn-wave-light md-btn-icon waves-effect waves-button waves-light md-btn-block">
                                 <i class="uk-icon-search"></i> Buscar
                             </a>
                         </div>
@@ -91,19 +89,10 @@
                                 <th class="uk-width-1-10 uk-text-center">Estado</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tbodyresults">
 
-                            <tr v-for="mantenimiento in mantenimientos">
-                                <td class="uk-text-center">.</td>
-                                <td class="uk-text-center">{{ mantenimiento.CodigoFac }}</td>
-                                <td class="uk-text-center">{{ mantenimiento.CodMNT }}</td>
-                                <td class="uk-text-center">{{ mantenimiento.Cliente }}</td>
-                                <td class="uk-text-center">{{ mantenimiento.CodProducto }}</td>
-                                <td class="uk-text-center">{{ mantenimiento.FechaINI }}</td>
-                                <td class="uk-text-center"> sin estado </td>
-                            </tr>
-                             
-                            <!-- <?php
+                        
+                          <?php
                                 if (is_array($arrayMantenimientos)) {
                                     $contador = 0;
                                 foreach ($arrayMantenimientos as $equipo) {
@@ -139,7 +128,7 @@
                                         ';
                                     }
                                     // FIN DEL IF
-                            ?>    -->
+                            ?> 
                                 
                             </tbody>
                         </table>
@@ -178,10 +167,9 @@
 <!-- altair common functions/helpers -->
 <script src="<?php echo ROOT_PATH; ?>assets/js/altair_admin_common.min.js"></script>
 
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
-
 <script src="<?php echo ROOT_PATH; ?>assets/js/pages/mantenimientosHistorico.js"></script>
 
+<!--  theme color functions -->
+<script src="<?php echo ROOT_PATH; ?>assets/js/configTheme.js"></script>
 
 </body>
