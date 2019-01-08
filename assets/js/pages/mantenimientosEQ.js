@@ -232,7 +232,7 @@ altair_crud_table = {
                 OrdenFisica: {
                     title: 'Orden de Trabajo (Fisica)',
                     list: false,
-                    edit: true,
+                    edit: false,
                     input: function(data) {
                         return '<input class="md-input" type="number" name="ordenTrabajo" placeholder="Ingrese el codigo sin 0 delante, ejem. 3050" required"/>';
                     }

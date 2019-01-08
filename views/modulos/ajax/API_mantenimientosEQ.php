@@ -101,7 +101,7 @@ class ajax{
         case 'update':
             $CodigoFac = trim($_POST['CodigoFac']);
             $CodProducto = trim($_POST['CodProducto']);
-            $OrdenTrabajo = trim($_POST['ordenTrabajo']);
+            $OrdenTrabajo = 0;
             $Comentario = trim($_POST['Comentario']);
             $CantitadProd = trim($_POST['CantitadProd']);
             $fechaINIup = trim($_POST['mantenimientoDate']);
