@@ -2,8 +2,8 @@
 
 class ajaxController  {
 
-    public $defaulDataBase = "SCKINSMAN_V7";
- 
+    public $defaulDataBase = "MODELO";
+  
     /* Devuelve array en el formato requerido para el plugin JTable */
     public function getAllEquiposSinMantenimiento($fechaInicio, $fechaFinal, $startIndex, $pageSize) {
 
@@ -265,18 +265,19 @@ class ajaxController  {
     }
 
     /* AJAX ESTADISTICAS - Get conteo de mantenimientos */
-    public function getCountMantenimientosController(){
+    public function getCountMantenimientosController($codEmpresa){
         $ajaxModel = new \models\ajaxModel();
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
-        $response = $ajaxModel->getCountMantenimientos();
+        $response = $ajaxModel->getCountMantenimientos($codEmpresa);
         return $response;
     }
 
     /* AJAX ESTADISTICAS - Get conteo de mantenimientos */
-    public function getHistoricoController(){
+    public function getHistoricoController($fechaINI, $fechaFIN, $codEmpresa, $tiposDocs){
         $ajaxModel = new \models\ajaxModel();
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
-        $response = $ajaxModel->getHistorico($dbEmpresa);
+       
+        $response = $ajaxModel->getHistorico($dbEmpresa, $fechaINI, $fechaFIN, $codEmpresa, $tiposDocs);
         return $response;
     }
     

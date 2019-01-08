@@ -11,12 +11,12 @@ class ajax{
       $this->ajaxController = new \controllers\ajaxController();
     }
 
-    public function getConteoMantenimientos() {
-        return $this->ajaxController->getCountMantenimientosController();
+    public function getConteoMantenimientos($codEmpresa) {
+        return $this->ajaxController->getCountMantenimientosController($codEmpresa);
     }
 
-    public function getHistorico() {
-      return $this->ajaxController->getHistoricoController();
+    public function getHistorico($fechaINI, $fechaFIN, $codEmpresa, $tiposDocs) {
+      return $this->ajaxController->getHistoricoController($fechaINI, $fechaFIN, $codEmpresa, $tiposDocs);
   }
 
 }
@@ -27,14 +27,19 @@ class ajax{
 
     switch ($HTTPaction) {
         case 'getConteoMantenimientos':
-        $respuesta = $ajax->getConteoMantenimientos();
+        $codEmpresa = $_SESSION["codEmpresaAUTH"];
+        $respuesta = $ajax->getConteoMantenimientos($codEmpresa);
         $rawdata = array('status' => 'OK', 'mensaje' => 'respuesta correcta', 'data' => $respuesta);
         echo json_encode($rawdata);
 
         break;
 
         case 'getHistorico':
-        $respuesta = $ajax->getHistorico();
+        $fechaINI = $_GET["fechaInicial"];
+        $fechaFIN = $_GET["fechaFinal"];
+        $tiposDocs = $_GET["tiposDocs"];
+        $codEmpresa = $_SESSION["codEmpresaAUTH"];
+        $respuesta = $ajax->getHistorico($fechaINI, $fechaFIN, $codEmpresa, $tiposDocs);
         $rawdata = array('status' => 'OK', 'mensaje' => 'recuperado historico', 'data' => $respuesta);
         echo json_encode($rawdata);
 

@@ -529,14 +529,14 @@ class ajaxModel  {
     /*
        - Realiza conteo de mantenimientos pendientes 
     */
-    public function getCountMantenimientos($dataBaseName='KAO_wssp') {
+    public function getCountMantenimientos($codEmpresa, $dataBaseName='KAO_wssp') {
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX();
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
             SELECT 
-                MantPendientes = (SELECT COUNT (*) FROM dbo.mantenimientosEQ WHERE codEmpresa = '004' AND estado = 0),
-                PorcentMantFinalizados = (SELECT COUNT( * ) FROM dbo.mantenimientosEQ  WHERE estado != 0) * 100 / (SELECT COUNT( * ) FROM dbo.mantenimientosEQ) 
+                MantPendientes = (SELECT COUNT (*) FROM dbo.mantenimientosEQ WHERE codEmpresa = '$codEmpresa' AND estado = 0),
+                PorcentMantFinalizados = (SELECT COUNT( * ) FROM dbo.mantenimientosEQ  WHERE estado != 0 AND codEmpresa = '$codEmpresa') * 100 / (SELECT COUNT( * ) FROM dbo.mantenimientosEQ WHERE codEmpresa = '$codEmpresa') 
         
         ";  // Final del Query SQL 
 
@@ -564,9 +564,11 @@ class ajaxModel  {
     /*
        - Retorna todos los mantenimientos de la tabla 
     */
-    public function getHistorico($dataBaseName='KAO_wssp') {
+    public function getHistorico($dataBaseName='KAO_wssp', $fechaINI, $fechaFIN, $codEmpresa, $tiposDocs) {
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX();
+        
+        $tiposDOC = $this->getFiltroTiposDoc($tiposDocs);
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
             SELECT 
@@ -583,8 +585,10 @@ class ajaxModel  {
                 INNER JOIN KAO_wssp.dbo.mantenimientosEQ as Mant ON Mant.codFactura COLLATE Modern_Spanish_CI_AS = Compra.ID
                 INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE = Cliente.CODIGO 
                 
-                WHERE codEmpresa = '004'
-            
+            WHERE 
+                codEmpresa = '$codEmpresa'
+                AND Mant.fechaInicio BETWEEN '$fechaINI' AND '$fechaFIN'
+                ".$tiposDOC."
             ORDER BY CodMNT ASC
         ";  // Final del Query SQL 
 
@@ -606,6 +610,25 @@ class ajaxModel  {
         return $resulset;  
 
    
+    }
+
+    private function getFiltroTiposDoc($tipoDOC){
+        switch ($tipoDOC) {
+            case 'ALL':
+                return 'AND Mant.estado IN(0,1,2,3)';
+                break;
+            case 'PND':
+                return 'AND Mant.estado IN(0)';
+                break;
+
+            case 'ANUL':
+                return 'AND Mant.estado IN(2,3)';
+                break;    
+            
+            default:
+                return 'AND Mant.estado IN(0,1,2,3)';
+                break;
+        }
     }
 }
 

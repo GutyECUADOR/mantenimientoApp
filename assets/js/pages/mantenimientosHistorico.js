@@ -13,7 +13,7 @@ $(function() {
     
         let fechaInicial = $('#uk_dp_start').val();
         let fechaFinal = $('#uk_dp_end').val();
-
+        let tiposDocs = $('#select_tiposDoc').val();
         /* Comprobacion de parametros no sean nullos y asignacion de valores si lo son*/
         if (fechaInicial == null || fechaInicial == "" || fechaFinal == null || fechaFinal == "") {
             fechaInicial = new Date().toISOString().slice(0, 10);
@@ -23,13 +23,15 @@ $(function() {
 
         console.log(fechaInicial);
         console.log(fechaFinal);
+        console.log(tiposDocs);
    
     $.ajax({
         url: 'views/modulos/ajax/API_estadisticas.php?action=getHistorico',
         method: 'GET',
-        data: { fechaInicial: fechaInicial, fechaFinal:fechaFinal },
+        data: { fechaInicial: fechaInicial, fechaFinal:fechaFinal, tiposDocs:tiposDocs },
 
         success: function (response) {
+            //console.log(response);
             altair_form_adv.displayData(response);
             
         }, error: function (error) {
@@ -85,18 +87,19 @@ altair_form_adv = {
         console.log(rows);
 
         $('#tbodyresults').html('');
-        
+        let contador = 0;
         rows.forEach(row => {
-            console.log(row);
+            contador++;
+            let codEstado = (parseInt(row.Estado));
             let rowHTML = `
             <tr class="">
-                <td class="uk-text-center"> ${row.TipoMant} </td>
+                <td class="uk-text-center"> ${ contador } </td>
                 <td class="uk-text-center"> ${row.CodigoFac} </td>
                 <td class="uk-text-center"> ${row.CodMNT} </td>
                 <td class="uk-text-center"> ${row.Cliente} </td>
                 <td class="uk-text-center"> ${row.CodProducto} </td>
                 <td class="uk-text-center"> ${row.FechaINI} </td>
-                <td class="uk-text-center"> ${row.Estado} </td>
+                <td class="uk-text-center"> <span class="uk-badge ${ altair_form_adv.getColorBadge(codEstado) }"> ${ altair_form_adv.getDescStatus(codEstado) } </span></td>
             </tr>
                     `;
 
@@ -104,6 +107,58 @@ altair_form_adv = {
 
         });
 
+    },
+    getColorBadge: function ($codigo) {
+        
+        switch ($codigo) {
+            case 0:
+            return 'uk-badge-primary';
+            break;
+            
+            case 1:
+            return 'uk-badge-success';
+            break;
+
+            case 2:
+            return 'uk-badge-danger';
+            break;
+            
+            case 3:
+            return 'uk-badge-warning';
+            break;
+
+            default:
+            return '';
+            
+            break;
+        }
+       
+    },
+    getDescStatus: function ($codigo) {
+        
+        switch ($codigo) {
+            case 0:
+            return 'Pendiente';
+            break;
+            
+            case 1:
+            return 'Finalizada';
+            break;
+
+            case 2:
+            return 'Anulada';
+            break;
+            
+            case 3:
+            return 'Omitida';
+            break;
+
+            default:
+            return 'No difinida';
+            
+            break;
+        }
+       
     }
 
 } 

@@ -1,0 +1,20 @@
+User: ::1 - January 8, 2019, 12:20 pm
+PCid: DELLPROGRA15
+Detail: Correo ha sido enviado.
+-------------------------
+User: ::1 - January 8, 2019, 12:22 pm
+PCid: DELLPROGRA15
+Detail: Correo ha sido enviado a : gutiecuador@gmail.com
+-------------------------
+User: ::1 - January 8, 2019, 12:27 pm
+PCid: DELLPROGRA15
+Detail: Correo ha sido enviado a : gutiecuador@gmail.com
+-------------------------
+User: ::1 - January 8, 2019, 12:45 pm
+PCid: DELLPROGRA15
+Detail: Correo ha sido enviado a : gutiecuador@gmail.com
+-------------------------
+User: ::1 - January 8, 2019, 12:46 pm
+PCid: DELLPROGRA15
+Detail: Correo ha sido enviado a : gutiecuador@gmail.com
+-------------------------

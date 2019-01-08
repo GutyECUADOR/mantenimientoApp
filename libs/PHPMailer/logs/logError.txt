@@ -1,0 +1,12 @@
+User: ::1 - January 8, 2019, 12:19 pm
+PCid: DELLPROGRA15
+Detail: SMTP Error: Could not authenticate.
+-------------------------
+User: ::1 - January 8, 2019, 12:20 pm
+PCid: DELLPROGRA15
+Detail: SMTP Error: Could not authenticate.
+-------------------------
+User: ::1 - January 8, 2019, 12:27 pm
+PCid: DELLPROGRA15
+Detail: SMTP Error: Could not authenticate.no se pudo enviar correo a: gutiecuador@gmail.com
+-------------------------

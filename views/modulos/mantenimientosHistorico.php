@@ -38,7 +38,7 @@
                                 <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
                                 <div class="md-input-wrapper md-input-filled">
                                   <label for="uk_dp_start">Fecha Inicial</label>
-                                  <input class="md-input label-fixed" type="date" id="uk_dp_start">
+                                  <input class="md-input label-fixed" type="date" id="uk_dp_start" value="<?php echo date("Y-m-d")?>">
                                   <span class="md-input-bar"></span></div>
 
                             </div>
@@ -48,7 +48,7 @@
                                 <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
                                 <div class="md-input-wrapper md-input-filled">
                                   <label for="uk_dp_end">Fecha Final</label>
-                                  <input class="md-input label-fixed" type="date" id="uk_dp_end">
+                                  <input class="md-input label-fixed" type="date" id="uk_dp_end" value="<?php echo date("Y-m-d")?>">
                                   <span class="md-input-bar"></span></div>
 
                             </div>
@@ -57,7 +57,7 @@
                         <div class="uk-width-medium-2-10">
                             <div class="md-input-wrapper md-input-filled">
                                 <label>Tipos</label>
-                                <select id="select_demo_4" data-md-selectize>
+                                <select id="select_tiposDoc" data-md-selectize>
                                         <option value="ALL">Todos</option>
                                         <option value="PND">Pendientes</option>
                                         <option value="ANUL">Aulados/Omitidos</option>
