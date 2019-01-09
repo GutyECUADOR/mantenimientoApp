@@ -90,6 +90,9 @@ class ajaxModel  {
         $arraycodigo = $sth->fetch();
         $newCod = $arraycodigo[0]; // Codgigo MNT obtenido por SP
 
+       /*  $usuarioActivo = trim('9999999999'); //Cedula del usuario logeado
+        $codEmpresa =  trim('004'); //Codigo de la empresa seleccionada en login */
+
         $usuarioActivo = trim($_SESSION["usuarioRUC"]); //Cedula del usuario logeado
         $codEmpresa =  trim($_SESSION["codEmpresaAUTH"]); //Codigo de la empresa seleccionada en login
 
@@ -111,12 +114,15 @@ class ajaxModel  {
             ('$newCod','$TipoMantenimiento','$OrdenTrabajo','$codFactura','$codProducto','$codEmpresa','$fechaHoraINI','$fechaHoraFIN',$CantitadProd,'$Comentario','$Tecnico',0);
         ";
 
-        $stmt = $this->db->prepare($query); 
-        if($stmt->execute()){
-            return true;
-        }else{
-            return false;
+        try{
+            $stmt = $this->db->prepare($query); 
+            $stmt->execute();
+            return array('status' => 'ok', 'mensaje' => 'Agregado registro a WSSP mantenimientos' ); 
+            
+        }catch(PDOException $exception){
+            return array('status' => 'error', 'mensaje' => $exception->getMessage() );
         }
+
         
     }
    

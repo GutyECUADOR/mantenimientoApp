@@ -1,0 +1,12 @@
+User: ::1 - January 9, 2019, 10:33 am
+PCid: DELLPROGRA15
+Detail: Message body empty No se pudo enviar correo a: gutiecuador@gmail.com
+-------------------------
+User: ::1 - January 9, 2019, 10:33 am
+PCid: DELLPROGRA15
+Detail: Message body empty No se pudo enviar correo a: gutiecuador@gmail.com
+-------------------------
+User: ::1 - January 9, 2019, 12:18 pm
+PCid: DELLPROGRA15
+Detail: Invalid address:  (to): @hotmail.com No se pudo enviar correo a: @hotmail.com
+-------------------------

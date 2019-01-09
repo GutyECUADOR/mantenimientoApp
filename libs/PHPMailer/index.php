@@ -42,7 +42,7 @@ try {
     $mail->CharSet = "UTF-8";
     $mail->isHTML(true);                                  // Set email format to HTML
     $mail->Subject = 'KAO Sport - Mantenimiento de Equipos';
-    $mail->Body    = file_get_contents('card_mantenimiento.html');
+    $mail->Body    = 'test desde controller'; //file_get_contents('card_mantenimiento.html');
   
     $mail->send();
     $detalleMail = 'Correo ha sido enviado a : '. $correoCliente;

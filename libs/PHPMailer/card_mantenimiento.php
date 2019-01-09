@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -66,7 +66,7 @@
                                                 <div>Se le ha agendado un nuevo mantenimiento<br><a style="font-family:Roboto-Regular,Helvetica,Arial,sans-serif;color:rgba(0,0,0,0.87);font-size:16px;line-height:1.8">#MNT000001</a></div>
                                             </div>
                                             <div style="font-family:Roboto-Regular,Helvetica,Arial,sans-serif;font-size:13px;color:rgba(0,0,0,0.87);line-height:1.6;padding-left:20px;padding-right:20px;padding-bottom:32px;padding-top:24px">
-                                                <div>La solicitud de mantenimiento Nº MNT00001 ha sido agendada correctamente para el dia 2019-01-01 , el tecnico asignado se contactara con usted el dia del mantenimiento, muchas gracias.
+                                                <div>La solicitud de mantenimiento ha sido agendada correctamente, el tecnico asignado se contactara con usted el dia del mantenimiento, muchas gracias.
                                                     <div style="padding-top:24px;text-align:center">
                                                         <a target="_blank" style="display:inline-block;text-decoration:none" href="">
                                                             

@@ -1,5 +1,8 @@
 <?php namespace controllers;
 
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+
 class ajaxController  {
 
     public $defaulDataBase = "MODELO";
@@ -50,11 +53,100 @@ class ajaxController  {
         return $arrayUTF8;
     }
 
+    /* Envia correo por PHPMailer */
+    public function sendEmail($email){
+       
+        //$correoCliente = 'gutiecuador@gmail.com';
+        $correoCliente = $email;
+
+
+        $mail = new PHPMailer(true);  // Passing `true` enables exceptions
+        try {
+            //Server settings
+            $mail->SMTPDebug = false;                                 // Enable verbose debug output 0->off 2->debug
+            $mail->isSMTP();                                      // Set mailer to use SMTP
+            $mail->Host = 'smtp-mail.outlook.com';  // Specify main and backup SMTP servers
+            $mail->SMTPAuth = true;                               // Enable SMTP authentication
+            $mail->Username = 'guti06@hotmail.es';                 // SMTP username
+            $mail->Password = 'adminguty2018';                           // SMTP password
+            $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+            $mail->Port = 587;                                    // TCP port to connect to
+
+            //Recipients
+            $mail->setFrom('guti06@hotmail.es', 'Administrador KAO');
+            $mail->addAddress($correoCliente, 'Cliente KAO');     // Add a recipient
+            $mail->addAddress('soporteweb@sudcompu.net', 'Sistemas');
+           
+            //Content
+            $mail->CharSet = "UTF-8";
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->Subject = 'KAO Sport - Mantenimiento de Equipos';
+            $mail->Body    = file_get_contents('../../../libs/PHPMailer/card_mantenimiento.php');
+        
+            $mail->send();
+            $detalleMail = 'Correo ha sido enviado a : '. $correoCliente;
+           
+            $pcID = php_uname('n'); // Obtiene el nombre del PC
+
+
+            function getIP(){
+                if( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] )) $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+                else if( isset( $_SERVER ['HTTP_VIA'] ))  $ip = $_SERVER['HTTP_VIA'];
+                else if( isset( $_SERVER ['REMOTE_ADDR'] ))  $ip = $_SERVER['REMOTE_ADDR'];
+                else $ip = null ;
+                return $ip;
+            }
+
+            $ip = getIP();
+
+                $log  = "User: ".$ip.' - '.date("F j, Y, g:i a").PHP_EOL.
+                "PCid: ".$pcID.PHP_EOL.
+                "Detail: ".$detalleMail.PHP_EOL.
+                "-------------------------".PHP_EOL;
+                //Save string to log, use FILE_APPEND to append.
+
+                file_put_contents('../../../logs/logOK.txt', $log, FILE_APPEND );
+            
+            return array('status' => 'ok', 'mensaje' => $detalleMail ); 
+
+        } catch (Exception $e) {
+
+            function getIP(){
+                if( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] )) $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+                else if( isset( $_SERVER ['HTTP_VIA'] ))  $ip = $_SERVER['HTTP_VIA'];
+                else if( isset( $_SERVER ['REMOTE_ADDR'] ))  $ip = $_SERVER['REMOTE_ADDR'];
+                else $ip = null ;
+                return $ip;
+            }
+
+            $ip = getIP();
+
+                $pcID = php_uname('n'); // Obtiene el nombre del PC
+                $log  = "User: ".$ip.' - '.date("F j, Y, g:i a").PHP_EOL.
+                "PCid: ".$pcID.PHP_EOL.
+                "Detail: ".$mail->ErrorInfo .' No se pudo enviar correo a: ' . $correoCliente . PHP_EOL.
+                "-------------------------".PHP_EOL;
+                //Save string to log, use FILE_APPEND to append.
+                file_put_contents('../../../logs/logMailError.txt', $log, FILE_APPEND);
+                $detalleMail = 'Error al enviar el correo. Mailer Error: '. $mail->ErrorInfo;
+                return array('status' => 'false', 'mensaje' => $detalleMail ); 
+            
+        }
+
+    }
+
     /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
     public function agendarMantenimiento($data){
         $ajaxModel = new \models\ajaxModel();
         $response = $ajaxModel->insertNewMantenimiento($data);
-        return $response;
+        $mailCliente = trim($data['Email']);
+        $statusOK = $response['status']; // Comprobamos que la respuesta desde el modelo de OK
+        $statusMail = null;
+        if ($statusOK == 'ok' && !empty($mailCliente)) {
+            $statusMail = $this->sendEmail($mailCliente);
+        }
+        
+        return array('status' => 'ok', 'mensaje' => 'Registro exitoso.', 'email' => $statusMail);
     }
 
     /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/

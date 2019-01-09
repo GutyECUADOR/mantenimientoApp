@@ -1,6 +1,9 @@
 <?php
 date_default_timezone_set('America/Lima');
 session_start();
+require_once '../../../libs/PHPMailer/src/Exception.php';
+require_once '../../../libs/PHPMailer/src/PHPMailer.php';
+require_once '../../../libs/PHPMailer/src/SMTP.php';
 require_once '../../../core/controllers/ajaxController.php';
 require_once '../../../core/models/ajaxModel.php';
 require_once '../../../core/models/MantenimientosClass.php';
@@ -59,6 +62,10 @@ class ajax{
       return $this->ajaxController->isValidOrdenFisica($formData);
     }
 
+    public function sendEmail(){
+        return $this->ajaxController->sendEmail();
+      }
+
 }
 
   try{
@@ -109,6 +116,7 @@ class ajax{
             $horaFin = trim($_POST['mantenimientoTimeFIN']);
             $TipoMantenimiento = trim($_POST['TipoMantenimiento']);
             $Tecnico = trim($_POST['Tecnico']);
+            $Email = trim($_POST['Email']);
 
             // Combinacion de fecha y hora para registro en DB
             $fechaHoraINI = date('Ymd H:i:s', strtotime("$fechaINIup $horaInicio"));
@@ -124,7 +132,8 @@ class ajax{
                 'fechaHoraINI' => $fechaHoraINI,
                 'fechaHoraFIN' => $fechaHoraFIN,
                 'TipoMantenimiento' => $TipoMantenimiento,
-                'Tecnico' => $Tecnico
+                'Tecnico' => $Tecnico,
+                'Email' => $Email,
             );
 
             $respuesta = $ajax->updateAction($data);
@@ -307,9 +316,14 @@ class ajax{
             break;
 
         case 'test':
-            $rawdata = array('status' => 'OK', 'Mensaje' => 'respuesta correcta');
-            echo json_encode($rawdata);
 
+            $respuesta = $ajax->sendEmail();
+            
+            //Return result to jTable
+            $jTableResult = array();
+            $jTableResult['Result'] = "OK";
+            $jTableResult['registroAgregado'] = $respuesta;
+            echo json_encode($jTableResult);
             break;
 
         default:

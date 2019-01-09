@@ -20,11 +20,6 @@
       <?php include 'sis_modules/sidebar_main.php'?>
     <!-- main sidebar end -->
 
-    <!-- secondary sidebar -->
-    <?php include 'sis_modules/secondary_sidebar.php'?>
-    <!-- secondary sidebar end -->
-
-
     <!-- CONTENIDO DE LA SECCION -->    
     <div id="page_content">
         <div id="page_content_inner">

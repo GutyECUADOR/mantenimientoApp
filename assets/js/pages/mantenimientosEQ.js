@@ -119,9 +119,14 @@ altair_crud_table = {
             },
             recordUpdated: function(event, data) {
                 console.log(data);
-                setTimeout(() => {
+                let registroinfo = data.serverResponse.registroAgregado.mensaje
+                let mailinfo = data.serverResponse.registroAgregado.email.mensaje;
+                console.log(mailinfo);
+
+                UIkit.modal.alert(registroinfo + '\n'+ mailinfo, {center: true, labels: {'Ok': 'Ok'}}).on('hide.uk.modal', function() {
                     $('#students_crud').jtable('reload');
-                }, 3000);
+                });
+
 
             },
             recordDeleted: function(event, data) {
@@ -221,7 +226,7 @@ altair_crud_table = {
                 Email: {
                     title: 'Correo',
                     width: '10%',
-                    edit: false
+                    edit: true
                 },
                 TipoMantenimiento: {
                     title: 'Tipo de Mantenimiento',

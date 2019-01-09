@@ -3,6 +3,9 @@
     @ob_start();
     session_start();
     require_once './config/global.php';
+    require_once './libs/PHPMailer/src/Exception.php';
+    require_once './libs/PHPMailer/src/PHPMailer.php';
+    require_once './libs/PHPMailer/src/SMTP.php';
     require_once './core/models/conexion.php';
     require_once './core/controllers/mainController.php';
     require_once './core/models/mainModel.php';
@@ -12,7 +15,7 @@
     require_once './core/models/ajaxModel.php';
     require_once './core/models/MantenimientosClass.php';
     require_once './core/models/venCabClass.php';
-     require_once './core/models/venMovClass.php';
+    require_once './core/models/venMovClass.php';
     
     /* TEST Conexion */    
     /* require_once './core/models/conexion.php';
@@ -38,8 +41,8 @@
     var_dump($newCodigo);*/ 
 
     /* TEST AjaxController */ 
-   /*  $ajax = new controllers\ajaxController();
-    var_dump($ajax->getAllEquiposSinMantenimiento('2017-10-10','2017-10-10',1,10)); */
+    /* $ajax = new controllers\ajaxController();
+    var_dump($ajax->sendEmail('gutiecuador@gmail.com')); */
     
 
      /* TEST MantenimientosClass */ 
