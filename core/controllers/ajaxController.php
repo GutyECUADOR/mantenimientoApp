@@ -54,7 +54,8 @@ class ajaxController  {
     }
 
     /* Envia correo por PHPMailer */
-    public function sendEmail($email){
+    /* ATECION LOS DATOS DE CUERPO Y LOGS DEBEN NO DEBEN SER MODIFICADOS ESTAS DIRECCIONADOS PARA AJAX */
+    public function sendEmail($email, $codMNT){
        
         //$correoCliente = 'gutiecuador@gmail.com';
         $correoCliente = $email;
@@ -80,7 +81,7 @@ class ajaxController  {
             //Content
             $mail->CharSet = "UTF-8";
             $mail->isHTML(true);                                  // Set email format to HTML
-            $mail->Subject = 'KAO Sport - Mantenimiento de Equipos';
+            $mail->Subject = 'KAO Sport - Mantenimiento de Equipos - ' . $codMNT;
             $mail->Body    = file_get_contents('../../../libs/PHPMailer/card_mantenimiento.php');
         
             $mail->send();
@@ -105,7 +106,7 @@ class ajaxController  {
                 "-------------------------".PHP_EOL;
                 //Save string to log, use FILE_APPEND to append.
 
-                file_put_contents('../../../logs/logOK.txt', $log, FILE_APPEND );
+                file_put_contents('../../../logs/logMailOK.txt', $log, FILE_APPEND );
             
             return array('status' => 'ok', 'mensaje' => $detalleMail ); 
 
@@ -140,13 +141,14 @@ class ajaxController  {
         $ajaxModel = new \models\ajaxModel();
         $response = $ajaxModel->insertNewMantenimiento($data);
         $mailCliente = trim($data['Email']);
+        $newCod = $response['newCod']; 
         $statusOK = $response['status']; // Comprobamos que la respuesta desde el modelo de OK
-        $statusMail = null;
+        $statusMail = array('status' => 'ok', 'mensaje' => 'No se definio correo' );
         if ($statusOK == 'ok' && !empty($mailCliente)) {
-            $statusMail = $this->sendEmail($mailCliente);
+            $statusMail = $this->sendEmail($mailCliente, $newCod);
         }
         
-        return array('status' => 'ok', 'mensaje' => 'Registro exitoso.', 'email' => $statusMail);
+        return array('status' => 'ok', 'mensaje' => 'Registro exitoso, codigo de mantenimiento: '. $newCod.'. ', 'email' => $statusMail);
     }
 
     /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/

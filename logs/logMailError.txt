@@ -10,3 +10,27 @@ User: ::1 - January 9, 2019, 12:18 pm
 PCid: DELLPROGRA15
 Detail: Invalid address:  (to): @hotmail.com No se pudo enviar correo a: @hotmail.com
 -------------------------
+User: ::1 - January 9, 2019, 12:29 pm
+PCid: DELLPROGRA15
+Detail: SMTP Error: Could not authenticate. No se pudo enviar correo a: gutiecuador@gmail.com
+-------------------------
+User: ::1 - January 9, 2019, 12:59 pm
+PCid: DELLPROGRA15
+Detail: Invalid address:  (to): +593999887479 No se pudo enviar correo a: +593999887479
+-------------------------
+User: ::1 - January 9, 2019, 1:16 pm
+PCid: DELLPROGRA15
+Detail: Message body empty No se pudo enviar correo a: gutiecuador@gmail.com
+-------------------------
+User: ::1 - January 9, 2019, 1:17 pm
+PCid: DELLPROGRA15
+Detail: Invalid address:  (to):  No se pudo enviar correo a: 
+-------------------------
+User: ::1 - January 9, 2019, 1:19 pm
+PCid: DELLPROGRA15
+Detail: Invalid address:  (to):  No se pudo enviar correo a: 
+-------------------------
+User: ::1 - January 9, 2019, 1:20 pm
+PCid: DELLPROGRA15
+Detail: Message body empty No se pudo enviar correo a: gutiecuador@gmail.com
+-------------------------

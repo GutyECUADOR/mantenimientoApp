@@ -117,7 +117,7 @@ class ajaxModel  {
         try{
             $stmt = $this->db->prepare($query); 
             $stmt->execute();
-            return array('status' => 'ok', 'mensaje' => 'Agregado registro a WSSP mantenimientos' ); 
+            return array('status' => 'ok', 'mensaje' => 'Agregado registro a WSSP mantenimientos'.$newCod , 'newCod' => $newCod ); 
             
         }catch(PDOException $exception){
             return array('status' => 'error', 'mensaje' => $exception->getMessage() );

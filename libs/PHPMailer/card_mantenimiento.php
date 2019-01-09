@@ -1,3 +1,8 @@
+<?php
+$codMNT = $_GET['codMNT'];
+//$data = $_GET['data'];
+?>
+
 <html lang="es">
 
 <head>
@@ -63,7 +68,7 @@
                                         </td>
                                         <td>
                                             <div style="font-family:Roboto-Regular,Helvetica,Arial,sans-serif;padding-left:20px;padding-right:20px;border-bottom:thin solid #f0f0f0;color:rgba(0,0,0,0.87);font-size:24px;padding-bottom:38px;padding-top:40px;text-align:center;word-break:break-word">
-                                                <div>Se le ha agendado un nuevo mantenimiento<br><a style="font-family:Roboto-Regular,Helvetica,Arial,sans-serif;color:rgba(0,0,0,0.87);font-size:16px;line-height:1.8">#MNT000001</a></div>
+                                                <div>Se le ha agendado un nuevo mantenimiento<br><a style="font-family:Roboto-Regular,Helvetica,Arial,sans-serif;color:rgba(0,0,0,0.87);font-size:16px;line-height:1.8"># <?php echo $codMNT?></a></div>
                                             </div>
                                             <div style="font-family:Roboto-Regular,Helvetica,Arial,sans-serif;font-size:13px;color:rgba(0,0,0,0.87);line-height:1.6;padding-left:20px;padding-right:20px;padding-bottom:32px;padding-top:24px">
                                                 <div>La solicitud de mantenimiento ha sido agendada correctamente, el tecnico asignado se contactara con usted el dia del mantenimiento, muchas gracias.

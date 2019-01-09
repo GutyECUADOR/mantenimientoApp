@@ -62,8 +62,8 @@ class ajax{
       return $this->ajaxController->isValidOrdenFisica($formData);
     }
 
-    public function sendEmail(){
-        return $this->ajaxController->sendEmail();
+    public function sendEmail($mail, $data){
+        return $this->ajaxController->sendEmail($mail, $data);
       }
 
 }
@@ -317,7 +317,7 @@ class ajax{
 
         case 'test':
 
-            $respuesta = $ajax->sendEmail();
+            $respuesta = $ajax->sendEmail('gutiecuador@gmail.com','MNT0005656');
             
             //Return result to jTable
             $jTableResult = array();
