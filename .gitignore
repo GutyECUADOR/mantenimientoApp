@@ -1,2 +1,3 @@
 logs/
 conexion.php
+core/models/conexion.php
