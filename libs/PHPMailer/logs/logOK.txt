@@ -18,3 +18,19 @@ User: ::1 - January 8, 2019, 12:46 pm
 PCid: DELLPROGRA15
 Detail: Correo ha sido enviado a : gutiecuador@gmail.com
 -------------------------
+User: ::1 - January 15, 2019, 10:43 am
+PCid: S06-BI
+Detail: Correo ha sido enviado a : gutiecuador@gmail.com
+-------------------------
+User: ::1 - January 15, 2019, 10:45 am
+PCid: S06-BI
+Detail: Correo ha sido enviado a : monicachiluiza@kaosportcenter.com
+-------------------------
+User: ::1 - January 15, 2019, 10:47 am
+PCid: S06-BI
+Detail: Correo ha sido enviado a : monicachiluiza@kaosportcenter.com
+-------------------------
+User: ::1 - January 15, 2019, 11:04 am
+PCid: S06-BI
+Detail: Correo ha sido enviado a : monicachiluiza@kaosportcenter.com
+-------------------------

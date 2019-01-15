@@ -31,7 +31,7 @@ $(function() {
         data: { fechaInicial: fechaInicial, fechaFinal:fechaFinal, tiposDocs:tiposDocs },
 
         success: function (response) {
-            //console.log(response);
+            console.log(response);
             altair_form_adv.displayData(response);
             
         }, error: function (error) {

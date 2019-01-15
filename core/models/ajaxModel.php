@@ -213,8 +213,8 @@ class ajaxModel  {
 
         $codFactura = $data['CodigoFac'];
         $codProducto = $data['CodProducto'];
-        $fechaHoraINI = date('Ynd');
-        $fechaHoraFIN =  date('Ynd');
+        $fechaHoraINI = date('Ymd');
+        $fechaHoraFIN =  date('Ymd');
 
         $query = "
         INSERT INTO 

@@ -76,7 +76,7 @@
                             <thead>
                             <tr>
                                 <th class="uk-width-1-10 uk-text-center">#</th>
-                                <th class="uk-width-2-10 uk-text-center">ID Facrura</th>
+                                <th class="uk-width-2-10 uk-text-center">ID Factura</th>
                                 <th class="uk-width-1-10 uk-text-center">ID Mant.</th>
                                 <th class="uk-width-2-10 uk-text-center">Cliente</th>
                                 <th class="uk-width-1-10 uk-text-center">Equipo</th>

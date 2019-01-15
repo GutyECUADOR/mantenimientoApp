@@ -11,22 +11,22 @@ require './src/SMTP.php';
 
 //Load Composer's autoloader
 //require 'vendor/autoload.php';
-$correoCliente = 'gutiecuador@gmail.com';
+$correoCliente = 'monicachiluiza@kaosportcenter.com';
 
 $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
 try {
     //Server settings
     $mail->SMTPDebug = false;                                 // Enable verbose debug output 0->off 2->debug
     $mail->isSMTP();                                      // Set mailer to use SMTP
-    $mail->Host = 'smtp-mail.outlook.com';  // Specify main and backup SMTP servers
+    $mail->Host = 'mail.sudcompu.net';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'guti06@hotmail.es';                 // SMTP username
-    $mail->Password = 'adminguty2018';                           // SMTP password
+    $mail->Username = 'soporteweb@sudcompu.net';                 // SMTP username
+    $mail->Password = '641429soporte';                           // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-    $mail->Port = 587;                                    // TCP port to connect to
+    $mail->Port = 25;                                    // TCP port to connect to
 
     //Recipients
-    $mail->setFrom('guti06@hotmail.es', 'Administrador KAO');
+    $mail->setFrom('mantenimiento@kaosportcenter.com', 'Administrador KAO');
     $mail->addAddress($correoCliente, 'Cliente KAO');     // Add a recipient
     $mail->addAddress('soporteweb@sudcompu.net', 'Sistemas');
     /* $mail->addAddress('ellen@example.com');               // Name is optional
@@ -42,7 +42,7 @@ try {
     $mail->CharSet = "UTF-8";
     $mail->isHTML(true);                                  // Set email format to HTML
     $mail->Subject = 'KAO Sport - Mantenimiento de Equipos';
-    $mail->Body    = 'test desde controller'; //file_get_contents('card_mantenimiento.html');
+    $mail->Body    = file_get_contents('card_mantenimiento.php');
   
     $mail->send();
     $detalleMail = 'Correo ha sido enviado a : '. $correoCliente;

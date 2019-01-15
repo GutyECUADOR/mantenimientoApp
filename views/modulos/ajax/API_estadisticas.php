@@ -38,9 +38,17 @@ class ajax{
         $fechaINI = $_GET["fechaInicial"];
         $fechaFIN = $_GET["fechaFinal"];
         $tiposDocs = $_GET["tiposDocs"];
+
+        $fechaFormatINI = date('Ymd', strtotime($fechaINI));
+        $fechaFormatFIN = date('Ymd', strtotime($fechaFIN));
+
         $codEmpresa = $_SESSION["codEmpresaAUTH"];
-        $respuesta = $ajax->getHistorico($fechaINI, $fechaFIN, $codEmpresa, $tiposDocs);
-        $rawdata = array('status' => 'OK', 'mensaje' => 'recuperado historico', 'data' => $respuesta);
+        $respuesta = $ajax->getHistorico($fechaFormatINI, $fechaFormatFIN, $codEmpresa, $tiposDocs);
+        $rawdata = array('status' => 'OK', 
+                        'mensaje' => $fechaFormatINI, 
+                        'horaINI' => 'recuperado historico', 
+                        'data' => $respuesta
+                      );
         echo json_encode($rawdata);
 
         break;
