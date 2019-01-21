@@ -382,7 +382,7 @@ class ajaxModel  {
         $codOrdenFisica = $formData->product_ordenFisica;
      
         $query = "
-            INSERT INTO mov_mantenimientosEQ VALUES ('$codMNT','$codVENCAB');
+            INSERT INTO mov_mantenimientosEQ VALUES ('$codMNT','$codVENCAB','$codEmpresa');
         ";
 
         
