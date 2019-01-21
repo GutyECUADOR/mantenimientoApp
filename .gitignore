@@ -1,3 +1,4 @@
 logs/
 conexion.php
 core/models/conexion.php
+logs/logMailError.txt

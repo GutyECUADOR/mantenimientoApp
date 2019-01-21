@@ -78,9 +78,11 @@
                                 <th class="uk-width-1-10 uk-text-center">#</th>
                                 <th class="uk-width-2-10 uk-text-center">ID Factura</th>
                                 <th class="uk-width-1-10 uk-text-center">ID Mant.</th>
+                                <th class="uk-width-1-10 uk-text-center">Mant Fisico.</th>
                                 <th class="uk-width-2-10 uk-text-center">Cliente</th>
                                 <th class="uk-width-1-10 uk-text-center">Equipo</th>
                                 <th class="uk-width-1-10 uk-text-center">Fecha Programada</th>
+                                <th class="uk-width-1-10 uk-text-center">Num Rel.</th>
                                 <th class="uk-width-1-10 uk-text-center">Estado</th>
                             </tr>
                             </thead>
@@ -105,9 +107,11 @@
                                     <td class="uk-text-center"><?php echo $contador?></td>
                                     <td class="uk-text-center"><?php echo $equipo['CodigoFac']?></td>
                                     <td class="uk-text-center"><?php echo $equipo['CodMNT']?></td>
+                                    <td class="uk-text-center"><?php echo $equipo['CodOrdenFisica']?></td>
                                     <td class="uk-text-center"><?php echo $equipo['Cliente']?></td>
                                     <td class="uk-text-center"><?php echo $equipo['CodProducto']?></td>
                                     <td class="uk-text-center"><?php echo $fechaFormat?></td>
+                                    <td class="uk-text-center"><?php echo $equipo['NUMREL']?></td>
                                     <td class="uk-text-center"><span class="uk-badge <?php echo $colorBadge?>"><?php echo $status ?></span></td>
                                 </tr>
 

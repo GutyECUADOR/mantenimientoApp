@@ -286,7 +286,7 @@ class ajaxController  {
             $VEN_CAB->setEjercicio($datosEmpresa['Ejercicio']);
             $VEN_CAB->setTipoDoc($tipoDOC);
             $VEN_CAB->setNumeroDoc($newCodigoWith0);
-            $VEN_CAB->setFecha(date('Ymd h:i:s'));
+            $VEN_CAB->setFecha(date('Ymd'));
             
             $VEN_CAB->setBodega($formData->product_edit_bodega);
             $VEN_CAB->setDivisa('DOL');
