@@ -54,7 +54,7 @@ class ajaxModel  {
         WHERE 
             Compra.ID COLLATE Modern_Spanish_CI_AS NOT IN( SELECT codFactura FROM KAO_wssp.dbo.mantenimientosEQ AS MANTENI  WHERE Compra.CODIGO = MANTENI.codEquipo COLLATE Modern_Spanish_CI_AS AND MANTENI.estado IN('0','1','3'))
             AND Compra.TIPO IN (SELECT CODIGO FROM VEN_TIPOS WHERE TIPODOC IN ('F', 'D'))
-            AND Cliente.RUC NOT IN('1792190851001', '1790417581001', '0992720301001', '1792585155001')
+            AND Cliente.RUC NOT IN('1792190851001', '1790417581001', '0992720301001', '1792585155001', '1706388335001')
             AND Compra.ANULADO = '0'
 			AND Producto.GarantiaCli != '0'
             AND fecha BETWEEN '".$fechaInicial."' AND '".$fechaFinal."' 
