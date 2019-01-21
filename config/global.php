@@ -11,3 +11,4 @@ define("ROOT_EDOCSXML","http://kaosportcenter.com.ec/docwf_sc/");   //Root del d
 define("EDOCS_MAIL","facturae-impkao@kaosportcenter.com"); //Configurar para envio de correos re recuperacion
 define("VIEWS_PATH","/views");
 define("PATH_FROM_INDEX","./core/resources/");
+define("CONFIG_FILE","./config/configuraciones.xml");

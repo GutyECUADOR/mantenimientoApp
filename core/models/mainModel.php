@@ -38,7 +38,11 @@ class mainModel {
             
             case 'logout':
                 $contenido = "views/modulos/cerrarSesion.php";
-                break;
+            break;
+
+            case 'configuracionSis':
+            $contenido = "views/modulos/configuracionSis.php";
+            break;
             
             default:
                 $contenido = "views/modulos/inicio.php";

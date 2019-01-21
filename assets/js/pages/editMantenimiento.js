@@ -138,7 +138,7 @@ function getPorcentDescuento(){
     if (facturadoA == '0'){
         return 90;
     }else{
-        return 0;
+        return 10;
     }
 }
 

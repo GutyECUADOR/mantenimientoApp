@@ -34,10 +34,18 @@
                         <li><a href="?&action=mantenimientosEQ">Agendar mantenimiento</a></li>
                         <li><a href="?&action=mantenimientosAG">Mantenimientos Agendados</a></li>
                         <li><a href="?&action=mantenimientosHistorico">Historico</a></li>
+                       
                     </ul>
                 
                 </li>
-             
+
+                <li title="Configuracion">
+                    <a href="?action=configuracionSis">
+                        <span class="menu_icon"><i class="material-icons">settings</i></span>
+                        <span class="menu_title">Configuracion</span>
+                    </a>
+                 
+                </li>
             </ul>
         </div>
 </aside>

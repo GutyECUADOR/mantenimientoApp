@@ -37,6 +37,7 @@ class ajaxModel  {
             FinGarantia = dateadd(day,Producto.GarantiaCli,Compra.FECHA),
             DiasGarantiarestantes = DATEDIFF(day, GETDATE () ,dateadd(day,Producto.GarantiaCli,Compra.FECHA)),
             Compra.CLIENTE as CodCliente,
+            Cliente.RUC as RUCCliente,
             Cliente.NOMBRE as NombreCliente,
             Cliente.TELEFONO1 as Telefono,
             Cliente.DIRECCION1 as Direccion,
@@ -53,6 +54,7 @@ class ajaxModel  {
         WHERE 
             Compra.ID COLLATE Modern_Spanish_CI_AS NOT IN( SELECT codFactura FROM KAO_wssp.dbo.mantenimientosEQ AS MANTENI  WHERE Compra.CODIGO = MANTENI.codEquipo COLLATE Modern_Spanish_CI_AS AND MANTENI.estado IN('0','1','3'))
             AND Compra.TIPO IN (SELECT CODIGO FROM VEN_TIPOS WHERE TIPODOC IN ('F', 'D'))
+            AND Cliente.RUC NOT IN('1792190851001', '1790417581001', '0992720301001', '1792585155001')
             AND Compra.ANULADO = '0'
 			AND Producto.GarantiaCli != '0'
             AND fecha BETWEEN '".$fechaInicial."' AND '".$fechaFinal."' 
@@ -151,7 +153,7 @@ class ajaxModel  {
     }
 
     /*Retorna string con el numero de columnas encontradas*/
-    public function isDisponibleOrdenFisica($formData, $dataBaseName='KAO_wssp'){
+    public function isDisponibleOrdenFisica($formData, $codEmpresa, $dataBaseName='KAO_wssp'){
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX();
         $codMNT = $formData->codMantenimiento;
@@ -159,7 +161,7 @@ class ajaxModel  {
 
         $query = "
             SELECT count(*) as totalRows FROM dbo.mantenimientosEQ WHERE codOrdenFisica = '$codOrdenFisica' AND codOrdenFisica IN 
-            (SELECT codOrdenFisica FROM dbo.mantenimientosEQ WHERE codMantenimiento != '$codMNT' )
+            (SELECT codOrdenFisica FROM dbo.mantenimientosEQ WHERE codMantenimiento != '$codMNT' AND codEmpresa='$codEmpresa'  )
 
         ";
 

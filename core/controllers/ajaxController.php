@@ -77,6 +77,7 @@ class ajaxController  {
             $mail->setFrom('mantenimiento@kaosportcenter.com', 'Administrador KAO');
             $mail->addAddress($correoCliente, 'Cliente KAO');     // Add a recipient
             $mail->addAddress('soporteweb@sudcompu.net', 'Sistemas');
+            $mail->addAddress('mantenimiento@kaosportcenter.com', 'Administrador KAO');
            
             //Content
             $mail->CharSet = "UTF-8";
@@ -183,7 +184,8 @@ class ajaxController  {
     /* Verifica si existe el codigo de ordenfisica en mantenimientosEQ*/
     public function isValidOrdenFisica ($formData){
         $ajaxModel = new \models\ajaxModel();
-        $response = $ajaxModel->isDisponibleOrdenFisica($formData);
+        $codEmpresa = $_SESSION["codEmpresaAUTH"];
+        $response = $ajaxModel->isDisponibleOrdenFisica($formData, $codEmpresa);
 
         if ($response <= 0) {
             return true;
