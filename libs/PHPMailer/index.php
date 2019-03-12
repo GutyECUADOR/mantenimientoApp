@@ -18,10 +18,10 @@ try {
     //Server settings
     $mail->SMTPDebug = false;                                 // Enable verbose debug output 0->off 2->debug
     $mail->isSMTP();                                      // Set mailer to use SMTP
-    $mail->Host = 'mail.sudcompu.net';  // Specify main and backup SMTP servers
+    $mail->Host = 'smtp-mail.outlook.com';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'soporteweb@sudcompu.net';                 // SMTP username
-    $mail->Password = '641429soporte';                           // SMTP password
+    $mail->Username = 'kaomantenimiento@hotmail.com';                 // SMTP username
+    $mail->Password = 'kaomnt2019$$';                           // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 25;                                    // TCP port to connect to
 
