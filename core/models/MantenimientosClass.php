@@ -15,15 +15,15 @@ class MantenimientosClass {
         Recupera los registros de la tabla mantenimientosEQ en KAO_wssp
         - Indicar base de datos (empresa) de la cual realizar la consulta o retornara false de encontrar dicho nombre de DB
     */
-    public function getMantenimientosAgendados($dataBaseName='KAO_wssp', $cantidad=1) {
+    public function getMantenimientosAgendados($dataBaseName='KAO_wssp', $cantidad=1, $fechaINI, $fechaFIN) {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
         
         $codEmpresa = $this->getCodeDBByName($dataBaseName)['Codigo']; // Usado para filtro de resultados. codigo de la DB
 
-        $primerDia = $this->first_month_day(); //$this->getPrimerDiaMes()['StartOfMonth'];
-        $ultimoDia = $this->last_month_day(); //$this->getUltimoDiaMes()['EndOfMonth'];
+        /* $fechaINI = $this->first_month_day(); //$this->getPrimerDiaMes()['StartOfMonth'];
+        $fechaFIN = $this->last_month_day(); //$this->getUltimoDiaMes()['EndOfMonth']; */
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
         SELECT TOP $cantidad
@@ -55,7 +55,7 @@ class MantenimientosClass {
         WHERE 
             WSSP.codEmpresa = '$codEmpresa'
             AND WSSP.estado = '0'
-            AND WSSP.fechaInicio BETWEEN '$primerDia' AND '$ultimoDia'
+            AND WSSP.fechaInicio BETWEEN '$fechaINI' AND '$fechaFIN'
         GROUP BY 
             Producto.Codigo,
             Compra.ID,

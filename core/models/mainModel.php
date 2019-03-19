@@ -20,6 +20,10 @@ class mainModel {
                 $contenido = "views/modulos/mantenimientosEQ.php";
                 break;
 
+            case 'mantenimientosEXT':
+            $contenido = "views/modulos/mantenimientosEXT.php";
+            break;
+                
             case 'editMantenimiento':
             $contenido = "views/modulos/editMantenimiento.php";
             break;
