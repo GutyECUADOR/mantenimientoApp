@@ -152,7 +152,7 @@
                                         </div>
                                         <div class="uk-form-row">
                                             <label for="uk_dp_start">Fecha del Mantenimiento</label>
-                                            <input class="md-input label-fixed" type="date" id="uk_dp_start" NAME="uk_dp_fecha"  value="<?php echo date("Y-m-d", strtotime($arrayMantenimiento["fechaInicio"]))?>">
+                                            <input class="md-input label-fixed" type="date" id="uk_dp_start" name="uk_dp_fecha"  value="<?php echo date("Y-m-d", strtotime($arrayMantenimiento["fechaInicio"]))?>">
                                         </div>
                                         <div class="uk-form-row">
                                             <label for="product_edit_tecnico" class="uk-form-label">Técnico Asignado</label>

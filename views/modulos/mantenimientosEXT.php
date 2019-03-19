@@ -21,7 +21,7 @@
                     <div class="md-top-bar-actions-left">
                         
                         <div class="md-btn-group">
-                            <a href="#" class="md-btn md-btn-flat md-btn-small md-btn-wave" data-uk-tooltip="{pos:'bottom'}" title="Nuevo Mantenimiento"><i class="material-icons">note_add</i>Nuevo</a>
+                            <a href="?&action=mantenimientosEXT/nuevo" class="md-btn md-btn-flat md-btn-small md-btn-wave" data-uk-tooltip="{pos:'bottom'}" title="Nuevo Mantenimiento"><i class="material-icons">note_add</i>Nuevo</a>
                         </div>
                         <div class="uk-button-dropdown" data-uk-dropdown="{mode: 'click'}" style="padding-top: 4px;">
                             <button class="md-btn md-btn-flat md-btn-small md-btn-wave" data-uk-tooltip="{pos:'top'}" title="Archivo"><i class="material-icons">&#xE2C7;</i> <i class="material-icons">&#xE313;</i></button>
