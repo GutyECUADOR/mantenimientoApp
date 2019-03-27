@@ -40,6 +40,10 @@ class mainModel {
             $contenido = "views/modulos/mantenimientosHistorico.php";
             break;   
 
+            case 'checkListSupervisoresBasicas':
+            $contenido = "views/modulos/checkActBasicasSup.php";
+            break;   
+
             case 'userconfig':
             $contenido = "views/modulos/userConfig.php";
             break;    
