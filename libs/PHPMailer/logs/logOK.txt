@@ -34,3 +34,11 @@ User: ::1 - January 15, 2019, 11:04 am
 PCid: S06-BI
 Detail: Correo ha sido enviado a : monicachiluiza@kaosportcenter.com
 -------------------------
+User: ::1 - January 22, 2019, 11:16 am
+PCid: S06-BI
+Detail: Correo ha sido enviado a : gutiecuador@gmail.com
+-------------------------
+User: ::1 - January 22, 2019, 11:27 am
+PCid: S06-BI
+Detail: Correo ha sido enviado a : gutiecuador@gmail.com
+-------------------------

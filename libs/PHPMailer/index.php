@@ -11,22 +11,22 @@ require './src/SMTP.php';
 
 //Load Composer's autoloader
 //require 'vendor/autoload.php';
-$correoCliente = 'monicachiluiza@kaosportcenter.com';
+$correoCliente = 'gutiecuador@gmail.com';
 
 $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
 try {
     //Server settings
     $mail->SMTPDebug = false;                                 // Enable verbose debug output 0->off 2->debug
     $mail->isSMTP();                                      // Set mailer to use SMTP
-    $mail->Host = 'mail.sudcompu.net';  // Specify main and backup SMTP servers
+    $mail->Host = 'smtp-mail.outlook.com';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'soporteweb@sudcompu.net';                 // SMTP username
-    $mail->Password = '641429soporte';                           // SMTP password
+    $mail->Username = 'kaomantenimientos@hotmail.com';                 // SMTP username
+    $mail->Password = 'kaomnt2019$$';                           // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-    $mail->Port = 25;                                    // TCP port to connect to
+    $mail->Port = 587;                                    // TCP port to connect to
 
     //Recipients
-    $mail->setFrom('mantenimiento@kaosportcenter.com', 'Administrador KAO');
+    $mail->setFrom('kaomantenimientos@hotmail.com', 'Administrador KAO');
     $mail->addAddress($correoCliente, 'Cliente KAO');     // Add a recipient
     $mail->addAddress('soporteweb@sudcompu.net', 'Sistemas');
     /* $mail->addAddress('ellen@example.com');               // Name is optional
