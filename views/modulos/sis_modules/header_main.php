@@ -12,6 +12,10 @@
                     <span class="sSwitchIcon"></span>
                 </a>
                 
+                <?php
+                    if (isset($_SESSION["usuarioRUC"])){
+                ?>
+
                 <div class="uk-navbar-flip">
                     <ul class="uk-navbar-nav user_actions">
                         <li><a href="#" id="full_screen_toggle" class="user_action_icon uk-visible-large"><i class="material-icons md-24 md-light">&#xE5D0;</i></a></li>
@@ -28,6 +32,11 @@
                         </li>
                     </ul>
                 </div>
+
+                <?php
+                    }
+                ?>
+
             </nav>
         </div>
 </header>

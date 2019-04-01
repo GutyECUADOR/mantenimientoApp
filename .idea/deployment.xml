@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="Xampp Apache Server">
+    <serverData>
+      <paths name="Xampp Apache Server">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="PHPProjects/mantenimientoApp" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

@@ -7,18 +7,25 @@
     $codEmpresa = trim($_SESSION["empresaAUTH"]);  // Nombre de la db asiganda en el login
     $mantenimientos = new models\MantenimientosClass();
 
-    $primerDiaMes = $mantenimientos->first_month_day(); //$mantenimientos->getPrimerDiaMes()['StartOfMonth'];
-    $ultimoDiaMes = $mantenimientos->last_month_day(); //$mantenimientos->getUltimoDiaMes()['EndOfMonth'];
+    if (isset($_GET['fechaINI']) || isset($_GET['fechaFIN'])) {
+       $fechaINI = $_GET['fechaINI'];
+       $fechaFIN = $_GET['fechaFIN'];
+    }else{
+        $fechaINI = $mantenimientos->first_month_day(); //$mantenimientos->getPrimerDiaMes()['StartOfMonth'];
+        $fechaFIN = $mantenimientos->last_month_day(); //$mantenimientos->getUltimoDiaMes()['EndOfMonth'];
+    }
 
-    $primerDiaMesSPAM = new DateTime($primerDiaMes);
+    $primerDiaMesSPAM = new DateTime($fechaINI);
     $primerDiaMesSPAM = date_format($primerDiaMesSPAM, "Y-m-d");
 
-    $ultimoDiaMesSPAM = new DateTime($ultimoDiaMes);
+    $ultimoDiaMesSPAM = new DateTime($fechaFIN);
     $ultimoDiaMesSPAM = date_format($ultimoDiaMesSPAM, "Y-m-d");
 
-    $arrayMantenimientos = $mantenimientos->getMantenimientosAgendados($codEmpresa, 100); //Devuelve array de mantenimientos
+    $arrayMantenimientos = $mantenimientos->getMantenimientosAgendados($codEmpresa, 100, $fechaINI, $fechaFIN); //Devuelve array de mantenimientos
     $dateNow = $mantenimientos->getDateNow(); //Fecha actual determina si la tarjeta esta valida o no
-   
+
+    
+
 ?>
 
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
@@ -34,7 +41,55 @@
     <div id="page_content">
         <div id="page_content_inner">
 
-            <h3 class="heading_a uk-margin-bottom">Equipos agendados del mes: <?php echo $primerDiaMesSPAM .' hasta '. $ultimoDiaMesSPAM?></h3>
+            <h3 class="heading_a uk-margin-bottom">Equipos agendados : <?php echo $primerDiaMesSPAM .' hasta '. $ultimoDiaMesSPAM?></h3>
+
+            <form action="" method="get">
+                <input type="hidden" name="action" value="mantenimientosAG">
+                <div class="md-card">
+                    <div class="md-card-content">
+                        <h3 class="heading_a">Filtros de busqueda</h3>
+                        <div class="uk-grid" data-uk-grid-margin="">
+                            <div class="uk-width-large-3-10 uk-row-first">
+                                <div class="uk-input-group">
+                                    <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
+                                    <div class="md-input-wrapper md-input-filled">
+                                        <label for="uk_dp_start">Fecha Inicial</label>
+                                        <input class="md-input label-fixed" type="date" id="uk_dp_start" name="fechaINI" value="<?php echo $fechaINI?>" required>
+                                        <span class="md-input-bar"></span></div>
+
+                                </div>
+                            </div>
+                            <div class="uk-width-medium-3-10">
+                                <div class="uk-input-group">
+                                    <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
+                                    <div class="md-input-wrapper md-input-filled">
+                                        <label for="uk_dp_end">Fecha Final</label>
+                                        <input class="md-input label-fixed" type="date" id="uk_dp_end" name="fechaFIN" value="<?php echo $fechaFIN?>" required>
+                                        <span class="md-input-bar"></span></div>
+
+                                </div>
+                            </div>
+
+                            <div class="uk-width-medium-2-10">
+                                <div class="md-input-wrapper md-input-filled">
+                                    <label>Tipos</label>
+                                    <select id="select_tiposDoc" data-md-selectize disabled>
+                                        <option value="ALL">Todos</option>
+                                        <option value="PND">Pendientes</option>
+                                        <option value="ANUL">Aulados/Omitidos</option>
+                                    </select>
+                                    </span></div>
+                            </div>
+
+                            <div class="uk-width-medium-2-10">
+                                <button type="submit" href="#" class="md-btn md-btn-primary md-btn-wave-light md-btn-icon waves-effect waves-button waves-light md-btn-block"><i class="uk-icon-search"></i> Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            </br>
 
             <ul id="products_sort" class="uk-subnav uk-subnav-pill">
                 <li data-uk-sort="product-name:asc"><a href="#">Acendente</a></li>

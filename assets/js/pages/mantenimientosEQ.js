@@ -152,7 +152,7 @@ altair_crud_table = {
             },
             fields: {
                 FechaCompra: {
-                    title: 'Fecha Compra',
+                    title: 'Fecha Venta',
                     width: '5%',
                     type: 'date',
                     create: false,

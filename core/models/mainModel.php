@@ -20,6 +20,14 @@ class mainModel {
                 $contenido = "views/modulos/mantenimientosEQ.php";
                 break;
 
+            case 'mantenimientosEXT':
+            $contenido = "views/modulos/mantenimientosEXT.php";
+            break;
+
+                case 'mantenimientosEXT/nuevo':
+                $contenido = "views/modulos/nuevoMantExterno.php";
+                break;
+                
             case 'editMantenimiento':
             $contenido = "views/modulos/editMantenimiento.php";
             break;
@@ -30,6 +38,10 @@ class mainModel {
             
             case 'mantenimientosHistorico':
             $contenido = "views/modulos/mantenimientosHistorico.php";
+            break;   
+
+            case 'checkListSupervisoresBasicas':
+            $contenido = "views/modulos/checkActBasicasSup.php";
             break;   
 
             case 'userconfig':

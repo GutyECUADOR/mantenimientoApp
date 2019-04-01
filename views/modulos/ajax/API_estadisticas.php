@@ -54,7 +54,7 @@ class ajax{
         break;
 
         case 'test':
-            $rawdata = array('status' => 'OK', 'mensaje' => 'respuesta correcta');
+            $rawdata = array('status' => 'OK', 'mensaje' => 'respuesta correcta', 'data' => 'JOSE GUTIERREZ');
             echo json_encode($rawdata);
 
             break;

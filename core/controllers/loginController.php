@@ -39,7 +39,7 @@ class loginController  {
                         echo '
                             <div class="uk-alert uk-alert-danger" data-uk-alert="">
                                 <a href="#" class="uk-alert-close uk-close"></a>
-                                No se pudo realizar el logeo con el usuario: '. $arrayDatos['usuario'] .' en la empresa seleccionada.
+                                No se pudo ingresar con el usuario: '. $arrayDatos['usuario'] .' en la empresa seleccionada.
                             </div>
                         ';
                        

@@ -17,6 +17,10 @@
 
       <title>KAO WebApp</title>
 
+      <!-- production version, optimized for size and speed -->
+      <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
       <!-- additional styles for plugins -->
       <!-- jquery ui -->
       <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>assets/skins/jquery-ui/material/jquery-ui.min.css">
