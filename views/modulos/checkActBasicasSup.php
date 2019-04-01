@@ -28,7 +28,7 @@
                     
 
                     <form action="" id="formActividadesBasicas" >
-                        <div class="md-card-content" style="padding-bottom: 50px;">
+                        <div class="md-card-content" id="todo_list" style="padding-bottom: 50px;">
 
                             <h2 class="heading_list">Informacion Solicitante: {{ usuarioIdentificado | capitalize }}</h2>
 
