@@ -283,6 +283,30 @@ class ajaxModel  {
         return $resulset;  
     }
 
+    public function getArraysSupervisores($dataBaseName='KAO_wssp') {
+
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
+        
+        //Query de consulta con parametros para bindear si es necesario.
+        $query = "SELECT Cedula as Value , (Nombre + Apellido) as DisplayText FROM dbo.Empleados WHERE CodDpto = 'SUP'";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+    
+        $arrayResultados = array();
+
+            if($stmt->execute()){
+                while ($row = $stmt->fetch( \PDO::FETCH_ASSOC )) {
+                    array_push($arrayResultados, $row);
+                }
+                return $arrayResultados;
+                
+            }else{
+                $resulset = false;
+            }
+        return $resulset;  
+    }
+
     public function getArraysBodegas($dataBaseName='KAO_wssp') {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp

@@ -232,6 +232,13 @@ class ajaxController  {
     }
 
     /* Retorna la respuesta del modelo ajax*/
+    public function getAllSupervisores(){
+        $ajaxModel = new \models\ajaxModel();
+        $response = $ajaxModel->getArraysSupervisores('SBIOKAO');
+        return $response;
+    }
+
+    /* Retorna la respuesta del modelo ajax*/
     public function getAllBodegas(){
         $ajaxModel = new \models\ajaxModel();
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;

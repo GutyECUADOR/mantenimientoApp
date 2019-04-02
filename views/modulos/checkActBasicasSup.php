@@ -1,3 +1,22 @@
+<?php
+    if (!isset($_SESSION["usuarioRUC"])){
+           header("Location:index.php?&action=login");  
+    }
+  
+    /* CREACION DE INSTANCIA USADA PARA ESTA VISTA*/  
+    
+    $codEmpresa = trim($_SESSION["empresaAUTH"]);  // Nombre de la db asiganda en el login
+    $ajaxController = new controllers\ajaxController();
+
+    $arrayBodegas = $ajaxController->getAllBodegas();
+    $arraySupervisores = $ajaxController->getAllSupervisores();
+
+    $day = date('w');
+    $week_start = date('Y-m-d', strtotime('-'.($day-1).' days'));
+    $week_end = date('Y-m-d', strtotime('+'.(7-$day).' days'));
+
+?>
+
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
     <!-- header main -->
       <?php include 'sis_modules/header_main.php'?>
@@ -30,65 +49,51 @@
                     <form action="" id="formActividadesBasicas" >
                         <div class="md-card-content" id="todo_list" style="padding-bottom: 50px;">
 
-                            <h2 class="heading_list">Informacion Solicitante: {{ usuarioIdentificado | capitalize }}</h2>
+                            <h2 class="heading_list">Informacion del Supervisor: </h2>
 
                             <div class="uk-grid" data-uk-grid-margin> 
-                                <div class="uk-input-group uk-width-medium-1-3">
+                                <div class="uk-input-group uk-width-medium-1-1">
                                     <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-user"></i></span>
-                                    <label>Cedula del supervisor: </label>
-                                    <input type="number" v-model="txtCIRUC" v-on:keyup="searchCIRUC" name="txtCIRUC" class="md-input label-fixed" placeholder="170000000000" />
-                                </div>
-
-                                <div class="uk-input-group uk-width-medium-1-3">
-                                    <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-cog"></i></span>
-                                    <label class="uk-form-label">Empresa: </label>
-                                    <select id="selectEmpresa" name="selectEmpresa" class="md-input" data-uk-tooltip="{pos:'top'}" title="Seleccione empresa">
-                                            <option value="" disabled selected hidden>Seleccione por favor</option>
-                                            <option value="a">MODELO</option>
+                                    <label class="uk-form-label">Supervisor: </label>
+                                    <select id="selectSupervisor" name="selectSupervisor" class="md-input" data-uk-tooltip="{pos:'top'}" title="Seleccione Supervisor">
+                                        <option value="" disabled selected hidden>Seleccione por favor</option>
+                                        <?php
+                                            foreach ($arraySupervisores as $opcion) {
+                                                echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
+                                            }
+                                        ?>
                                     </select>
                                 </div>
 
-                                <div class="uk-input-group uk-width-medium-1-3">
-                                    <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-cog"></i></span>
-                                    <label class="uk-form-label">Bodega: </label>
-                                    <select id="selectBodega" name="selectBodega" class="md-input" data-uk-tooltip="{pos:'top'}" title="Seleccione bodega">
-                                            <option value="" disabled selected hidden>Seleccione por favor</option>
-                                            <option value="a">PRUEBA</option>
-                                    </select>
-                                </div>
-
-                                
 
                             </div>
 
                             <h2 class="heading_list">Semana, Hora de Ingreso/Salida: </h2>
                             <div class="uk-grid" data-uk-grid-margin>
 
-                                <div class="uk-input-group uk-width-medium-1-3">
+                                <div class="uk-input-group uk-width-medium-2-4">
                                     <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
                                     <label class="uk-form-label">Semana: </label>
                                     <select id="selectSemana" name="selectSemana" class="md-input" data-uk-tooltip="{pos:'top'}" title="Seleccione semana">
                                             <option value="" disabled selected hidden>Seleccione por favor</option>
-                                            <option value="a">SEMANA 1</option>
-                                            <option value="b">SEMANA 2</option>
-                                            <option value="c">SEMANA 3</option>
-                                            <option value="c">SEMANA 4</option>
+                                            <option value="a"><?php echo 'Semana del: '. $week_start. ' al ' . $week_end?></option>
                                     </select>
                                 </div>
 
-                                <div class="uk-input-group uk-width-medium-1-3">
-                                    <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-clock-o"></i></span>
-                                    <label> Hora de Inicio</label>
-                                    <input id="txt_horaINI" name="txt_horaINI" class="md-input label-fixed" type="time" data-uk-timepicker>
-                                    
+                                <div class="uk-input-group uk-width-medium-2-4">
+                                    <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-home"></i></span>
+                                    <label class="uk-form-label">Bodega: </label>
+                                    <select id="selectBodega" name="selectBodega" class="md-input" data-uk-tooltip="{pos:'top'}" title="Seleccione Bodega">
+                                        <?php
+                                            foreach ($arrayBodegas as $opcion) {
+                                                echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
+                                            }
+                                        ?>
+                                        
+                                    </select>
                                 </div>
                                 
-                                <div class="uk-input-group uk-width-medium-1-3">
-                                    <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-clock-o"></i></span>
-                                    <label>Hora de finalizacion</label>
-                                    <input id="txt_horaFIN" name="txt_horaFIN" class="md-input label-fixed" type="time" data-uk-timepicker>
-                                
-                                </div>
+                               
                             </div>
 
                             <h2 class="heading_list">Detalle: </h2>
