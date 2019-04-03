@@ -76,7 +76,7 @@
                                     <label class="uk-form-label">Semana: </label>
                                     <select id="selectSemana" name="selectSemana" class="md-input" data-uk-tooltip="{pos:'top'}" title="Seleccione semana">
                                             <option value="" disabled selected hidden>Seleccione por favor</option>
-                                            <option value="a"><?php echo 'Semana del: '. $week_start. ' al ' . $week_end?></option>
+                                            <option value="<?php echo $week_start .'.'. $week_end ?>"><?php echo 'Semana del: '. $week_start. ' al ' . $week_end?></option>
                                     </select>
                                 </div>
 
@@ -97,70 +97,14 @@
                             </div>
 
                             <h2 class="heading_list">Detalle: </h2>
-                            <div>
+                            <div id="listCheckItems">
                                 <!-- Checklists -->
                                 <ul class="md-list md-list-addon uk-margin-small-bottom uk-nestable" data-uk-nestable="{ maxDepth:2,handleClass:'md-list-content'}">
                                     
-                                    <li>
-                                        <div class="md-list-addon-element">
-                                            <input type="checkbox" name="chklist" data-md-icheck />
-                                        </div>
-                                        <div class="md-list-content">
-                                            <span class="md-list-heading"> Revision de CheckList </span>
-                                            <span class="uk-text-small uk-text-muted">Se ha revisado los checklist de los locales.</span>
-                                        </div>
-                                        <div class="md-input-wrapper md-input-filled">
-                                            <input type="text" class="md-input" placeholder="Comentario del item">
-                                            <span class="md-input-bar"></span>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <div class="md-list-addon-element">
-                                            <input type="checkbox" name="chklist" data-md-icheck />
-                                        </div>
-                                        <div class="md-list-content">
-                                            <span class="md-list-heading"> Revision de Couching de ventas</span>
-                                            <span class="uk-text-small uk-text-muted">Se ha dado revision al trabajo del personal de ventas.</span>
-                                        </div>
-                                        <div class="md-input-wrapper md-input-filled">
-                                            <input type="text" class="md-input" placeholder="Comentario del item">
-                                            <span class="md-input-bar"></span>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <div class="md-list-addon-element">
-                                            <input type="checkbox" data-md-icheck />
-                                        </div>
-                                        <div class="md-list-content">
-                                            <span class="md-list-heading"> Revision de Couching de ventas</span>
-                                            <span class="uk-text-small uk-text-muted">Se ha dado revision al trabajo del personal de ventas.</span>
-                                        </div>
-                                        <div class="md-input-wrapper md-input-filled">
-                                            <input type="text" class="md-input" placeholder="Comentario del item">
-                                            <span class="md-input-bar"></span>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <div class="md-list-addon-element">
-                                            <input type="checkbox" data-md-icheck />
-                                        </div>
-                                        <div class="md-list-content">
-                                            <span class="md-list-heading"> Revision de Couching de ventas</span>
-                                            <span class="uk-text-small uk-text-muted">Se ha dado revision al trabajo del personal de ventas.</span>
-                                        </div>
-                                        <div class="md-input-wrapper md-input-filled">
-                                            <input type="text" class="md-input" placeholder="Comentario del item">
-                                            <span class="md-input-bar"></span>
-                                        </div>
-                                    </li>
+                                    <!-- Dinamic content here  -->
+                                   
                                 </ul>
-                                
-                                </div>
-
-                        </div>
+                            </div>
                     </form>
                     
                 </div>

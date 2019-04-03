@@ -662,6 +662,31 @@ class ajaxModel  {
                 break;
         }
     }
+
+    /*
+       - Retorna todos los mantenimientos de la tabla 
+    */
+    public function getCheckListActBasicasModel($dataBaseName='KAO_wssp') {
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+        
+        //Query de consulta con parametros para bindear si es necesario.
+            $query = "
+                SELECT * FROM dbo.checkActBasicasSup_Banco
+            ";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+    
+        $arrayResultados = array();
+
+        if($stmt->execute()){
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);  
+        }else{
+            return false;
+        }
+       
+
+    }
 }
 
 

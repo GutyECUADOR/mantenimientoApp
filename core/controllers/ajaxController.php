@@ -5,7 +5,12 @@
 
 class ajaxController  {
 
+    private $ajaxModel;
     public $defaulDataBase = "MODELO";
+
+    public function __construct() {
+        $this->ajaxModel = new \models\ajaxModel();
+    }
   
     /* Devuelve array en el formato requerido para el plugin JTable */
     public function getAllEquiposSinMantenimiento($fechaInicio, $fechaFinal, $startIndex, $pageSize) {
@@ -384,5 +389,11 @@ class ajaxController  {
         return $response;
     }
     
+    /* AJAX SUPERVISORES - Retorna todos los checklist de la DB */
+    public function getCheckListActBasicasController(){
+
+        $response = $this->ajaxModel->getCheckListActBasicasModel();
+        return $response;
+    }
     
 }
