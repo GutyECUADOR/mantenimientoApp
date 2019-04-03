@@ -7,6 +7,7 @@ $(function() {
         init: function() {
             this.altair_init();
             this.loadChecks();
+            this.altair_validations();
         },
         altair_init: function () {
             var $todo_list = $('#todo_list');
@@ -17,6 +18,35 @@ $(function() {
                 .on('ifUnchecked', function(){
                     $(this).closest('li').removeClass('md-list-item-disabled');
                 });
+        },
+        altair_validations: function() {
+            var $formValidate = $('#formActividadesBasicas');
+    
+            $formValidate
+                .parsley({
+                    'excluded': 'input[type=button], input[type=submit], input[type=reset], input[type=hidden], .selectize-input > input'
+                })
+                .on('form:validated',function() {
+                    altair_md.update_input($formValidate.find('.md-input-danger'));
+                })
+                .on('field:validated',function(parsleyField) {
+                    if($(parsleyField.$element).hasClass('md-input')) {
+                        altair_md.update_input( $(parsleyField.$element) );
+                    }
+                });
+    
+            window.Parsley.on('field:validate', function() {
+                var $server_side_error = $(this.$element).closest('.md-input-wrapper').siblings('.error_server_side');
+                if($server_side_error) {
+                    $server_side_error.hide();
+                }
+            });
+    
+    
+            // datepicker callback
+            $('#val_birth').on('hide.uk.datepicker', function() {
+                $(this).parsley().validate();
+            });
         },
         loadChecks: function () {
             fetch('views/modulos/ajax/API_supervisores.php?action=getCheckListActBasicas')
@@ -80,13 +110,23 @@ $(function() {
     
     app.init(); // Inicializacion de estilos altair y carga de objetos dinamicos
 
-    // Actualizacion de los campos CHECKED array del objeto solicitud
-    $('#listCheckItems').on('ifChecked ifUnchecked', '.icheck', function(event){
-        let codigo = this.id; // ID del objeto HTML
+    // De select Supervisor
+    $('#selectSupervisor').on('change', function(event){
         let valor = this.value;
-        app.updateItemCheck(codigo, valor);
+        solicitud.supervisor = valor;
     });
 
+    // De select Semana
+    $('#selectSemana').on('change', function(event){
+        let valor = this.value;
+        solicitud.semana = valor;
+    });
+
+    // De select Semana
+    $('#selectBodega').on('change', function(event){
+        let valor = this.value;
+        solicitud.bodega = valor;
+    });
 
     // Actualizacion de los campos CHECKED array del objeto solicitud
     $('#listCheckItems').on('ifChecked ifUnchecked', '.icheck', function(event){
