@@ -122,8 +122,19 @@ $(function() {
             let objActualizar = ArrayItems.find(checkItem => checkItem.codigo === codigoBusqueda);
  
             objActualizar.comentario = valor;
-             
-         }
+
+        },
+        countScore(){
+            let ArrayItems = solicitud.checkItems;
+            return ArrayItems.reduce(function(total, record){
+                if(record.checked == true ){
+                    return total + 1;
+                } 
+                else {
+                    return total;
+                }
+              }, 0);
+        }
     };
     
     app.init(); // Inicializacion de estilos altair y carga de objetos dinamicos
@@ -163,11 +174,24 @@ $(function() {
     /*Accions */
     $('#save_form_submit').on('click', function(e) {
         e.preventDefault();
+        console.log(solicitud);
+        if (solicitud.supervisor === null) {
+            UIkit.modal.alert('Seleccione supervisor por favor.');
+            return;
+        }
 
-        UIkit.modal.confirm('Confirme, desea registrar el documento ?', function() {
-            
+        if (solicitud.semana === null) {
+            UIkit.modal.alert('Seleccione semana por favor.');
+            return;
+        }
+
+        if (solicitud.bodega === null) {
+            UIkit.modal.alert('Seleccione bodega por favor.');
+            return;
+        }
+
+        UIkit.modal.confirm(`Confirme, desea registrar el documento ? </br> El puntaje actual es de ${ app.countScore() } / ${solicitud.checkItems.length} `, function() {
             app.save_solicitud();
-
         }, {labels: {'Ok': 'Si, registrar', 'Cancel': 'No'}});
 
        

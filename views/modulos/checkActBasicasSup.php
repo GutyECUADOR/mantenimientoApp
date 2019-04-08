@@ -35,8 +35,13 @@
             <div class="uk-width-medium-8-10 uk-container-center">
                 <div class="md-card md-card-single">
                     <div class="md-card-toolbar">
-                        <div class="md-card-toolbar-actions">
+                        <div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}" aria-haspopup="true" aria-expanded="false">
                             <i class="md-icon material-icons"></i>
+                            <div class="uk-dropdown uk-dropdown-small uk-dropdown-bottom" aria-hidden="true" style="min-width: 160px; top: 32px; left: 0px;" tabindex="">
+                                <ul class="uk-nav">
+                                    <li><a href="?&action=checkListSupervisoresBasicas">Nuevo</a></li>
+                                </ul>
+                            </div>
                         </div>
                         <h3 class="md-card-toolbar-heading-text large">
                             Actividades basicas a cumplir
@@ -84,6 +89,7 @@
                                     <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-home"></i></span>
                                     <label class="uk-form-label">Bodega: </label>
                                     <select id="selectBodega" name="selectBodega" class="md-input" data-uk-tooltip="{pos:'top'}" title="Seleccione Bodega">
+                                        <option value="" disabled selected hidden>Seleccione por favor</option>
                                         <?php
                                             foreach ($arrayBodegas as $opcion) {
                                                 echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
