@@ -64,7 +64,11 @@ $(function() {
         }
         ,
         save_solicitud: function() {
-            
+
+            var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Realizando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
+                modalBlocked.show();
+
+            console.log(solicitud);
             let formData = new FormData();
             formData.append('solicitud', JSON.stringify(solicitud));
             
@@ -73,7 +77,16 @@ $(function() {
                 body: formData
             })
             .then( response =>  response.json())
-            .then( responseJSON => console.log(responseJSON))
+            .then( responseJSON => {
+                console.log(responseJSON);
+                modalBlocked.hide();
+
+                if (responseJSON.status == 'OK') {
+                    UIkit.modal.alert(`${responseJSON.mensaje} ${responseJSON.respuesta.CAB.mensaje}`, { center: true, labels: { 'Ok': 'Ok' } }).on('hide.uk.modal', function () {
+                        location.href = "index.php?&action=checkListSupervisoresBasicas";
+                    });
+                }
+            })
             .catch( error => console.log(error))
           
         },
@@ -102,9 +115,7 @@ $(function() {
         updateItemCheck(codigoBusqueda){
            let ArrayItems = solicitud.checkItems;
             let objActualizar = ArrayItems.find(checkItem => checkItem.codigo === codigoBusqueda);
-
             objActualizar.checked = !objActualizar.checked;
-            console.log(solicitud);
         },
         updateObeservacionCheck(codigoBusqueda, valor){
             let ArrayItems = solicitud.checkItems;
@@ -152,7 +163,14 @@ $(function() {
     /*Accions */
     $('#save_form_submit').on('click', function(e) {
         e.preventDefault();
-        app.save_solicitud();
+
+        UIkit.modal.confirm('Confirme, desea registrar el documento ?', function() {
+            
+            app.save_solicitud();
+
+        }, {labels: {'Ok': 'Si, registrar', 'Cancel': 'No'}});
+
+       
 
     });
 

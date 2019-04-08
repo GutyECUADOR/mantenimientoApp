@@ -1,19 +1,23 @@
 <?php
 date_default_timezone_set('America/Lima');
 session_start();
-require_once '../../../core/controllers/ajaxController.php';
-require_once '../../../core/models/ajaxModel.php';
+require_once '../../../core/controllers/supervisoresController.php';
+require_once '../../../core/models/supervisoresModel.php';
 
 class ajax{
   private $ajaxController;
 
     public function __construct() {
-      $this->ajaxController = new \controllers\ajaxController();
+      $this->ajaxController = new \controllers\supervisoresController();
     }
 
     public function getCheckListActBasicas() {
         return $this->ajaxController->getCheckListActBasicasController();
     }
+
+    public function saveActividadesBasicasController($formDataObject) {
+      return $this->ajaxController->saveActividadesBasicasController($formDataObject);
+  }
 
    
 
@@ -34,10 +38,11 @@ class ajax{
         case 'saveActividadesBasicas':
 
           if (isset($_POST['solicitud'])) {
-            $formData = json_decode($_POST['solicitud']);
-            $rawdata = array('status' => 'OK', 'mensaje' => 'solicitud grabada', 'formData' => $formData);
+            $formDataObject = json_decode($_POST['solicitud']);
+            $respuesta = $ajax->saveActividadesBasicasController($formDataObject);
+            $rawdata = array('status' => 'OK', 'mensaje' => 'CheckList registrado.', 'respuesta' => $respuesta);
           }else {
-            $rawdata = array('status' => 'FAIL', 'mensaje' => 'Error en post');
+            $rawdata = array('status' => 'FAIL', 'mensaje' => 'Error en post, el objeto de datos no es correcto');
           }
         
         
