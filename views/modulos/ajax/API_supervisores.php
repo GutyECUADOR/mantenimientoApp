@@ -31,6 +31,20 @@ class ajax{
 
         break;
 
+        case 'saveActividadesBasicas':
+
+          if (isset($_POST['solicitud'])) {
+            $formData = json_decode($_POST['solicitud']);
+            $rawdata = array('status' => 'OK', 'mensaje' => 'solicitud grabada', 'formData' => $formData);
+          }else {
+            $rawdata = array('status' => 'FAIL', 'mensaje' => 'Error en post');
+          }
+        
+        
+        echo json_encode($rawdata);
+
+        break;
+
         
         case 'test':
             $rawdata = array('status' => 'OK', 'mensaje' => 'respuesta correcta');

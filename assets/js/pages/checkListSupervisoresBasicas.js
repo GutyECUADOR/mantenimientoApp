@@ -1,13 +1,13 @@
 
 $(function() {
 
-    solicitud = new Solicitud();
+    var solicitud = new Solicitud();
 
     app = {
         init: function() {
             this.altair_init();
             this.loadChecks();
-            this.altair_validations();
+            //this.altair_validations();
         },
         altair_init: function () {
             var $todo_list = $('#todo_list');
@@ -64,10 +64,17 @@ $(function() {
         }
         ,
         save_solicitud: function() {
-            //let $formMain = $('#formActividadesBasicas'); //ID formulario 
-            //let form_serialized = JSON.stringify($formMain.serializeObject(), null, 2);
-            //UIkit.modal.alert('<p>Confirme datos del formulario:</p><pre>' + form_serialized + '</pre>');
-            console.log(solicitud);
+            
+            let formData = new FormData();
+            formData.append('solicitud', JSON.stringify(solicitud));
+            
+            fetch('views/modulos/ajax/API_supervisores.php?action=saveActividadesBasicas',{
+                method: 'POST', 
+                body: formData
+            })
+            .then( response =>  response.json())
+            .then( responseJSON => console.log(responseJSON))
+            .catch( error => console.log(error))
           
         },
         renderCheckList: function (arrayItems){
