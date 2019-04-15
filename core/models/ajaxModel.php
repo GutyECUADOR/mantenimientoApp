@@ -687,6 +687,75 @@ class ajaxModel  {
        
 
     }
+
+    /*
+       - Retorna todos los mantenimientos de la tabla 
+    */
+    public function searchClienteModel($value, $by, $dataBaseName='KAO_wssp') {
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+        
+       
+
+        //Query de consulta con parametros para bindear si es necesario.
+            $query = "
+            SELECT TOP 10 RUC, NOMBRE, CODIGO, TIPOPRECIO FROM dbo.COB_CLIENTES WHERE $by LIKE '$value%'
+            ";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+    
+        if($stmt->execute()){
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);  
+        }else{
+            return false;
+        }
+    }
+
+    public function getInfoClienteModel($RUC, $dataBaseName) {
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+        
+
+        //Query de consulta con parametros para bindear si es necesario.
+        $query = " 
+            
+        SELECT 
+            CLIENTE.CODIGO, 
+            RTRIM(CLIENTE.NOMBRE) as NOMBRE, 
+            RTRIM(CLIENTE.EMPRESA) as EMPRESA, 
+            RTRIM(CLIENTE.RUC) as RUC, 
+            RTRIM(CLIENTE.EMAIL) as EMAIL, 
+            RTRIM(CLIENTE.FECHAALTA) as FECHAALTA, 
+            RTRIM(CLIENTE.DIRECCION1) as DIRECCION, 
+            RTRIM(CLIENTE.TELEFONO1) as TELEFONO, 
+            RTRIM(VENDEDOR.CODIGO) as VENDEDOR,
+            RTRIM(VENDEDOR.NOMBRE) as VENDEDORNAME,
+            RTRIM(CLIENTE.LIMITECRED) as LIMITECRED, 
+            RTRIM(CLIENTE.FPAGO) as FPAGO, 
+            RTRIM(CLIENTE.DIASPAGO) as DIASPAGO, 
+            RTRIM(CLIENTE.TIPOPRECIO) as TIPOPRECIO 
+        FROM 
+            dbo.COB_CLIENTES as CLIENTE INNER JOIN
+            dbo.COB_VENDEDORES as VENDEDOR ON VENDEDOR.CODIGO = CLIENTE.VENDEDOR
+        WHERE 
+            RUC='$RUC'";  // Final del Query SQL 
+
+        try{
+            $stmt = $this->db->prepare($query); 
+    
+                if($stmt->execute()){
+                    $resulset = $stmt->fetch( \PDO::FETCH_ASSOC );
+                    
+                }else{
+                    $resulset = false;
+                }
+            return $resulset;  
+
+        }catch(PDOException $exception){
+            return array('status' => 'error', 'mensaje' => $exception->getMessage() );
+        }
+   
+    }
 }
 
 

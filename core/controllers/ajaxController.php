@@ -395,5 +395,19 @@ class ajaxController  {
         $response = $this->ajaxModel->getCheckListActBasicasModel();
         return $response;
     }
+
+    /* AJAX SUPERVISORES - Retorna todos los checklist de la DB */
+    public function searchClienteController($value, $by){
+
+        $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
+        $response = $this->ajaxModel->searchClienteModel($value, $by, $dbEmpresa);
+        return $response;
+    }
+
+    public function getInfoClienteController($RUC){
+        $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
+        $response = $this->ajaxModel->getInfoClienteModel($RUC, $dbEmpresa);
+        return $response;
+    }
     
 }

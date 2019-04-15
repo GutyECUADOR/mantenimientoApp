@@ -64,7 +64,15 @@ class ajax{
 
     public function sendEmail($mail, $data){
         return $this->ajaxController->sendEmail($mail, $data);
-      }
+    }
+
+    public function searchCliente($value, $by){
+        return $this->ajaxController->searchClienteController($value, $by);
+    }
+
+    public function getInfoCliente($RUC) {
+        return $this->ajaxController->getInfoClienteController($RUC);
+    }
 
 }
 
@@ -315,15 +323,37 @@ class ajax{
 
             break;
 
-        case 'test':
+        case 'searchCliente':
 
-            $respuesta = $ajax->sendEmail('gutiecuador@gmail.com','MNT0005656');
+            if (isset($_GET['terminoBusqueda']) && isset($_GET['tipoBusqueda'])) {
+                $terminoBusqueda = $_GET['terminoBusqueda'];
+                $tipoBusqueda = $_GET['tipoBusqueda'];
+                $respuesta = $ajax->searchCliente($terminoBusqueda, $tipoBusqueda);
+                $rawdata = array('status' => 'OK', 'mensaje' => 'respuesta correcta', 'data' => $respuesta);
+            }else{
+                header("HTTP/1.1 404 Not Found");
+                $rawdata = array('status' => 'ERROR', 'mensaje' => 'No se ha indicado parámetros.');
+            }
             
-            //Return result to jTable
-            $jTableResult = array();
-            $jTableResult['Result'] = "OK";
-            $jTableResult['registroAgregado'] = $respuesta;
-            echo json_encode($jTableResult);
+            echo json_encode($rawdata);
+            break;
+           
+        case 'getInfoCliente':
+          if (isset($_GET['ruc'])) {
+            $RUC = $_GET['ruc'];
+            $respuesta = $ajax->getInfoCliente($RUC);
+            $rawdata = array('status' => 'OK', 'mensaje' => 'respuesta correcta', 'data' => $respuesta);
+          }else{
+            $rawdata = array('status' => 'ERROR', 'mensaje' => 'No se ha indicado parámetros.');
+          }
+          
+          echo json_encode($rawdata);
+
+        break;
+
+        case 'test':
+            $rawdata = array('status' => 'ok', 'mensaje' =>'el API ha podido responder la solicitud');
+            echo json_encode($rawdata);
             break;
 
         default:

@@ -29,6 +29,21 @@
             <div class="uk-grid">
                 <div class="uk-width-medium-4-5 uk-container-center">
                     <div class="md-card">
+                        <div class="md-card-toolbar">
+                            <div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}" aria-haspopup="true" aria-expanded="false">
+                                <i class="md-icon material-icons"></i>
+                                <div class="uk-dropdown uk-dropdown-small uk-dropdown-bottom" aria-hidden="true" style="min-width: 160px; top: 32px; left: 0px;" tabindex="">
+                                    <ul class="uk-nav">
+                                        <li><a href="#">Nuevo</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <h3 class="md-card-toolbar-heading-text large">
+                                Registro de mantenimiento externo
+                            </h3>
+
+                        </div>
+
                         <div class="md-card-content large-padding">
 
                             <h2 class="heading_b">1. Cliente</h2>
@@ -37,23 +52,29 @@
                                     <div class="uk-grid" data-uk-grid-margin>
                                         <div class="uk-width-medium-1-2">
                                             <label>Cedula/RUC <span class="uk-badge uk-badge-danger uk-badge-notification">Obligatorio</span> </label>
-                                            <input type="text" class="md-input" required />
+                                            <input type="text" id="inputRUC" class="md-input label-fixed" required />
                                         </div>
                                         <div class="uk-width-medium-1-2">
                                             <label>Telefono</label>
-                                            <input type="text" class="md-input" />
+                                            <input type="text" id="inputTelefono" class="md-input label-fixed" />
                                         </div>
                                     </div>
                                     <div class="uk-grid">
                                         <div class="uk-width-1-1">
                                             <label>Nombre del cliente</label>
-                                            <input type="text" class="md-input" />
+                                            <input type="text" id="inputNombre" class="md-input label-fixed" />
+                                        </div>
+                                    </div>
+                                    <div class="uk-grid">
+                                        <div class="uk-width-1-1">
+                                            <label>Email</label>
+                                            <input type="text" id="inputCorreo" class="md-input label-fixed" />
                                         </div>
                                     </div>
                                     <div class="uk-grid" data-uk-grid-margin>
                                         <div class="uk-width-1-1">
                                             <label>Direccion</label>
-                                            <input type="text" class="md-input" />
+                                            <input type="text" id="inputDireccion" class="md-input label-fixed" />
                                         </div>
                                     </div>
                                     
@@ -61,7 +82,7 @@
                                 <div class="uk-width-medium-1-3">
                                     <strong>Informacion del cliente</strong><br>
                                     <p class="uk-text-muted">Indique el cliente al que sera facturado el trabajo, indique su numero de Cedula o RUC; este debe estar previamente registrado en Winfenix. O haga clic en el boton buscar cliente.</p>
-                                    <button class="md-btn btn-block md-btn-success md-btn-block" type="button">Buscar cliente</button>
+                                    <button class="md-btn btn-block md-btn-success md-btn-block" data-uk-modal="{target:'#modal_AgendarNuevo'}" type="button">Buscar cliente</button>
                                 </div>
                             </div>
                             <hr class="uk-grid-divider">
@@ -167,6 +188,61 @@
         </div>
     </div>
 
+    <!-- MODALS WINDOWS -->
+
+    <div class="uk-modal" id="modal_AgendarNuevo">
+        <div class="uk-modal-dialog">
+            <div class="uk-modal-header">
+                <h3 class="uk-modal-title">Busqueda de clientes - Winfenix <i class="material-icons">search</i></h3>
+            </div>
+            
+                <div class="uk-grid">
+                    
+                    <div class="uk-width-medium-2-3">
+                        <div class="uk-input-group">
+                            <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-user"></i></span>
+                            <div class="md-input-wrapper md-input-filled">
+                                <label>Cedula, RUC o Nombre del Cliente</label>
+                                <input class="md-input label-fixed" id="terminoBusquedaModalCliente" type="text">
+                                <span class="md-input-bar "></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="uk-width-medium-1-3">
+                        <div class="uk-input-group">
+                            <span class="uk-input-group-addon" style="padding:0px"><i class="uk-input-group-icon uk-icon-cog"></i></span>
+                            <select id="tipoBusquedaModalCliente" class="md-input" data-uk-tooltip="{pos:'top'}" title="Filtro de busqueda">
+                              <option value="cedula">CEDULA / RUC</option>
+                                <option value="nombre" selected>NOMBRE</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+
+                    <div class="uk-width-medium-1-1">
+                        <br><h4>Resultados:</h4>
+                        <ul id="resultadosBusquedaClientes" class="md-list md-list-addon md-list-right">
+                            <!-- Render items here -->
+                        </ul>
+                    </div>
+                    
+                   
+                </div>
+            
+            <div class="uk-modal-footer uk-text-right">
+                <button type="button" class="md-btn md-btn-flat uk-modal-close">Cerrar</button>
+                <button id="searchClienteModal_Button" type="button" class="md-btn md-btn-flat md-btn-flat-primary">Buscar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAB Button -->  
+    <div class="md-fab-wrapper">
+        <a class="md-fab md-fab-accent" id="save_form_submit">
+            <i class="material-icons">save</i>
+        </a>
+    </div>
   
 <!-- google web fonts -->
 <script>
