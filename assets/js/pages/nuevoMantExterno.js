@@ -34,7 +34,7 @@ $(function() {
                 let row = `
                     <li>
                         <div class="md-list-addon-element">
-                            <button class="md-btn md-btn-primary"><i class="md-list-addon-icon material-icons"></i></button>
+                            <button class="md-btn md-btn-primary btnAddCliente" data-ruc="${item.RUC.trim()}"><i class="md-list-addon-icon material-icons"></i></button>
                         </div>
                         <div class="md-list-content">
                             <span class="md-list-heading">${item.NOMBRE.trim()}</span>
@@ -56,8 +56,8 @@ $(function() {
                 $('#inputTelefono').val(cliente.TELEFONO.trim());
 
             } else {
-                myCliente = null;
-                cotizacion.cliente = null;
+                solicitud = null;
+                solicitud.cliente = null;
                 $('#inputNombre').val('(Sin identificar)');
                 $('#inputCorreo').val('');
                 $('#inputDireccion').val('');
@@ -87,8 +87,11 @@ $(function() {
             .then( response => response.json())
             .then(function (data){
                 let cliente = data.data;
-                console.log(cliente);
-                app.displayInfoCliente(cliente);
+                if (cliente) {
+                    console.log(cliente);
+                    app.displayInfoCliente(cliente);
+                }
+                
             })
             .catch( error => console.log(error))
 
@@ -145,23 +148,41 @@ $(function() {
         
     });
 
-    // De select Supervisor
-    $('#selectSupervisor').on('change', function(event){
-        let valor = this.value;
-        solicitud.supervisor = valor;
+    $("#resultadosBusquedaClientes").on('click', '.btnAddCliente', function(event) {
+        event.preventDefault();
+
+        let RUC = $(this).data('ruc');
+        $('#inputRUC').val(RUC);
+        app.validaCliente(RUC);
+        UIkit.modal("#modal_AgendarNuevo").hide();
     });
 
-    // De select Semana
-    $('#selectSemana').on('change', function(event){
+    
+
+    // De select tipoMantenimiento
+    $('#select_tipoMantenimiento').on('change', function(event){
         let valor = this.value;
-        solicitud.semana = valor;
+        solicitud.tipoMantenimiento = valor;
     });
 
-    // De select Semana
-    $('#selectBodega').on('change', function(event){
+    // De select tipoEquipo
+    $('#select_tipoEquipo').on('change', function(event){
         let valor = this.value;
-        solicitud.bodega = valor;
+        solicitud.tipoEquipo = valor;
     });
+
+    // De select tipoEquipo
+    $('#select_tecnico').on('change', function(event){
+        let valor = this.value;
+        solicitud.tecnico = valor;
+    });
+
+    // De input fecha
+    $('#uk_dp_fecha').on('change', function(event){
+        let valor = this.value;
+        solicitud.fechaPrometida = valor;
+    });
+
 
     /*Accions */
     $('#save_form_submit').on('click', function(e) {
@@ -180,9 +201,11 @@ class Solicitud {
     constructor() {
         this.cliente = null,
         this.tipoMantenimiento = null,
+        this.tecnico = null,
         this.serieModelo = null,
         this.tipoEquipo = null,
         this.fecha = new Date(),
+        this.fechaPrometida = null,
         this.comentario = null
     }
 }

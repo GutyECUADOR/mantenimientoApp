@@ -87,99 +87,97 @@
                             </div>
                             <hr class="uk-grid-divider">
 
-                            <h2 class="heading_b">2. Tipo de Trabajo</h2>
+                            <h2 class="heading_b">2. Identificacion del equipo</h2>
                             <div class="uk-grid uk-grid-divider" data-uk-grid-margin>
-                                <div class="uk-width-medium-2-3">
-                                    <div class="uk-grid">
-                                        <div class="uk-width-1-1">
-                                            <input type="radio" name="sm" id="sm_regular" data-md-icheck />
-                                            <label for="sm_regular" class="inline-label">Mantenimiento Regular</label>
-                                        </div>
-                                    </div>
-                                    <div class="uk-grid">
-                                        <div class="uk-width-1-1">
-                                            <input type="radio" name="sm" id="sm_express" data-md-icheck />
-                                            <label for="sm_express" class="inline-label">Mantenimiento Completo</label>
-                                        </div>
-                                    </div>
+                                
+                                <div class="uk-width-medium-2-4">
+                                    <select id="select_tipoMantenimiento" class="md-input" data-uk-tooltip="{pos:'top'}" title="Tipo de mantenimiento">
+                                        <option value="" disabled="" selected="" hidden="">Seleccione el tipo de mantenimiento</option>
+                                        <optgroup label="Bicicletas">
+                                            <option value="BBA">Mantenimiento Básico</option>
+                                            <option value="BES">Mantenimiento Especial</option>
+                                        
+                                        </optgroup>
+                                        <optgroup label="Equipos">
+                                            <option value="EPR">Mantenimiento Preventivo</option>
+                                            <option value="ECO">Mantenimiento Correctivo</option>
+                                        </optgroup>
+                                    </select>
                                 </div>
-                                <div class="uk-width-medium-1-3">
-                                    <p class="uk-text-muted"><a href="#modal_shipping" data-uk-modal>Mostrar el detalle de los tipos de mantenimientos</a></p>
-                                    <div class="uk-modal" id="modal_shipping">
-                                        <div class="uk-modal-dialog">
-                                            <button type="button" class="uk-modal-close uk-close"></button>
-                                            <div class="uk-modal-header">
-                                                <h3 class="uk-modal-title">Shipping Info</h3>
-                                            </div>
-                                            <p>With customers all around the world, we are happy to send our products to
-                                                anywhere that has a letterbox. P.O. Boxes in the U.S. and Canada can be sent
-                                                to with the regular shipping option.</p>
-                                            <p>While we always dispatch an order within 2 working days, we can’t directly
-                                                control the delivery times beyond our end.</p>
-                                            <p>As a general rule, assume that regular post will take 3–8 working days for
-                                                Australia, North America and the UK, and 6–28 working days for the rest of
-                                                the world. Express post is generally 1–3 working days for Australia, North
-                                                America and the UK, and 2–8 working days for other International. ​</p>
-                                            <p></p>
+
+                                <div class="uk-width-medium-2-4">
+                                    <select id="select_tipoEquipo" class="md-input" data-uk-tooltip="{pos:'top'}" title="Tipo de equipo">
+                                        <option value="" disabled="" selected="" hidden="">Seleccione el tipo de equipo</option>
+                                        <optgroup label="Bicicletas">
+                                            <option value="R12">RIN 12</option>
+                                            <option value="R16">RIN 16</option>
+                                            <option value="R16">RIN 20</option>
+                                            <option value="R16">RIN 26</option>
+                                        </optgroup>
+                                        <optgroup label="Equipos">
+                                            <option value="CAM">Caminadora</option>
+                                            <option value="MUL">Multifuerza</option>
+                                            <option value="BES">Bici. Estatica</option>
+                                            <option value="BEL">Bici. Eliptica</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="uk-grid" data-uk-grid-margin>
+                                <div class="uk-width-1-1">
+                                    <div class="uk-input-group">
+                                        <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-commenting"></i></span>
+                                        <div class="md-input-wrapper md-input-filled">
+                                        <label>SERIE / MODELO</label>
+                                            <input type="text" id="inputSerieModelo" class="md-input label-fixed" placeholder="Escriba aqui..." />
+                                            <span class="md-input-bar "></span>
                                         </div>
                                     </div>
+                                   
                                 </div>
                             </div>
-                            <hr class="uk-grid-divider">
 
                             <h2 class="heading_b">3. Fecha y Tecnico</h2>
                             <div class="uk-grid uk-grid-divider" data-uk-grid-margin>
-                                <div class="uk-width-medium-2-3">
                                 
-                                    <div class="uk-grid" data-uk-grid-margin="">
-                                        <div class="uk-width-1-3 uk-row-first">
-                                            <div class="md-input-wrapper"><label>Fecha Entrega</label>
-                                            <input type="text" class="md-input" id="uk_dp_fecha" name="uk_dp_fecha"><span class="md-input-bar "></span></div>
-                                            
+                                <div class="uk-width-medium-2-4">
+                                    
+                                    <div class="uk-input-group">
+                                        <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
+                                        <div class="md-input-wrapper ">
+                                            <div class="md-input-wrapper md-input-filled"><label>Fecha Entrega</label>
+                                            <input type="text" class="md-input label-fixed" id="uk_dp_fecha" name="uk_dp_fecha" placeholder="Click aqui..."><span class="md-input-bar "></span>
                                         </div>
-                                        <div class="uk-width-2-3">
-                                        
-                                            <select id="product_edit_tecnico" name="product_edit_tecnico" data-md-selectize>
-                                                <?php
-                                                     foreach ($arrayTecnicos as $opcion) {
-                                                        echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
-                                                     }
-                                                ?>
-                                                
-                                            </select>
+                                    
                                         </div>
                                     </div>
-                                        
-                                   
+                                </div>
+                                <div class="uk-width-medium-2-4">
                                 
+                                    <select id="select_tecnico" name="select_tecnico" class="md-input" data-uk-tooltip="{pos:'top'}" title="Seleccione un tecnico">
+                                        <option value="" disabled="" selected="" hidden="">Seleccione un tecnico</option>
+                                        <?php
+                                                foreach ($arrayTecnicos as $opcion) {
+                                                echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
+                                                }
+                                        ?>
+                                        
+                                    </select>
                                 </div>
-                                <div class="uk-width-medium-1-3">
-                                    <strong>Fecha prevista</strong><br>
-                                    <p class="uk-text-muted">Indique una fecha prevista para la entrega del equipo y asigne un tecnico</p>
-                                   
-                                </div>
+                                    
+                               
                             </div>
-                            <hr class="uk-grid-divider">
-
+                            
                             <h2 class="heading_b">4. Descripcion especifica</h2>
                             <div class="uk-grid uk-grid-divider" data-uk-grid-margin>
-                                <div class="uk-width-medium-2-3">
-                                    <textarea cols="30" rows="4" class="md-input autosized" placeholder="Maximo 200 caracteres" style="overflow-x: hidden; overflow-wrap: break-word; height: 145px;"></textarea>
+                                <div class="uk-width-medium-3-3">
+                                    <textarea cols="30" rows="4" class="md-input autosized" placeholder="Escriba aqui, maximo 200 caracteres" style="overflow-x: hidden; overflow-wrap: break-word; height: 145px;"></textarea>
                                 </div>
-                                <div class="uk-width-medium-1-3">
-                                    <strong>Detalles especificos</strong><br>
-                                    <p class="uk-text-muted">Inique en esta seccion los detalles tecnicos extra del trabajo que no se den por entendido. O hayan sido hechos por el cliente.</p>
-                                </div>
+                                
                             </div>
-                            <hr class="uk-grid-divider">
-
-                            <div class="uk-grid uk-margin-large-top" data-uk-grid-margin>
-                                <div class="uk-width-medium-1-1">
-                                    <button class="md-btn md-btn-primary" type="button">Guardar</button>
-                                    <button class="md-btn md-btn-danger" type="button">Cancelar</button>
-                                </div>
-                            </div>
-
+                            
                         </div>
                     </div>
                 </div>
