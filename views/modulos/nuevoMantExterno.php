@@ -91,6 +91,26 @@
                             <div class="uk-grid uk-grid-divider" data-uk-grid-margin>
                                 
                                 <div class="uk-width-medium-2-4">
+                                    <select id="select_tipoEquipo" class="md-input" data-uk-tooltip="{pos:'top'}" title="Tipo de equipo">
+                                        <option value="" disabled="" selected="" hidden="">Seleccione el tipo de equipo</option>
+                                        <optgroup label="Bicicletas">
+                                            <option value="R12">RIN 12</option>
+                                            <option value="R16">RIN 16</option>
+                                            <option value="R20">RIN 20</option>
+                                            <option value="R26">RIN 26</option>
+                                            <option value="R275">RIN 27.5</option>
+                                            <option value="R29">RIN 29</option>
+                                        </optgroup>
+                                        <optgroup label="Equipos">
+                                            <option value="CAM">Caminadora</option>
+                                            <option value="MUL">Multifuerza</option>
+                                            <option value="BES">Bici. Estatica</option>
+                                            <option value="BEL">Bici. Eliptica</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+
+                                <div class="uk-width-medium-2-4">
                                     <select id="select_tipoMantenimiento" class="md-input" data-uk-tooltip="{pos:'top'}" title="Tipo de mantenimiento">
                                         <option value="" disabled="" selected="" hidden="">Seleccione el tipo de mantenimiento</option>
                                         <optgroup label="Bicicletas">
@@ -105,23 +125,7 @@
                                     </select>
                                 </div>
 
-                                <div class="uk-width-medium-2-4">
-                                    <select id="select_tipoEquipo" class="md-input" data-uk-tooltip="{pos:'top'}" title="Tipo de equipo">
-                                        <option value="" disabled="" selected="" hidden="">Seleccione el tipo de equipo</option>
-                                        <optgroup label="Bicicletas">
-                                            <option value="R12">RIN 12</option>
-                                            <option value="R16">RIN 16</option>
-                                            <option value="R16">RIN 20</option>
-                                            <option value="R16">RIN 26</option>
-                                        </optgroup>
-                                        <optgroup label="Equipos">
-                                            <option value="CAM">Caminadora</option>
-                                            <option value="MUL">Multifuerza</option>
-                                            <option value="BES">Bici. Estatica</option>
-                                            <option value="BEL">Bici. Eliptica</option>
-                                        </optgroup>
-                                    </select>
-                                </div>
+                                
 
                             </div>
 
@@ -173,7 +177,7 @@
                             <h2 class="heading_b">4. Descripcion especifica</h2>
                             <div class="uk-grid uk-grid-divider" data-uk-grid-margin>
                                 <div class="uk-width-medium-3-3">
-                                    <textarea cols="30" rows="4" class="md-input autosized" placeholder="Escriba aqui, maximo 200 caracteres" style="overflow-x: hidden; overflow-wrap: break-word; height: 145px;"></textarea>
+                                    <textarea id="inputComentario" cols="30" rows="4" class="md-input autosized" placeholder="Escriba aqui, maximo 200 caracteres" style="overflow-x: hidden; overflow-wrap: break-word; height: 145px;"></textarea>
                                 </div>
                                 
                             </div>

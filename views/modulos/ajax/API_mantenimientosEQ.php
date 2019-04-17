@@ -74,6 +74,10 @@ class ajax{
         return $this->ajaxController->getInfoClienteController($RUC);
     }
 
+    public function saveMantenimientoExterno($formDataObject) {
+        return $this->ajaxController->saveMantenimientoExternoController($formDataObject);
+    }
+
 }
 
   try{
@@ -348,6 +352,21 @@ class ajax{
           }
           
           echo json_encode($rawdata);
+
+        break;
+
+        case 'saveMantenimientoExterno':
+
+          if (isset($_POST['solicitud'])) {
+            $formDataObject = json_decode($_POST['solicitud']);
+            //$respuesta = $ajax->saveMantenimientoExternoController($formDataObject);
+            $rawdata = array('status' => 'OK', 'mensaje' => 'Mantenimiento externo registrado.', 'respuesta' => $formDataObject->cliente);
+          }else {
+            $rawdata = array('status' => 'FAIL', 'mensaje' => 'Error en post, el objeto de datos no es correcto');
+          }
+        
+        
+        echo json_encode($rawdata);
 
         break;
 

@@ -96,6 +96,41 @@ $(function() {
             .catch( error => console.log(error))
 
         },
+        validaSolicitud: function () {
+            if (solicitud.cliente === null) {
+                UIkit.modal.alert('Indique un cliente por favor.');
+                return;
+            }
+    
+            if (solicitud.tipoEquipo === null) {
+                UIkit.modal.alert('Seleccione tipo de equipo por favor.');
+                return;
+            }
+    
+            if (solicitud.tipoMantenimiento === null) {
+                UIkit.modal.alert('Seleccione tipo de mantenimiento por favor.');
+                return;
+            }
+
+            if (solicitud.tecnico === null) {
+                UIkit.modal.alert('Seleccione tecnico por favor.');
+                return;
+            }
+
+            if (solicitud.serieModelo === null) {
+                UIkit.modal.alert('Indique una serie o modelo del equipo.');
+                return;
+            }
+
+            if (solicitud.fechaPrometida === null) {
+                UIkit.modal.alert('Indique la fecha de entrega del equipo.');
+                return;
+            }
+            
+            
+            return true;
+           
+        },
         save_solicitud: function () {
 
             var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Realizando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
@@ -105,7 +140,7 @@ $(function() {
             let formData = new FormData();
             formData.append('solicitud', JSON.stringify(solicitud));
             
-            fetch('views/modulos/ajax/API_supervisores.php?action=saveActividadesBasicas',{
+            fetch('views/modulos/ajax/API_mantenimientosEQ.php?action=saveMantenimientoExterno',{
                 method: 'POST', 
                 body: formData
             })
@@ -115,8 +150,8 @@ $(function() {
                 modalBlocked.hide();
 
                 if (responseJSON.status == 'OK') {
-                    UIkit.modal.alert(`${responseJSON.mensaje} ${responseJSON.respuesta.CAB.mensaje}`, { center: true, labels: { 'Ok': 'Ok' } }).on('hide.uk.modal', function () {
-                        location.href = "index.php?&action=checkListSupervisoresBasicas";
+                    UIkit.modal.alert(`${responseJSON.mensaje}`, { center: true, labels: { 'Ok': 'Ok' } }).on('hide.uk.modal', function () {
+                        //location.href = "index.php?&action=mantenimientosEXT";
                     });
                 }
             })
@@ -183,13 +218,28 @@ $(function() {
         solicitud.fechaPrometida = valor;
     });
 
+    // Input SerieModelo
+    $('#inputSerieModelo').on('keyup change', function(event){
+        let valor = this.value;
+        solicitud.serieModelo = valor;
+    });
+
+    // Input Comentario
+    $('#inputComentario').on('keyup change', function(event){
+        let valor = this.value;
+        solicitud.comentario = valor;
+    });
 
     /*Accions */
     $('#save_form_submit').on('click', function(e) {
         e.preventDefault();
-        console.log(solicitud);
+        if (app.validaSolicitud()) {
+            UIkit.modal.confirm(`Confirme, desea registrar el documento ?` , function() {
+                console.log(JSON.stringify(solicitud));
+                app.save_solicitud();
+            }, {labels: {'Ok': 'Si, registrar', 'Cancel': 'No'}});
+        }
         
-
     });
 
 
