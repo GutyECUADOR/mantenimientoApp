@@ -30,6 +30,12 @@ class ajax{
       return $this->ajaxController->anularMantenimiento($codMNT);
     }
 
+    public function anularExternoAction($codMNT){
+        return $this->ajaxController->anularMantenimientoExterno($codMNT);
+      }
+
+    
+
     public function aprobarAction($codMNT){
       return $this->ajaxController->aprobarMantenimiento($codMNT);
     }
@@ -359,8 +365,8 @@ class ajax{
 
           if (isset($_POST['solicitud'])) {
             $formDataObject = json_decode($_POST['solicitud']);
-            //$respuesta = $ajax->saveMantenimientoExternoController($formDataObject);
-            $rawdata = array('status' => 'OK', 'mensaje' => 'Mantenimiento externo registrado.', 'respuesta' => $formDataObject->cliente);
+            $respuesta = $ajax->saveMantenimientoExterno($formDataObject);
+            $rawdata = $respuesta;
           }else {
             $rawdata = array('status' => 'FAIL', 'mensaje' => 'Error en post, el objeto de datos no es correcto');
           }
@@ -368,6 +374,28 @@ class ajax{
         
         echo json_encode($rawdata);
 
+        break;
+
+        case 'anularExterno':
+            /* Establece estado ANULADO (2) en la tabla mantenimientosEQ*/
+            if (isset($_GET["codigoMNT"])) {
+                $codigoMNT = $_GET["codigoMNT"];
+            
+                $respuesta = $ajax->anularExternoAction($codigoMNT);
+                if($respuesta){
+                $response = array('status' => 'OK'
+                            , 'mensaje' => 'Mantenimiento establecido como anulado');
+                }else{
+                $response = array('status' => 'FAIL'
+                            , 'mensaje' => 'Ha ocurrido un problema al realizar la petición');
+                }
+
+            }else{
+                $response = array('status' => 'FAIL'
+                , 'mensaje' => 'No se han indicado codigo de mantenimiento');
+            }
+        
+        echo json_encode($response);
         break;
 
         case 'test':

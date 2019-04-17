@@ -152,6 +152,30 @@ class ajaxModel  {
         }
     }
 
+    public function anulaMantenimientoExternoByCod($codMNT, $dataBaseName='KAO_wssp'){
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+
+        $codEmpresa =  trim($_SESSION["codEmpresaAUTH"]); //Codigo de la empresa seleccionada en login
+
+        $query = "
+            UPDATE 
+                dbo.mantExternosEQ_CAB 
+            SET 
+                estado = '2'
+            WHERE 
+                codMantExt = '$codMNT' 
+                AND empresa ='$codEmpresa'
+        ";
+
+        $stmt = $this->db->prepare($query); 
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     /*Retorna string con el numero de columnas encontradas*/
     public function isDisponibleOrdenFisica($formData, $codEmpresa, $dataBaseName='KAO_wssp'){
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
@@ -755,6 +779,42 @@ class ajaxModel  {
             return array('status' => 'error', 'mensaje' => $exception->getMessage() );
         }
    
+    }
+
+    public function persist_MantenimientoExterno($formDataObject, $dataBaseName='KAO_wssp'){
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+
+        $codigoDOC = 'MNE'; //Codigo para checklist
+        $sth = $this->db->prepare("exec sp_genera_codMantenimientoExt ?");
+        $sth->bindParam(1, $codigoDOC);
+        $sth->execute();
+        $arraycodigo = $sth->fetch();
+        $newCod = $arraycodigo[0]; // Codgigo MNT obtenido por SP
+
+        $usuarioActivo = trim($_SESSION["usuarioRUC"]); //Cedula del usuario logeado
+        $codEmpresa =  trim($_SESSION["codEmpresaAUTH"]); //Codigo de la empresa seleccionada en login
+
+        $fechaActual = date('Ymd');
+        $cliente = $formDataObject->cliente;
+
+        $query = "
+            INSERT INTO 
+                dbo.mantExternosEQ_CAB
+            VALUES
+                ('$newCod', '$usuarioActivo', '$codEmpresa','$fechaActual','$formDataObject->fechaPrometida', null,'$cliente->RUC','$formDataObject->tecnico','$formDataObject->tipoEquipo','$formDataObject->tipoMantenimiento','$formDataObject->serieModelo','$formDataObject->comentario', 0) 
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); 
+            $stmt->execute();
+            return array('status' => 'ok', 'mensaje' => 'Se ha registrado correctamente '.$newCod, 'newCod' => $newCod); 
+            
+        }catch(PDOException $exception){
+            return array('status' => 'error', 'mensaje' => $exception->getMessage() );
+        }
+
+        
     }
 }
 

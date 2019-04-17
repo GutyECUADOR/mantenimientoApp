@@ -208,6 +208,14 @@ class ajaxController  {
     }
 
     /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
+    public function anularMantenimientoExterno($data){
+        $ajaxModel = new \models\ajaxModel();
+        $response = $ajaxModel->anulaMantenimientoExternoByCod($data);
+        return $response;
+    }
+
+    
+    /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
     public function aprobarMantenimiento($data){
         $ajaxModel = new \models\ajaxModel();
         $response = $ajaxModel->aprobarMantenimientoByCod($data);
@@ -407,6 +415,11 @@ class ajaxController  {
     public function getInfoClienteController($RUC){
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
         $response = $this->ajaxModel->getInfoClienteModel($RUC, $dbEmpresa);
+        return $response;
+    }
+
+    public function saveMantenimientoExternoController($formDataObject){
+        $response = $this->ajaxModel->persist_MantenimientoExterno($formDataObject);
         return $response;
     }
     

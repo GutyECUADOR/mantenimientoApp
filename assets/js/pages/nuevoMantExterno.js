@@ -149,9 +149,9 @@ $(function() {
                 console.log(responseJSON);
                 modalBlocked.hide();
 
-                if (responseJSON.status == 'OK') {
+                if (responseJSON.status == 'OK' || responseJSON.status == 'ok') {
                     UIkit.modal.alert(`${responseJSON.mensaje}`, { center: true, labels: { 'Ok': 'Ok' } }).on('hide.uk.modal', function () {
-                        //location.href = "index.php?&action=mantenimientosEXT";
+                        location.href = "index.php?&action=mantenimientosEXT";
                     });
                 }
             })

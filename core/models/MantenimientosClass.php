@@ -97,6 +97,55 @@ class MantenimientosClass {
     }
 
     /*
+        Recupera los registros de la tabla mantenimientosEQExternos en KAO_wssp
+        - Indicar base de datos (empresa) de la cual realizar la consulta o retornara false de encontrar dicho nombre de DB
+    */
+    public function getMantenimientosExternosAgendados($dataBaseName='KAO_wssp', $cantidad=1, $fechaINI, $fechaFIN) {
+
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
+        
+        $codEmpresa = $this->getCodeDBByName($dataBaseName)['Codigo']; // Usado para filtro de resultados. codigo de la DB
+
+        $query = "
+            SELECT 
+                Cliente.NOMBRE as NombreCliente,
+                Cliente.TELEFONO1 as Telefono,
+                Cliente.DIRECCION1 as Direccion,
+                Cliente.EMAIL as Email,
+                WSSP.codMantExt,
+                WSSP.empresa,
+                WSSP.fechaPrometida as fechaPrometida, 
+                WSSP.estado,
+                SBIO.Apellido + SBIO.Nombre as Encargado
+
+            FROM 
+                dbo.COB_CLIENTES as Cliente
+            INNER JOIN KAO_wssp.dbo.mantExternosEQ_CAB as WSSP on Cliente.RUC COLLATE DATABASE_DEFAULT = WSSP.cliente 
+            INNER JOIN SBIOKAO.dbo.Empleados as SBIO on WSSP.tecnico COLLATE DATABASE_DEFAULT = SBIO.Cedula
+
+            WHERE 
+                WSSP.empresa = '$codEmpresa'
+                AND WSSP.estado = '0'
+            
+            ORDER BY NombreCliente ASC 
+
+
+        ";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+
+            if($stmt->execute()){
+                return $stmt->fetchAll( \PDO::FETCH_ASSOC );
+            }else{
+                $resulset = false;
+            }
+        return $resulset;  
+
+   
+    }
+
+    /*
         Recupera los registros de la tabla mantenimientosEQ en KAO_wssp
         - Indicar base de datos (empresa) de la cual realizar la consulta o retornara false de encontrar dicho nombre de DB
     */
@@ -214,6 +263,54 @@ class MantenimientosClass {
             WSSP.fechaFin,
             WSSP.comentario,
             WSSP.estado
+        ORDER BY NombreCliente ASC 
+
+        ";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+    
+            if($stmt->execute()){
+                $resulset = $stmt->fetch( \PDO::FETCH_ASSOC );
+            }else{
+                $resulset = false;
+            }
+        return $resulset;  
+
+   
+    }
+
+    /*
+        Recupera el registro con el codigo indicado tabla mantenimientosEQ en KAO_wssp
+    */
+    public function getMantenimientoExternoByCod($dataBaseName='KAO_wssp', $codMantenimiento) {
+
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
+        
+        $codEmpresa = $this->getCodeDBByName($dataBaseName)['Codigo']; // Usado para filtro de resultados. codigo de la DB
+
+        //Query de consulta con parametros para bindear si es necesario.
+        $query = "
+        SELECT 
+            Cliente.NOMBRE as NombreCliente,
+            Cliente.TELEFONO1 as Telefono,
+            Cliente.DIRECCION1 as Direccion,
+            Cliente.EMAIL as Email,
+            WSSP.codMantExt,
+            WSSP.empresa,
+            WSSP.fechaPrometida as fechaPrometida, 
+            WSSP.estado,
+            SBIO.Apellido + SBIO.Nombre as Encargado
+        
+        FROM 
+            dbo.COB_CLIENTES as Cliente
+        INNER JOIN KAO_wssp.dbo.mantExternosEQ_CAB as WSSP on Cliente.RUC COLLATE DATABASE_DEFAULT = WSSP.cliente 
+        INNER JOIN SBIOKAO.dbo.Empleados as SBIO on WSSP.tecnico COLLATE DATABASE_DEFAULT = SBIO.Cedula
+        
+        WHERE 
+            WSSP.empresa = '$codEmpresa'
+            AND WSSP.codMantExt = '$codMantenimiento'
+            
         ORDER BY NombreCliente ASC 
 
         ";  // Final del Query SQL 
