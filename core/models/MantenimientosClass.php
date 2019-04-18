@@ -113,10 +113,7 @@ class MantenimientosClass {
                 Cliente.TELEFONO1 as Telefono,
                 Cliente.DIRECCION1 as Direccion,
                 Cliente.EMAIL as Email,
-                WSSP.codMantExt,
-                WSSP.empresa,
-                WSSP.fechaPrometida as fechaPrometida, 
-                WSSP.estado,
+                WSSP.*,
                 SBIO.Apellido + SBIO.Nombre as Encargado
 
             FROM 
@@ -296,10 +293,7 @@ class MantenimientosClass {
             Cliente.TELEFONO1 as Telefono,
             Cliente.DIRECCION1 as Direccion,
             Cliente.EMAIL as Email,
-            WSSP.codMantExt,
-            WSSP.empresa,
-            WSSP.fechaPrometida as fechaPrometida, 
-            WSSP.estado,
+            WSSP.*,
             SBIO.Apellido + SBIO.Nombre as Encargado
         
         FROM 

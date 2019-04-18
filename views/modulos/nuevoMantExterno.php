@@ -5,6 +5,10 @@
 
     $ajaxController = new controllers\ajaxController();
     $arrayTecnicos = $ajaxController->getAllTecnicos();
+    $arrayBicis = $ajaxController->getAllTiposEquiposBy('BICI');
+    $arrayEquipos = $ajaxController->getAllTiposEquiposBy('EQUI');
+    $arrayMantenimientosBici = $ajaxController->getAllTiposEquiposBy('MANTB');
+    $arrayMantenimientosEquipos = $ajaxController->getAllTiposEquiposBy('MANTE');
 
 ?>
 
@@ -94,18 +98,18 @@
                                     <select id="select_tipoEquipo" class="md-input" data-uk-tooltip="{pos:'top'}" title="Tipo de equipo">
                                         <option value="" disabled="" selected="" hidden="">Seleccione el tipo de equipo</option>
                                         <optgroup label="Bicicletas">
-                                            <option value="R12">RIN 12</option>
-                                            <option value="R16">RIN 16</option>
-                                            <option value="R20">RIN 20</option>
-                                            <option value="R26">RIN 26</option>
-                                            <option value="R275">RIN 27.5</option>
-                                            <option value="R29">RIN 29</option>
+                                            <?php
+                                                foreach ($arrayBicis as $opcion) {
+                                                echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
+                                                }
+                                            ?>
                                         </optgroup>
                                         <optgroup label="Equipos">
-                                            <option value="CAM">Caminadora</option>
-                                            <option value="MUL">Multifuerza</option>
-                                            <option value="BES">Bici. Estatica</option>
-                                            <option value="BEL">Bici. Eliptica</option>
+                                            <?php
+                                                foreach ($arrayEquipos as $opcion) {
+                                                echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
+                                                }
+                                            ?>
                                         </optgroup>
                                     </select>
                                 </div>
@@ -114,13 +118,19 @@
                                     <select id="select_tipoMantenimiento" class="md-input" data-uk-tooltip="{pos:'top'}" title="Tipo de mantenimiento">
                                         <option value="" disabled="" selected="" hidden="">Seleccione el tipo de mantenimiento</option>
                                         <optgroup label="Bicicletas">
-                                            <option value="BBA">Mantenimiento Básico</option>
-                                            <option value="BES">Mantenimiento Especial</option>
+                                            <?php
+                                                foreach ($arrayMantenimientosBici as $opcion) {
+                                                echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
+                                                }
+                                            ?>
                                         
                                         </optgroup>
                                         <optgroup label="Equipos">
-                                            <option value="EPR">Mantenimiento Preventivo</option>
-                                            <option value="ECO">Mantenimiento Correctivo</option>
+                                            <?php
+                                                foreach ($arrayMantenimientosEquipos as $opcion) {
+                                                echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
+                                                }
+                                            ?>
                                         </optgroup>
                                     </select>
                                 </div>
@@ -135,7 +145,7 @@
                                         <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-commenting"></i></span>
                                         <div class="md-input-wrapper md-input-filled">
                                         <label>SERIE / MODELO</label>
-                                            <input type="text" id="inputSerieModelo" class="md-input label-fixed" placeholder="Escriba aqui..." />
+                                            <input type="text" id="inputSerieModelo" class="md-input label-fixed" placeholder="Escriba aqui..." maxlength="75" />
                                             <span class="md-input-bar "></span>
                                         </div>
                                     </div>

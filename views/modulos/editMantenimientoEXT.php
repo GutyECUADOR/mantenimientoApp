@@ -22,13 +22,13 @@
     $arrayBodegas = $ajaxController->getAllBodegas();
 
     /*Redireccion si no existe el mantenimiento o tiene status diferente de 0 */
-    /* if (empty($arrayMantenimiento)){
+    if (empty($arrayMantenimiento)){
         header("Location:index.php?&action=inicio"); 
     }
 
     if (trim($arrayMantenimiento["estado"]) != 0) {
         header("Location:index.php?&action=inicio"); 
-    } */
+    }
 
     var_dump($arrayMantenimiento);
     
@@ -46,10 +46,10 @@
     <!-- CONTENIDO DE LA SECCION -->    
     <div id="page_content">
         <div id="page_heading" data-uk-sticky="{ top: 48, media: 960 }">
-            <h1 id="product_edit_name"><?php ?></h1>
+            <h1 id="product_edit_name"><?php echo $arrayMantenimiento['serieModelo']?></h1>
             <span class="uk-text-muted uk-text-upper uk-text-small" id="product_edit_sn">
-                <strong id="codMantenimiento"><?php ?></strong>
-                , técnico asignado <strong><?php echo $arrayMantenimiento["Encargado"]?></strong>, orden fisica <strong><?php ?></strong>
+                <strong id="codMantenimiento"><?php echo $arrayMantenimiento['codMantExt']?></strong>
+                , técnico asignado <strong><?php echo $arrayMantenimiento["Encargado"]?></strong>, orden fisica <strong><?php echo $arrayMantenimiento['codOrdenFisica'] ?></strong>
             </span>
         </div>
         <div id="page_content_inner">
@@ -130,7 +130,7 @@
                                 <div class="uk-grid uk-grid-divider uk-grid-medium" data-uk-grid-margin>
                                     <div class="uk-width-large-1-2">
                                         <div class="uk-form-row">
-                                            <input type="hidden" class="md-input" id="codMantenimiento" name="codMantenimiento" value="<?php echo trim($arrayMantenimiento["codMantenimiento"])?>" readonly/>
+                                            <input type="hidden" class="md-input" id="codMantenimiento" name="codMantenimiento" value="<?php echo trim($arrayMantenimiento["codMantExt"])?>" readonly/>
                                             <input type="hidden" class="md-input" id="codCliente" name="codCliente" value="<?php echo trim($arrayMantenimiento["CodCliente"])?>" readonly/>
                                         </div>
                                    
@@ -151,21 +151,10 @@
                                             <input type="number" class="md-input" id="product_ordenFisica" name="product_ordenFisica" min="1" max="99999999" maxlength="8" value="<?php echo trim($arrayMantenimiento["codOrdenFisica"])?>"/>
                                         </div>
                                         <div class="uk-form-row">
-                                            <label for="uk_dp_start">Fecha del Mantenimiento</label>
-                                            <input class="md-input label-fixed" type="date" id="uk_dp_start" name="uk_dp_fecha"  value="<?php echo date("Y-m-d", strtotime($arrayMantenimiento["fechaInicio"]))?>">
+                                            <label for="uk_dp_start">Fecha de entrega prometida</label>
+                                            <input class="md-input label-fixed" type="date" id="uk_dp_start" name="uk_dp_fecha"  value="<?php echo date("Y-m-d", strtotime($arrayMantenimiento["fechaPrometida"]))?>" disabled>
                                         </div>
-                                        <div class="uk-form-row">
-                                            <label for="product_edit_tecnico" class="uk-form-label">Técnico Asignado</label>
-                                            <select id="product_edit_tecnico" name="product_edit_tecnico" data-md-selectize>
-                                                <?php
-                                                     foreach ($arrayTecnicos as $opcion) {
-                                                        echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
-                                                     }
-                                                ?>
-                                                
-                                            </select>
-                                        </div>
-
+                                        
                                          <div class="uk-form-row">
                                             <label for="product_edit_bodega" class="uk-form-label">Bodega</label>
                                             <select id="product_edit_bodega" name="product_edit_bodega" data-md-selectize>
@@ -180,9 +169,8 @@
 
                                         <div class="uk-form-row">
                                             <label for="product_edit_tecnico" class="uk-form-label">Pago mantenimiento</label>
-                                            <select id="product_edit_facturadoa" name="product_edit_facturadoa" data-md-selectize>
-                                                <option value="1">Facturado a cliente</option>
-                                                <option value="0">Facturado a KAO Importaciones</option>
+                                            <select id="product_edit_facturadoa" name="product_edit_facturadoa" data-md-selectize disabled>
+                                                <option value="1" selected>Facturado a cliente</option>
                                             </select>
                                         </div>
 
@@ -190,84 +178,10 @@
                                     <div class="uk-width-large-1-2">
                                         <div class="uk-form-row">
                                             <label for="product_edit_description_control">Observaciones</label>
-                                            <textarea class="md-input" name="product_edit_description_control" id="product_edit_description_control" cols="30" rows="4"><?php echo trim($arrayMantenimiento['comentario']);?></textarea>
+                                            <textarea class="md-input" name="product_edit_description_control" id="product_edit_description_control" cols="30" rows="4"><?php  echo trim($arrayMantenimiento['serieModelo']);  echo '. '; echo trim($arrayMantenimiento['comentario']);?></textarea>
                                             
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card de repuestos ya ingresados -->
-                        <div class="md-card">
-                            <div class="md-card-toolbar">
-                                <h3 class="md-card-toolbar-heading-text">
-                                    Ordenes ya registradas
-                                </h3>
-                            </div>
-                            <div class="md-card-content">
-                                <div class="uk-overflow-container">
-                                    <table class="uk-table uk-table-nowrap uk-table-hover table_check">
-                                        <thead>
-                                        <tr>
-                                            <th class="uk-width-1-10 uk-text-center">ID</th>
-                                            <th class="uk-width-2-10">Facturado A</th>
-                                            <th class="uk-width-2-10 uk-text-center">Fecha</th>
-                                            <th class="uk-width-1-10 uk-text-center">Bodega</th>
-                                            <th class="uk-width-1-10 uk-text-center">Monto</th>
-                                            <th class="uk-width-2-10 uk-text-center">Acciones</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                                foreach ($arrayRepuestos as $repuesto) {
-                                                    $fecha = date_create($repuesto['FECHA']);
-                                                    $bodegaName = $repuesto['bodegaName'];
-                                                    $RUCCliente = trim($repuesto['RUC']);
-                                                    if ( $RUCCliente == '1790417581001' ) {
-                                                        $style = 'uk-badge uk-badge-primary';
-                                                    }else{
-                                                        $style = 'uk-badge uk-badge-success';
-                                                    }
-                                            ?>      
-                                                    <tr>
-                                                        <td class="uk-text-center"><?php echo $repuesto['ID']?></td>
-                                                        <td class="uk-text-center">
-                                                            <span class="<?php echo $style ?>">
-                                                                <?php echo $repuesto['facturadoA'] ?>
-                                                            </span>
-                                                        </td>
-                                                        <td class="uk-text-center"><?php echo date_format($fecha, 'Y-m-d H:i:s')?></td>
-                                                        <td class="uk-text-center"><?php echo $bodegaName ?></td>
-                                                        <td><?php echo number_format($repuesto['TOTAL'], 2)?></td>
-                                                        <td class="uk-text-center">
-                                                            <a><i class="md-icon material-icons" data-uk-modal="{target:'#modal_full'}" data-mantenimiento="<?php echo $repuesto['ID']?> ">&#xE88F;</i></a>
-                                                        </td>
-                                                    </tr>
-                                               
-                                                <?php
-                                                 }
-                                            ?>
-                                            
-                                            <div class="uk-modal uk-modal-card-fullscreen" id="modal_full">
-                                                <div class="uk-modal-dialog uk-modal-dialog-blank">
-                                                    <div class="md-card uk-height-viewport">
-                                                        <div class="md-card-toolbar">
-                                                            
-                                                            <span class="md-icon material-icons uk-modal-close">&#xE5C4;</span>
-                                                            <h3 class="md-card-toolbar-heading-text">
-                                                                Detalle del documento: 
-                                                            </h3>
-                                                        </div>
-                                                        <div class="md-card-content">
-                                                        Sin contenido
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -276,7 +190,7 @@
                         <div class="md-card">
                             <div class="md-card-toolbar">
                                 <h3 class="md-card-toolbar-heading-text">
-                                    Nuevos Repuestos
+                                    Items a facturar
                                 </h3>
                             </div>
                             <div class="md-card-content">

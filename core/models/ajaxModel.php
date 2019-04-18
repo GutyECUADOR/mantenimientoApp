@@ -307,6 +307,25 @@ class ajaxModel  {
         return $resulset;  
     }
 
+    public function getAllTiposEquiposByModel($tipoEquipo='BICI', $dataBaseName='KAO_wssp') {
+
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
+        
+        //Query de consulta con parametros para bindear si es necesario.
+        $query = "SELECT codigo as Value, Descripcion as DisplayText FROM dbo.mantTiposEquipos WHERE tipo = '$tipoEquipo' ORDER BY Descripcion";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+    
+            if($stmt->execute()){
+                return $stmt->fetchAll( \PDO::FETCH_ASSOC);
+                
+            }else{
+                $resulset = false;
+            }
+        return $resulset;  
+    }
+
     public function getArraysSupervisores($dataBaseName='KAO_wssp') {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
@@ -403,6 +422,40 @@ class ajaxModel  {
         WHERE 
             codMantenimiento = '$codMNT' 
             AND codEmpresa ='$codEmpresa'
+        ";
+
+
+        try{
+            $stmt = $this->db->prepare($query); 
+            $stmt->execute();
+            
+            return array('status' => 'ok', 'mensaje' => $codMNT. ' actualizada' ); 
+            
+        }catch(PDOException $exception){
+            return array('status' => 'error', 'mensaje' => 'Error en mantenimientosEQ' . $exception->getMessage() );
+        }
+
+
+        
+    }
+
+    /* Actualiza tabla mantenimientosEQ con la informacion que llega del formulario editMantenimiento*/
+    public function updateMantenimientoExterno($formData, $dataBaseName='KAO_wssp'){
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+
+        $codEmpresa = trim($_SESSION["codEmpresaAUTH"]); //Codigo de la empresa seleccionada en login
+        $codMNT = $formData->codMantenimiento;
+        $codOrdenFisica = str_pad($formData->product_ordenFisica, 8, "0", STR_PAD_LEFT);
+       
+        $query = "
+        UPDATE 
+            DBO.mantExternosEQ_CAB
+        SET 
+            codOrdenFisica = '$codOrdenFisica'
+        WHERE 
+            codMantExt = '$codMNT' 
+            AND empresa ='$codEmpresa'
         ";
 
 
@@ -802,7 +855,7 @@ class ajaxModel  {
             INSERT INTO 
                 dbo.mantExternosEQ_CAB
             VALUES
-                ('$newCod', '$usuarioActivo', '$codEmpresa','$fechaActual','$formDataObject->fechaPrometida', null,'$cliente->RUC','$formDataObject->tecnico','$formDataObject->tipoEquipo','$formDataObject->tipoMantenimiento','$formDataObject->serieModelo','$formDataObject->comentario', 0) 
+                ('$newCod', '0' , '$usuarioActivo', '$codEmpresa','$fechaActual','$formDataObject->fechaPrometida', null,'$cliente->RUC','$formDataObject->tecnico','$formDataObject->tipoEquipo','$formDataObject->tipoMantenimiento','$formDataObject->serieModelo','$formDataObject->comentario', 0) 
         ";
 
         try{

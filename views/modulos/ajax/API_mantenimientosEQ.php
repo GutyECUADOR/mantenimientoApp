@@ -60,6 +60,10 @@ class ajax{
       return $this->ajaxController->updateMantenimientoByCod($formData, $productosArray);
     }
 
+    public function updateMantenimientoExterno($formData, $productosArray){
+        return $this->ajaxController->updateMantenimientoExternoByCod($formData, $productosArray);
+      }
+
     public function insertExtraMantenimiento($formData){
       return $this->ajaxController->agendarExtraMantenimiento($formData);
     }
@@ -281,6 +285,21 @@ class ajax{
                 $productosArray = json_decode($_GET["productosArray"]);
 
                 $updateCorrecto = $ajax->updateMantenimiento($dataDecode, $productosArray);
+            
+                echo json_encode($updateCorrecto);
+            
+            }else{
+                $rawdata = array('status' => 'FAIL', 'mensaje' =>'No existe formData.');
+                echo json_encode($rawdata);
+            }
+            break;
+
+        case 'updateOrdenExterna':
+            if(isset($_GET["formData"]) && isset($_GET["productosArray"])){
+                $dataDecode = json_decode($_GET["formData"]);
+                $productosArray = json_decode($_GET["productosArray"]);
+
+                $updateCorrecto = $ajax->updateMantenimientoExterno($dataDecode, $productosArray);
             
                 echo json_encode($updateCorrecto);
             

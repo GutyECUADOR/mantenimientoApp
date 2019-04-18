@@ -160,6 +160,7 @@
                                         <!-- Titulo del card-->
                                         <?php 
                                             echo $equipo['codMantExt'];
+                                            echo "</br><small>".$equipo['serieModelo']."</small>";
                                         ?>
                                     </h3>
                                 </div>
