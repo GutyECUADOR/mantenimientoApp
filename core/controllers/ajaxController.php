@@ -222,6 +222,13 @@ class ajaxController  {
         return $response;
     }
 
+    /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
+    public function aprobarMantenimientoExtenoByCod($data){
+        $ajaxModel = new \models\ajaxModel();
+        $response = $ajaxModel->aprobarMantenimientoExtenoByCod($data);
+        return $response;
+    }
+
 
     /* Realiza peticion al modelo para setear estado 3 al registro de la tabla mantenimientosEQ*/
     public function omitirMantenimiento($data){
@@ -392,7 +399,7 @@ class ajaxController  {
         $ajaxModel = new \models\ajaxModel();
         $VEN_CAB = new \models\venCabClass();
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
-        $tipoDOC = 'C02';
+        $tipoDOC = $formData->product_edit_bodega;
         //Actualizacion a WSSP - MantenimientosEQ
         $response_WSSP = $ajaxModel->updateMantenimientoExterno($formData);
        
@@ -413,14 +420,10 @@ class ajaxController  {
 
             $new_cod_VENCAB = $datosEmpresa['Oficina'].$datosEmpresa['Ejercicio'].$tipoDOC.$newCodigoWith0;
             
-            //Creacion y asignacion de valores a VEN_CAB
-            if ($formData->product_edit_facturadoa == 1) {
-                $VEN_CAB->setCliente($formData->codCliente);
-                $VEN_CAB->setPorcentDescuento(0);
-            }else{
-                $VEN_CAB->setCliente($codIMPORTKAO);
-                $VEN_CAB->setPorcentDescuento(90);
-            }
+           
+            $VEN_CAB->setCliente($formData->codCliente);
+            $VEN_CAB->setPorcentDescuento(0);
+           
 
             $VEN_CAB->setPcID(php_uname('n'));
             $VEN_CAB->setOficina($datosEmpresa['Oficina']);
@@ -443,20 +446,14 @@ class ajaxController  {
              //Registro en VEN_CAB y MOV mantenimientosEQ
             $response_VEN_CAB = $ajaxModel->insertVEN_CAB($VEN_CAB, $dbEmpresa);
 
+            // Registro en mov_mantenimientosEQ
             $response_MOV_MNT = $ajaxModel->insertMOVMantenimientoEQ($formData, $new_cod_VENCAB);
             
             $arrayVEN_MOVinsets = array();
 
                 foreach ($VEN_CAB->getProductos() as $producto) {
                     $VEN_MOV = new \models\venMovClass();
-                    if ($formData->product_edit_facturadoa == 1) {
-                        $VEN_MOV->setCliente($formData->codCliente);
-                        
-                    }else{
-                        $VEN_MOV->setCliente($codIMPORTKAO);
-                    }
-    
-                
+                    $VEN_MOV->setCliente($formData->codCliente);
                     $VEN_MOV->setOficina($datosEmpresa['Oficina']);
                     $VEN_MOV->setEjercicio($datosEmpresa['Ejercicio']);
                     $VEN_MOV->setTipoDoc($tipoDOC);
@@ -478,14 +475,14 @@ class ajaxController  {
                     
                 }
          
-            $response_Aprobada = $this->aprobarMantenimiento($formData->codMantenimiento);
+            $response_Aprobada = $this->aprobarMantenimientoExtenoByCod($formData->codMantenimiento);
             
             return array('status' => 'OK', 
                     'mensaje'  => 'Mantenimiento Actualizado, y se registraron los repuestos.',
                     'newCodigoWith0' => $newCodigoWith0,
                     'response_WSSP' => $response_WSSP,
-                    'response_VEN_CAB' => false,
-                    'response_MOV_MNT' => false,
+                    'response_VEN_CAB' => $response_VEN_CAB,
+                    'response_MOV_MNT' => $response_MOV_MNT,
                     'arrayVEN_MOVinsets' => $arrayVEN_MOVinsets
                 ); 
 

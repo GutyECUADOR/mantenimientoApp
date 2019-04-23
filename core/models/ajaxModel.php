@@ -223,6 +223,32 @@ class ajaxModel  {
         }
     }
 
+    public function aprobarMantenimientoExtenoByCod($codMNT, $dataBaseName='KAO_wssp'){
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+
+        $codEmpresa =  trim($_SESSION["codEmpresaAUTH"]); //Codigo de la empresa seleccionada en login
+        $fechaActual = date('Ymd');
+
+        $query = "
+            UPDATE 
+                dbo.mantExternosEQ_CAB 
+            SET 
+                estado = '1',
+                fechaEntrega = '$fechaActual'
+            WHERE 
+                codMantExt = '$codMNT' 
+                AND empresa ='$codEmpresa'
+        ";
+
+        $stmt = $this->db->prepare($query); 
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public function omitirMantenimientoByCod($data, $dataBaseName='KAO_wssp'){
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX();

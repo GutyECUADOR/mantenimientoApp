@@ -29,8 +29,6 @@
     if (trim($arrayMantenimiento["estado"]) != 0) {
         header("Location:index.php?&action=inicio"); 
     }
-
-    var_dump($arrayMantenimiento);
     
 ?>
 

@@ -222,19 +222,15 @@ altair_product_edit = {
                             response = JSON.parse(response);
                             console.log(response);
                             
-                            if (response.status === 'OK' && getProductos().length === 0) {
+                            if (response.status === 'OK') {
                                 
                                 UIkit.modal.alert(response.mensaje, { center: true, labels: { 'Ok': 'Ok' } }).on('hide.uk.modal', function () {
                                     location.href = "index.php?&action=mantenimientosEXT";
                                 });
 
-                            } else if (response.status === 'OK' && getProductos().length >= 1 ) {
-                               
-                                UIkit.modal.alert(response.mensaje, { labels: { 'Ok': 'Ok' } });
-                                
                             } else if (response.Result) {
                                
-                                UIkit.modal.alert("Error: " + response.Message, { labels: { 'Ok': 'Ok' } });
+                                UIkit.modal.alert("Error, reporte a sistemas: " + response.Message, { labels: { 'Ok': 'Ok' } });
                             }
                             
                             
