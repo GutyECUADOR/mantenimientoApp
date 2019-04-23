@@ -290,7 +290,8 @@ class MantenimientosClass {
         $query = "
         SELECT 
             Cliente.NOMBRE as NombreCliente,
-            Cliente.RUC as CodCliente,
+            Cliente.RUC as RUC,
+            Cliente.CODIGO as CodCliente,
             Cliente.TELEFONO1 as Telefono,
             Cliente.DIRECCION1 as Direccion,
             Cliente.EMAIL as Email,
