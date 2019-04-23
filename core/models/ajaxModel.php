@@ -875,13 +875,14 @@ class ajaxModel  {
         $codEmpresa =  trim($_SESSION["codEmpresaAUTH"]); //Codigo de la empresa seleccionada en login
 
         $fechaActual = date('Ymd');
+        $fechaPrometida = date('Ymd H:i:s', strtotime("$formDataObject->fechaPrometida"));
         $cliente = $formDataObject->cliente;
 
         $query = "
             INSERT INTO 
                 dbo.mantExternosEQ_CAB
             VALUES
-                ('$newCod', '0' , '$usuarioActivo', '$codEmpresa','$fechaActual','$formDataObject->fechaPrometida', null,'$cliente->RUC','$formDataObject->tecnico','$formDataObject->tipoEquipo','$formDataObject->tipoMantenimiento','$formDataObject->serieModelo','$formDataObject->comentario', 0) 
+                ('$newCod', '0' , '$usuarioActivo', '$codEmpresa','$fechaActual','$fechaPrometida', null,'$cliente->RUC','$formDataObject->tecnico','$formDataObject->tipoEquipo','$formDataObject->tipoMantenimiento','$formDataObject->serieModelo','$formDataObject->comentario', 0) 
         ";
 
         try{

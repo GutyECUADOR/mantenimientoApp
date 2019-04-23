@@ -144,7 +144,9 @@ $(function() {
                 method: 'POST', 
                 body: formData
             })
-            .then( response =>  response.json())
+            .then( response =>  {
+                response.json();
+            })
             .then( responseJSON => {
                 console.log(responseJSON);
                 modalBlocked.hide();
