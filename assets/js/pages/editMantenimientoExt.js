@@ -88,9 +88,9 @@ function validaProducto(codProducto, inputHTML) {
 function getPorcentDescuento(){
     let facturadoA = document.getElementById('product_edit_facturadoa').value;
     if (facturadoA == '0'){
-        return 90;
+        return 0;
     }else{
-        return 10;
+        return 0;
     }
 }
 

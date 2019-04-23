@@ -198,6 +198,15 @@
                                         <div class="uk-overflow-container">
                                             
                                                 <table class="uk-table repuestos_table" data-dynamic-fields="field_template_a" dynamic-fields-counter="3">
+                                                    <tr class="form_section">
+                                                        <td class="uk-width-2-10"><b>Codigo</b></td>
+                                                        <td class="uk-width-5-10"><b>Producto</b></td>
+                                                        <td class="uk-width-1-10"><b>Cantidad</b></td>
+                                                        <td class="uk-width-1-10"><b>Descuento</b></td>
+                                                        <td class="uk-width-2-10"><b>Valor</b></td>
+                                                        <td class="uk-width-1-10 uk-text-right uk-text-middle"></td>
+                                                    </tr>
+                                                
                                                 </table>
                                                       
                                             <script id="field_template_a" type="text/x-handlebars-template">
