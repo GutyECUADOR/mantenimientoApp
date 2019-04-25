@@ -48,6 +48,10 @@ class mainModel {
             $contenido = "views/modulos/checkActBasicasSup.php";
             break;   
 
+                case 'tableListActBasicasSup':
+                $contenido = "views/modulos/tableListActBasicasSup.php";
+                break;
+
             case 'userconfig':
             $contenido = "views/modulos/userConfig.php";
             break;    

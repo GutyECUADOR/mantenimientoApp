@@ -52,6 +52,7 @@
                         </a>
                         <ul>
                             <li><a href="?&action=checkListSupervisoresBasicas">Actividades Basicas a cumplir</a></li>
+                            <li><a href="?&action=tableListActBasicasSup">Resumen mensual</a></li>
                         </ul>
                     </li>
 

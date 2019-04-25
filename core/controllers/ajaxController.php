@@ -286,7 +286,7 @@ class ajaxController  {
         $ajaxModel = new \models\ajaxModel();
         $VEN_CAB = new \models\venCabClass();
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
-        $tipoDOC = 'C02';
+        $tipoDOC = 'C09';
         //Actualizacion a WSSP - MantenimientosEQ
         $response_WSSP = $ajaxModel->updateMantenimientoEQ($formData);
        

@@ -32,6 +32,8 @@
         
         <div id="page_content_inner">
 
+            <h3 class="heading_a uk-margin-bottom">Registro semanal</h3>
+
             <div class="uk-width-medium-8-10 uk-container-center">
                 <div class="md-card md-card-single">
                     <div class="md-card-toolbar">
@@ -54,12 +56,12 @@
                     <form action="" id="formActividadesBasicas" >
                         <div class="md-card-content" id="todo_list" style="padding-bottom: 50px;">
 
-                            <h2 class="heading_list">Informacion del Supervisor: </h2>
+                            <h2 class="heading_list">Informacion del evaluado: </h2>
 
                             <div class="uk-grid" data-uk-grid-margin> 
                                 <div class="uk-input-group uk-width-medium-1-1">
                                     <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-user"></i></span>
-                                    <label class="uk-form-label">Supervisor: </label>
+                                    <label class="uk-form-label">Supervisor a evaluar: </label>
                                     <select id="selectSupervisor" name="selectSupervisor" class="md-input" data-uk-tooltip="{pos:'top'}" title="Seleccione Supervisor">
                                         <option value="" disabled selected hidden>Seleccione por favor</option>
                                         <?php
@@ -73,7 +75,7 @@
 
                             </div>
 
-                            <h2 class="heading_list">Semana, Hora de Ingreso/Salida: </h2>
+                            <h2 class="heading_list">Semana y Bodega: </h2>
                             <div class="uk-grid" data-uk-grid-margin>
 
                                 <div class="uk-input-group uk-width-medium-2-4">
@@ -110,6 +112,8 @@
                                     <!-- Dinamic content here  -->
                                    
                                 </ul>
+
+
                             </div>
                     </form>
                     
