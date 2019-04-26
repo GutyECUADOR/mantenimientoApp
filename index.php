@@ -16,7 +16,8 @@
     require_once './core/models/MantenimientosClass.php';
     require_once './core/models/venCabClass.php';
     require_once './core/models/venMovClass.php';
-    
+    require_once './core/models/SupervisoresRepositoryClass.php';
+
     /* TEST Conexion */    
     /* require_once './core/models/conexion.php';
     $conexion = new models\conexion();
