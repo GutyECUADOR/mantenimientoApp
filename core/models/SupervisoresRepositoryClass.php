@@ -57,40 +57,77 @@ class SupervisoresRepositoryClass {
        
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
-        SELECT 
-            CAB.codChecklist,
-            CAB.fechaCreacion,
-            CAB.semana
-        FROM 
-        dbo.checkActBasicasSup_CAB AS CAB
-        
-        WHERE 
-            CAB.supervisor = '$supervisor'
-            AND fechaCreacion = '$fechaMes'
-
+                --This parameter will hold the dynamically created SQL script
+                DECLARE   @SQLQuery AS NVARCHAR(MAX)
+                
+                --This parameter will hold the Pivoted Column values
+                DECLARE   @PivotColumns AS NVARCHAR(MAX)
+                DECLARE @supervisor AS varchar(13) = '$supervisor';
+                DECLARE @fechaMES AS varchar(13) = '$fechaMes';
+                DECLARE @count as INT;
+                
+                SELECT   @PivotColumns= COALESCE(@PivotColumns + ',','') + QUOTENAME(codChecklist)
+                FROM dbo.checkActBasicasSup_CAB WHERE fechaCreacion = @fechaMES and supervisor = @supervisor
+                
+                /* UNCOMMENT TO SEE THE NEW COLUMN NAMES THAT WILL BE CREATED */
+                --SELECT   @PivotColumns
+                
+                --LIST ALL FILEDS EXCEPT PIVOT COLUMN
+                
+                SET   @SQLQuery =
+                '
+                SELECT supervisor, codCheckItem, Titulo,' +   @PivotColumns + '
+                    FROM 
+                        (
+                        SELECT 
+                            MOV.codCAB, 
+                            CAB.supervisor, 
+                            MOV.codCheckItem,
+                            BANCO.Titulo,
+                            MOV.checked
+                        FROM dbo.checkActBasicasSup_CAB as CAB
+                            INNER JOIN dbo.checkActBasicasSup_MOV as MOV on CAB.codChecklist = MOV.codCAB
+                            INNER JOIN dbo.checkActBasicasSup_Banco as BANCO on BANCO.Codigo = MOV.codCheckItem
+                        WHERE supervisor = '+@supervisor+'
+                        ) AS ResultSet
+                        PIVOT(
+                        MAX(checked)
+                        FOR codCAB in ('+ @PivotColumns +')
+                        )as Pivote
+                '
+                
+                --Execute dynamic query
+                EXEC sp_executesql @SQLQuery
         ";  // Final del Query SQL 
 
         $stmt = $this->db->prepare($query); 
     
-            $arrayResultados = array();
-
-            if($stmt->execute()){
-                while ($row = $stmt->fetch( \PDO::FETCH_ASSOC )) {
-                    
-                    // Agregar a cada row una key que lleva el detalle
-                    $codigoCheckList = $row['codChecklist'];
-                    $row['items'] = $this->getChkMOVBySupervisor($codigoCheckList);
-                    array_push($arrayResultados, $row);
-                }
+        if($stmt->execute()){
+            return $stmt->fetchAll();
                 
-                return $arrayResultados;
+        }else{
+            $resulset = false;
+        }
+    }
 
+    public function getCurrentCodsCheckList($supervisor, $fechaMes, $dataBaseName='KAO_wssp') {
+
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
+       
+        //Query de consulta con parametros para bindear si es necesario.
+        $query = "
+        SELECT codChecklist FROM dbo.checkActBasicasSup_CAB WHERE supervisor = '$supervisor' and fechaCreacion = '$fechaMes'
+        ";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+    
+        if($stmt->execute()){
+            return $stmt->fetchAll( \PDO::FETCH_ASSOC );
                 
-            }else{
-                $resulset = false;
-            }
-
-   
+        }else{
+            $resulset = false;
+        }
     }
 
 
@@ -101,9 +138,13 @@ class SupervisoresRepositoryClass {
        
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
-            SELECT * 
+            SELECT 
+                MOV.*,
+                BANCO.Titulo,
+                BANCO.Descripcion
             FROM 
                 dbo.checkActBasicasSup_MOV as MOV
+                INNER JOIN dbo.checkActBasicasSup_Banco as BANCO on BANCO.Codigo = MOV.codCheckItem
             WHERE MOV.codCAB = '$codCheckCAB'
 
         ";  // Final del Query SQL 
@@ -121,10 +162,6 @@ class SupervisoresRepositoryClass {
 
    
     }
-
-    
-
-    
 
     public function getResumenTableListActBasicasSup($dataBaseName='KAO_wssp') {
 
@@ -174,5 +211,14 @@ class SupervisoresRepositoryClass {
    
     }
 
+    public function showIconCheched($checkedValue){
+        if ($checkedValue == 1) {
+            return '<i class="md-list-addon-icon material-icons uk-text-success">check</i>';
+        }elseif ($checkedValue == 0) {
+            return '<i class="md-list-addon-icon material-icons uk-text-danger">clear</i>';
+        }else{
+            return 'error';
+        }
+    }
     
 }

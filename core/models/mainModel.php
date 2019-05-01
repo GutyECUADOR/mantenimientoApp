@@ -52,6 +52,12 @@ class mainModel {
                 $contenido = "views/modulos/tableListActBasicasSup.php";
                 break;
 
+                case 'detailListActBasicasSup':
+                $contenido = "views/modulos/detailListActBasicasSup.php";
+                break;
+
+                
+
             case 'userconfig':
             $contenido = "views/modulos/userConfig.php";
             break;    
