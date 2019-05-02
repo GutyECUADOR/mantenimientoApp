@@ -286,7 +286,7 @@ class ajaxController  {
         $ajaxModel = new \models\ajaxModel();
         $VEN_CAB = new \models\venCabClass();
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
-        $tipoDOC = 'C09';
+        $tipoDOC = 'COT';
         //Actualizacion a WSSP - MantenimientosEQ
         $response_WSSP = $ajaxModel->updateMantenimientoEQ($formData);
        
@@ -399,7 +399,7 @@ class ajaxController  {
         $ajaxModel = new \models\ajaxModel();
         $VEN_CAB = new \models\venCabClass();
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
-        $tipoDOC = 'C09';
+        $tipoDOC = 'COT';
         //Actualizacion a WSSP - MantenimientosEQ
         $response_WSSP = $ajaxModel->updateMantenimientoExterno($formData);
        

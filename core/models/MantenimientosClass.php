@@ -55,7 +55,7 @@ class MantenimientosClass {
         WHERE 
             WSSP.codEmpresa = '$codEmpresa'
             AND WSSP.estado = '0'
-            AND WSSP.fechaInicio BETWEEN '$fechaINI' AND '$fechaFIN'
+            
         GROUP BY 
             Producto.Codigo,
             Compra.ID,
