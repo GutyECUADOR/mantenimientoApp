@@ -40,11 +40,13 @@
                                     <table class="uk-table uk-table-hover uk-table-nowrap uk-table-align-vertical">
                                         <thead>
                                             <tr>
+                                                
                                                 <th class="uk-width-1-10">Items / Semanas (CheckList)</th>
                                                 <th class="uk-text-center md-bg-grey-100 uk-text-small"> SEMANA 1 </th>
                                                 <th class="uk-text-center md-bg-grey-100 uk-text-small"> SEMANA 2 </th>
                                                 <th class="uk-text-center md-bg-grey-100 uk-text-small"> SEMANA 3 </th>
                                                 <th class="uk-text-center md-bg-grey-100 uk-text-small"> SEMANA 4 </th>
+                                                <th class="uk-text-center md-bg-grey-100 uk-text-small"> TOTAL </th>
                                                 
                                             </tr>
                                         </thead>
@@ -53,15 +55,15 @@
                                                 if (is_array($arrayCheckLists)) {
                                                 
                                                 foreach ($arrayCheckLists as $checkList) {
-                                            //var_dump($checkList);
+                                           
                                                 
                                             ?>
                                                 <tr>        
-                                                    <td class="md-bg-grey-100 uk-text-small"><?php echo $checkList['Titulo']?></td>  
+                                                    <td class="md-bg-grey-100 uk-text-small"><span class="codcheckItem" data-codCheckItem="<?php echo trim($checkList['codCheckItem'])?>"></span><?php echo $checkList['codCheckItem'].' - '. $checkList['Titulo']?></td>  
                                                     <td class="uk-text-center">
                                                         <?php 
                                                         if (isset($checkList[3])) {
-                                                            echo $supervisoresRepository->showIconCheched($checkList[3]);
+                                                            echo $supervisoresRepository->showIconCheched($checkList[1],$checkList[3]);
                                                         }
                                                         
                                                         ?>
@@ -69,7 +71,7 @@
                                                     <td class="uk-text-center">
                                                         <?php 
                                                         if (isset($checkList[4])) {
-                                                            echo $supervisoresRepository->showIconCheched($checkList[4]);
+                                                            echo $supervisoresRepository->showIconCheched($checkList[1],$checkList[4]);
                                                         }
                                                         
                                                         ?>
@@ -77,7 +79,7 @@
                                                     <td class="uk-text-center">
                                                         <?php 
                                                         if (isset($checkList[5])) {
-                                                            echo $supervisoresRepository->showIconCheched($checkList[5]);
+                                                            echo $supervisoresRepository->showIconCheched($checkList[1],$checkList[5]);
                                                         }
                                                         
                                                         ?>
@@ -85,18 +87,21 @@
                                                     <td class="uk-text-center">
                                                         <?php 
                                                         if (isset($checkList[6])) {
-                                                            echo $supervisoresRepository->showIconCheched($checkList[6]);
+                                                            echo $supervisoresRepository->showIconCheched($checkList[1],$checkList[6]);
                                                         }
                                                         
                                                         ?>
-                                                    </td>   
+                                                    </td> 
+                                                    <td class="uk-text-center"> <span id="<?php echo 'total_'.trim($checkList[1]) ?>">calculando...</span> </td>  
                                                 </tr>
                                                    
-                                            
+                                                
                                             <?php
                                                     
                                                     
                                                 } // FIN del ciclo for
+
+                                                
                                                 }else{
                                                     echo '
                                                         <script>
@@ -106,6 +111,14 @@
                                                 }
                                                 // FIN DEL IF
                                             ?>
+                                            <tr>
+                                                <td class="md-bg-grey-100 uk-text-small uk-text-center" colspan="5">TOTAL GENERAL</th>
+                                                <td class="uk-text-center" id="totalGeneralShow"> 256 </th>
+                                            </tr>
+                                            <tr>
+                                                <td class="md-bg-grey-100 uk-text-small uk-text-center" colspan="5">TOTAL GENERAL SOBRE CANT. ITEMS</th>
+                                                <td class="uk-text-center" id="totalGeneralEquivalenteShow"> 256 </th>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -147,5 +160,7 @@
 <!-- altair common functions/helpers -->
 <script src="<?php echo ROOT_PATH; ?>assets/js/altair_admin_common.min.js"></script>
 
+<!-- scripts de la pagina -->
+<script src="<?php echo ROOT_PATH; ?>assets/js/pages/detailListActBasicasSup.js"></script>
 
 </body>

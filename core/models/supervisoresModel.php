@@ -28,7 +28,7 @@ class supervisoresModel  {
         $usuarioActivo = trim($_SESSION["usuarioRUC"]); //Cedula del usuario logeado
         $codEmpresa =  trim($_SESSION["codEmpresaAUTH"]); //Codigo de la empresa seleccionada en login
 
-        $fechaActual = date('Ymd');
+        $fechaActual = date('Ym01');
 
         $query = "
             INSERT INTO 
