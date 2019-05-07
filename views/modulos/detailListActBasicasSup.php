@@ -1,14 +1,16 @@
 <?php
-    if (!isset($_SESSION["usuarioRUC"]) || !isset($_GET["cedula"]) || !isset($_GET["fecha"]) ){
+    if (!isset($_SESSION["usuarioRUC"]) || !isset($_GET["cedula"]) || !isset($_GET["evaluador"]) || !isset($_GET["fecha"]) ){
            header("Location:index.php?&action=login");  
         }   
     
-    $cedula = $_GET["cedula"];
+    $cedula = $_GET["cedula"]; // Cedula del evaluado
+    $cedulaEvaluador = trim($_GET["evaluador"]);
     $fechaMes = $_GET["fecha"];
 
     $supervisoresRepository = new models\SupervisoresRepositoryClass();
-    $arrayCheckLists = $supervisoresRepository->getChkCABBySupervisor($cedula,$fechaMes); 
+    $arrayCheckLists = $supervisoresRepository->getChkCABBySupervisor($cedula, $cedulaEvaluador, $fechaMes); 
    
+     
     //var_dump($arrayCheckLists);
 
    
@@ -32,7 +34,7 @@
     <div id="page_content">
         <div id="page_content_inner">
 
-        <h3 class="heading_a uk-margin-bottom">Evaluaciones realizadas por ADMIN: </h3>
+            <h3 class="heading_a uk-margin-bottom">Evaluaciones realizadas por supervisor inmediato: </h3>
 
             <div class="uk-grid" data-uk-grid-margin="">
                     
@@ -128,10 +130,110 @@
                             </div>
                         </div>
                     </div>
-                </div>
+            </div>
 
+            <h3 class="heading_a uk-margin-bottom">Evaluaciones realizadas por jefe de almacen: </h3>
+
+            <div class="uk-grid" data-uk-grid-margin="">
+                    
+                    <div class="uk-width-medium-1-1">
+                        <div class="md-card">
+                            <div class="md-card-content">
+                                <div class="uk-overflow-container">
+                                    <table class="uk-table uk-table-hover uk-table-nowrap uk-table-align-vertical">
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th class="uk-width-1-10">Items / Semanas (CheckList)</th>
+                                                <th class="uk-text-center md-bg-grey-100 uk-text-small"> SEMANA 1 </th>
+                                                <th class="uk-text-center md-bg-grey-100 uk-text-small"> SEMANA 2 </th>
+                                                <th class="uk-text-center md-bg-grey-100 uk-text-small"> SEMANA 3 </th>
+                                                <th class="uk-text-center md-bg-grey-100 uk-text-small"> SEMANA 4 </th>
+                                                <th class="uk-text-center md-bg-grey-100 uk-text-small"> TOTAL </th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <!-- <tbody>
+                                            <?php
+                                                if (is_array($arrayCheckLists)) {
+                                                
+                                                foreach ($arrayCheckLists2 as $checkList) {
+                                           
+                                                
+                                            ?>
+                                                <tr>        
+                                                    <td class="md-bg-grey-100 uk-text-small"><span class="codcheckItem" data-codCheckItem="<?php echo trim($checkList['codCheckItem'])?>"></span><?php echo $checkList['codCheckItem'].' - '. $checkList['Titulo']?></td>  
+                                                    <td class="uk-text-center">
+                                                        <?php 
+                                                        if (isset($checkList[3])) {
+                                                            echo $supervisoresRepository->showIconCheched($checkList[1],$checkList[3]);
+                                                        }
+                                                        
+                                                        ?>
+                                                    </td> 
+                                                    <td class="uk-text-center">
+                                                        <?php 
+                                                        if (isset($checkList[4])) {
+                                                            echo $supervisoresRepository->showIconCheched($checkList[1],$checkList[4]);
+                                                        }
+                                                        
+                                                        ?>
+                                                    </td> 
+                                                    <td class="uk-text-center">
+                                                        <?php 
+                                                        if (isset($checkList[5])) {
+                                                            echo $supervisoresRepository->showIconCheched($checkList[1],$checkList[5]);
+                                                        }
+                                                        
+                                                        ?>
+                                                    </td> 
+                                                    <td class="uk-text-center">
+                                                        <?php 
+                                                        if (isset($checkList[6])) {
+                                                            echo $supervisoresRepository->showIconCheched($checkList[1],$checkList[6]);
+                                                        }
+                                                        
+                                                        ?>
+                                                    </td> 
+                                                    <td class="uk-text-center"> <span id="<?php echo 'total_'.trim($checkList[1]) ?>">calculando...</span> </td>  
+                                                </tr>
+                                                   
+                                                
+                                            <?php
+                                                    
+                                                    
+                                                } // FIN del ciclo for
+
+                                                
+                                                }else{
+                                                    echo '
+                                                        <script>
+                                                            alert("No se pudo establecer conexion con la tabla requerida o existe un error en la sintaxis SQL.");
+                                                        </script>
+                                                    ';
+                                                }
+                                                // FIN DEL IF
+                                            ?>
+                                            <tr>
+                                                <td class="md-bg-grey-100 uk-text-small uk-text-center" colspan="5">TOTAL GENERAL</th>
+                                                <td class="uk-text-center" id="totalGeneralShow"> Error </th>
+                                            </tr>
+                                            <tr>
+                                                <td class="md-bg-grey-100 uk-text-small uk-text-center" colspan="5">TOTAL GENERAL SOBRE CANT. ITEMS</th>
+                                                <td class="uk-text-center" id="totalGeneralEquivalenteShow"> Error </th>
+                                            </tr>
+                                        </tbody> -->
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
         </div>
     
+       
+
+
     </div>
 
   

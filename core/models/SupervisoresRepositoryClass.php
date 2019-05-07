@@ -18,20 +18,22 @@ class SupervisoresRepositoryClass {
        
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
-            SELECT 
-                CAB.supervisor as Cedula,
-                CAB.fechaCreacion as fecha,
-                SBIO.Apellido + SBIO.Nombre as Nombre
-            
-            FROM
-                dbo.checkActBasicasSup_CAB as CAB
-                INNER JOIN SBIOKAO.dbo.Empleados as SBIO on SBIO.Cedula = CAB.supervisor
-            
-            GROUP BY 
-                CAB.fechaCreacion,
-                CAB.supervisor,
-                SBIO.Apellido,
-                sbio.Nombre
+        SELECT 
+            CAB.supervisor as Cedula,
+            CAB.fechaCreacion as fecha,
+            CAB.evaluador as Evaluador,
+            SBIO.Apellido + SBIO.Nombre as Nombre
+                    
+        FROM
+            dbo.checkActBasicasSup_CAB as CAB
+            INNER JOIN SBIOKAO.dbo.Empleados as SBIO on SBIO.Cedula = CAB.supervisor
+                    
+        GROUP BY 
+            CAB.fechaCreacion,
+            CAB.supervisor,
+            CAB.evaluador,
+            SBIO.Apellido,
+            sbio.Nombre
 
         ";  // Final del Query SQL 
 
@@ -50,7 +52,7 @@ class SupervisoresRepositoryClass {
     }
 
 
-    public function getChkCABBySupervisor($supervisor, $fechaMes, $dataBaseName='KAO_wssp') {
+    public function getChkCABBySupervisor($supervisor, $evaluador, $fechaMes, $dataBaseName='KAO_wssp') {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
@@ -63,6 +65,7 @@ class SupervisoresRepositoryClass {
                 --This parameter will hold the Pivoted Column values
                 DECLARE   @PivotColumns AS NVARCHAR(MAX)
                 DECLARE @supervisor AS varchar(13) = '$supervisor';
+                DECLARE @evaluador AS varchar(13) = '$evaluador';
                 DECLARE @fechaMES AS varchar(13) = '$fechaMes';
                 DECLARE @count as INT;
                 
@@ -88,7 +91,7 @@ class SupervisoresRepositoryClass {
                         FROM dbo.checkActBasicasSup_CAB as CAB
                             INNER JOIN dbo.checkActBasicasSup_MOV as MOV on CAB.codChecklist = MOV.codCAB
                             INNER JOIN dbo.checkActBasicasSup_Banco as BANCO on BANCO.Codigo = MOV.codCheckItem
-                        WHERE supervisor = '+@supervisor+'
+                        WHERE supervisor = '+@supervisor+' and evaluador = '+@evaluador+'
                         ) AS ResultSet
                         PIVOT(
                         MAX(checked)

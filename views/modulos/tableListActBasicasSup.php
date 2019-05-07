@@ -21,6 +21,7 @@
         <div id="page_content_inner">
 
             <h3 class="heading_a uk-margin-bottom">Lista de supervisores evaluados</h3>
+            <small class="heading_a uk-margin-bottom" style="font-size:12px">(Seccion en desarrollo, los calculos y funcionalidades del sitio podrian ser limitadas)</small>
 
             <div class="md-card-list-wrapper">
                 <div class="uk-container-center">
@@ -41,7 +42,7 @@
                                         <a href="#" class="md-icon material-icons">&#xE5D4;</a>
                                         <div class="uk-dropdown uk-dropdown-small">
                                             <ul class="uk-nav">
-                                                <li><a href="?&action=detailListActBasicasSup&cedula=<?php echo trim($item['Cedula'])?>&fecha=<?php echo trim($item['fecha'])?>"><i class="material-icons">playlist_add_check</i> Ver detalle</a></li>
+                                                <li><a href="?&action=detailListActBasicasSup&cedula=<?php echo trim($item['Cedula'])?>&evaluador=<?php echo trim($item['Evaluador'])?>&fecha=<?php echo trim($item['fecha'])?>"><i class="material-icons">playlist_add_check</i> Ver detalle</a></li>
                                                 <li><a href="#"><i class="material-icons">print;</i> Imprimir Informe</a></li>
                                             </ul>
                                         </div>
