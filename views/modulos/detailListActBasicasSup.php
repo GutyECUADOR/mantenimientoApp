@@ -31,6 +31,9 @@
     <!-- CONTENIDO DE LA SECCION -->    
     <div id="page_content">
         <div id="page_content_inner">
+
+        <h3 class="heading_a uk-margin-bottom">Evaluaciones realizadas por ADMIN: </h3>
+
             <div class="uk-grid" data-uk-grid-margin="">
                     
                     <div class="uk-width-medium-1-1">
@@ -113,11 +116,11 @@
                                             ?>
                                             <tr>
                                                 <td class="md-bg-grey-100 uk-text-small uk-text-center" colspan="5">TOTAL GENERAL</th>
-                                                <td class="uk-text-center" id="totalGeneralShow"> 256 </th>
+                                                <td class="uk-text-center" id="totalGeneralShow"> Error </th>
                                             </tr>
                                             <tr>
                                                 <td class="md-bg-grey-100 uk-text-small uk-text-center" colspan="5">TOTAL GENERAL SOBRE CANT. ITEMS</th>
-                                                <td class="uk-text-center" id="totalGeneralEquivalenteShow"> 256 </th>
+                                                <td class="uk-text-center" id="totalGeneralEquivalenteShow"> Error </th>
                                             </tr>
                                         </tbody>
                                     </table>

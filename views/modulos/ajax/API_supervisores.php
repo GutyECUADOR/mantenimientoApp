@@ -17,8 +17,11 @@ class ajax{
 
     public function saveActividadesBasicasController($formDataObject) {
       return $this->ajaxController->saveActividadesBasicasController($formDataObject);
-  }
+    }
 
+    public function getActividades1xmes($condition) {
+      return $this->ajaxController->getActividades1xmesController($condition);
+    }
    
 
 }
@@ -49,6 +52,22 @@ class ajax{
         echo json_encode($rawdata);
 
         break;
+
+
+        case 'getActividadesByCondicion':
+
+          if (isset($_GET['condicion'])) {
+            $condicion = $_GET['condicion'];
+            $respuesta = $ajax->getActividades1xmes($condicion);
+            $rawdata = array('status' => 'OK', 'respuesta' => $respuesta);
+          }else{
+            $rawdata = array('status' => 'ERROR', 'mensaje' => 'Indique el tipo de condicion, ejem: 1XMES');
+          }
+          
+       
+          echo json_encode($rawdata);
+
+      break;
 
         
         case 'test':

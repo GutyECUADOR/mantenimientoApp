@@ -36,6 +36,7 @@
                             <span class="menu_title">Mantenimientos</span>
                         </a>
                         <ul>
+                           
                             <li><a href="?&action=mantenimientosEQ">Agendar mantenimiento</a></li>
                             <li><a href="?&action=mantenimientosAG">Mantenimientos Agendados</a></li>
                             <li><a href="?&action=mantenimientosHistorico">Historico</a></li>
@@ -72,15 +73,7 @@
 
             <div class="menu_section">
                 <ul>
-                    <li title="Supervisores">
-                        <a href="#">
-                            <span class="menu_icon"><i class="material-icons">remove_red_eye</i></span>
-                            <span class="menu_title">Supervisores</span>
-                        </a>
-                        <ul>
-                            <li><a href="?&action=checkListSupervisoresBasicas">Actividades Basicas a cumplir</a></li>
-                        </ul>
-                    </li>
+                    
                 </ul>
             </div>
 

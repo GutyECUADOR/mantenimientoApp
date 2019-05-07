@@ -10,14 +10,17 @@ class supervisoresController  {
     }
   
     public function saveActividadesBasicasController($formDataObject){
-
-        
         $response_CAB = $this->ajaxModel->persist_ActividadesBasicas_CAB($formDataObject);
 
         /*Enviamos arry de chalist + el nuevo codigo al que pertenecen */
         $response_MOV = $this->ajaxModel->persist_ActividadesBasicas_MOV($formDataObject->checkItems, $response_CAB['newCod']);
         
         return array('CAB' => $response_CAB, 'MOV' => $response_MOV);
+    }
+
+    public function getActividades1xmesController($condition){
+        return $this->ajaxModel->getActividadesModelByCondition($condition);
+
     }
 
     /* AJAX SUPERVISORES - Retorna todos los checklist de la DB */

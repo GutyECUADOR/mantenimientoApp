@@ -101,6 +101,32 @@ class supervisoresModel  {
        
 
     }
+
+
+    /*
+       - Retorna todos los mantenimientos de la tabla 
+    */
+    public function getActividadesModelByCondition($condition, $dataBaseName='KAO_wssp') {
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+        
+        //Query de consulta con parametros para bindear si es necesario.
+            $query = "
+                SELECT Codigo, condicion FROM dbo.checkActBasicasSup_Banco WHERE condicion = '$condition'
+            ";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+    
+        $arrayResultados = array();
+
+        if($stmt->execute()){
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);  
+        }else{
+            return false;
+        }
+       
+
+    }
 }
 
 
