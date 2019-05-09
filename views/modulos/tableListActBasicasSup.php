@@ -55,7 +55,7 @@
                                     </div>
                                     
                                     <div class="md-card-list-item-subject">
-                                        <span>Evaluado por <?php echo substr($item['Evaluador'], 0, 20)?> a <?php echo $item['Nombre']?></span>
+                                        <span>Evaluado por <?php echo substr($item['NombreEvaluador'], 0, 20)?> a <?php echo $item['NombreEvaluado']?></span>
                                     </div>
                                     
                                     

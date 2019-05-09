@@ -20,20 +20,24 @@ class SupervisoresRepositoryClass {
         $query = "
         SELECT 
             CAB.supervisor as Cedula,
+            SBIO.Apellido + SBIO.Nombre as NombreEvaluado,
             CAB.fechaCreacion as fecha,
             CAB.evaluador as Evaluador,
-            SBIO.Apellido + SBIO.Nombre as Nombre
+            SBIO2.Apellido + SBIO2.Nombre as NombreEvaluador
                     
         FROM
             dbo.checkActBasicasSup_CAB as CAB
             INNER JOIN SBIOKAO.dbo.Empleados as SBIO on SBIO.Cedula = CAB.supervisor
-                    
+            INNER JOIN SBIOKAO.dbo.Empleados as SBIO2 on SBIO2.Cedula = CAB.evaluador
+                            
         GROUP BY 
             CAB.fechaCreacion,
             CAB.supervisor,
             CAB.evaluador,
             SBIO.Apellido,
-            sbio.Nombre
+            SBIO.Nombre,
+            SBIO2.Apellido,
+            SBIO2.Nombre
 
         ";  // Final del Query SQL 
 
