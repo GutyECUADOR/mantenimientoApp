@@ -273,6 +273,12 @@ class ajaxController  {
     }
 
     /* Retorna la respuesta del modelo ajax*/
+    public function getSupervisoresEvaluarBy($supervisor){
+        $response = $this->ajaxModel->getArraySupervisoresEvaluarBy($supervisor);
+        return $response;
+    }
+
+    /* Retorna la respuesta del modelo ajax*/
     public function getProductoByCod($codProducto){
         $ajaxModel = new \models\ajaxModel();
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;

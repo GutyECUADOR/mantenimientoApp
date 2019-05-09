@@ -70,7 +70,7 @@ class SupervisoresRepositoryClass {
                 DECLARE @count as INT;
                 
                 SELECT   @PivotColumns= COALESCE(@PivotColumns + ',','') + QUOTENAME(codChecklist)
-                FROM dbo.checkActBasicasSup_CAB WHERE fechaCreacion = @fechaMES and supervisor = @supervisor
+                FROM dbo.checkActBasicasSup_CAB WHERE fechaCreacion = @fechaMES and supervisor = @supervisor and evaluador = @evaluador
                 
                 /* UNCOMMENT TO SEE THE NEW COLUMN NAMES THAT WILL BE CREATED */
                 --SELECT   @PivotColumns

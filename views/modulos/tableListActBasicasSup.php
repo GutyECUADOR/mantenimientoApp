@@ -20,9 +20,10 @@
     <div id="page_content">
         <div id="page_content_inner">
 
-            <h3 class="heading_a uk-margin-bottom">Lista de supervisores evaluados</h3>
-            <small class="heading_a uk-margin-bottom" style="font-size:12px">(Seccion en desarrollo, los calculos y funcionalidades del sitio podrian ser limitadas)</small>
+            <input id="txt_hidden_sessionEvaluador" name="txt_hidden_sessionEvaluador" type="hidden" value="<?php echo trim($_SESSION["usuarioRUC"])?>">
 
+            <h3 class="heading_a uk-margin-bottom">Lista de supervisores evaluados</h3>
+           
             <div class="md-card-list-wrapper">
                 <div class="uk-container-center">
                     <div class="md-card-list">
@@ -52,11 +53,9 @@
                                     <div class="md-card-list-item-avatar-wrapper">
                                         <span class="md-card-list-item-avatar md-bg-grey">KAO</span>
                                     </div>
-                                    <div class="md-card-list-item-sender">
-                                        <span><?php echo substr($item['Cedula'], 0, 20)?></span>
-                                    </div>
+                                    
                                     <div class="md-card-list-item-subject">
-                                        <span><?php echo $item['Nombre']?></span>
+                                        <span>Evaluado por <?php echo substr($item['Evaluador'], 0, 20)?> a <?php echo $item['Nombre']?></span>
                                     </div>
                                     
                                     

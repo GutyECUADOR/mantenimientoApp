@@ -402,6 +402,35 @@ class ajaxModel  {
    
     }
 
+    public function getArraySupervisoresEvaluarBy($supervisorEvaluador, $dataBaseName='KAO_wssp') {
+
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
+        
+        //Query de consulta con parametros para bindear si es necesario.
+        $query = "
+        SELECT ASIGNADOS.evaluado as Value,
+                (SBIO.Apellido + SBIO.Nombre) as DisplayText 
+        FROM
+            dbo.SUP_evasignados as ASIGNADOS
+            INNER JOIN SBIOKAO.dbo.Empleados as SBIO on SBIO.Cedula = ASIGNADOS.evaluado
+        WHERE ASIGNADOS.supervisor = '$supervisorEvaluador'
+ 
+        ";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+    
+            if($stmt->execute()){
+                return $stmt->fetchAll( \PDO::FETCH_ASSOC );
+                  
+            }else{
+                $resulset = false;
+            }
+        return $resulset;  
+
+   
+    }
+
     public function getArrayProducto($dataBaseName='KAO_wssp', $codProducto) {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp

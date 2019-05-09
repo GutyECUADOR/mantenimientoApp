@@ -22,8 +22,18 @@ class ajax{
     public function getActividades1xmes($condition) {
       return $this->ajaxController->getActividades1xmesController($condition);
     }
-   
 
+    public function countEvaluacionesSup($evaluador, $evaluado, $fechaMesActual, $semana) {
+      return $this->ajaxController->countEvaluacionesSupController($evaluador, $evaluado, $fechaMesActual, $semana);
+    }
+   
+    public function getCanDoEvaluation($evaluador, $evaluado, $fechaMesActual, $semana) {
+      return $this->ajaxController->getCanDoEvaluationController($evaluador, $evaluado, $fechaMesActual, $semana);
+    }
+
+
+    
+    
 }
 
   try{
@@ -67,7 +77,39 @@ class ajax{
        
           echo json_encode($rawdata);
 
-      break;
+        break;
+
+        case 'countEvaluacionesSup':
+        
+          if (isset($_GET['evaluador']) && isset($_GET['evaluado']) && isset($_GET['semana'])) {
+            $evaluador = $_GET['evaluador'];
+            $evaluado = $_GET['evaluado'];
+            $fechaMesActual = date('Ym01');
+            $semana = $_GET['semana'];
+            $respuesta = $ajax->countEvaluacionesSup($evaluador, $evaluado, $fechaMesActual, $semana);
+            $rawdata = array('status' => 'OK', 'mensaje' => 'respuesta correcta', 'data' => $respuesta);
+          
+          }else{
+            $rawdata = array('status' => 'ERROR', 'mensaje' => 'No se especifico Evaluador, evaluado o semana');
+          }  
+            echo json_encode($rawdata);
+        break;
+
+        case 'getCanDoEvaluation':
+        
+          if (isset($_GET['evaluador']) && isset($_GET['evaluado']) && isset($_GET['semana'])) {
+            $evaluador = $_GET['evaluador'];
+            $evaluado = $_GET['evaluado'];
+            $fechaMesActual = date('Ym01');
+            $semana = $_GET['semana'];
+            $respuesta = $ajax->getCanDoEvaluation($evaluador, $evaluado, $fechaMesActual, $semana);
+            $rawdata = array('status' => 'OK', 'mensaje' => 'respuesta correcta', 'data' => $respuesta);
+          
+          }else{
+            $rawdata = array('status' => 'ERROR', 'mensaje' => 'No se especifico Evaluador, evaluado o semana');
+          }  
+            echo json_encode($rawdata);
+        break;
 
         
         case 'test':

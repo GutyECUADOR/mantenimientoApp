@@ -24,7 +24,6 @@
                             <a href="#" class="user_action_image"><img class="md-user-image" src="assets/img/avatars/avatar_11_tn.png" alt=""/></a>
                             <div class="uk-dropdown uk-dropdown-small">
                                 <ul class="uk-nav js-uk-prevent">
-                                    <li><a href="#">Mi perfil</a></li>
                                     <li><a href="?action=logout">Cerrar Sesion</a></li>
                                     
                                 </ul>

@@ -25,9 +25,20 @@ class supervisoresController  {
 
     /* AJAX SUPERVISORES - Retorna todos los checklist de la DB */
     public function getCheckListActBasicasController(){
-
         $response = $this->ajaxModel->getCheckListActBasicasModel();
         return $response;
+    }
+
+    /* Retorna la cantidad de evaluaciones para ese evaluador, evaluado en el mes */
+    public function countEvaluacionesSupController($evaluador, $evaluado, $fechaMesActual, $semana){
+       
+        return $this->ajaxModel->countEvaluacionesSupModel($evaluador, $evaluado, $fechaMesActual);
+    }
+
+    /* Retorna informacion sobre si la evaluacion es posible en la semana */
+    public function getCanDoEvaluationController($evaluador, $evaluado, $fechaMesActual, $semana){
+       
+        return $this->ajaxModel->getCanDoEvaluationModel($evaluador, $evaluado, $fechaMesActual, $semana);
     }
 
     

@@ -61,8 +61,7 @@ $(function() {
                 app.renderCheckList(solicitud.checkItems);
             })
             .catch( error => console.log(error))
-        }
-        ,
+        },
         save_solicitud: function() {
 
             var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Realizando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
@@ -86,6 +85,62 @@ $(function() {
                         location.href = "index.php?&action=checkListSupervisoresBasicas";
                     });
                 }
+            })
+            .catch( error => console.log(error))
+          
+        },
+        validaCanDoEvaluation: function() {
+
+            var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Realizando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
+                modalBlocked.show();
+            let sesionEvaluador =  $('#txt_hidden_sessionEvaluador').val();
+
+            fetch(`views/modulos/ajax/API_supervisores.php?action=countEvaluacionesSup&evaluador=${sesionEvaluador}&evaluado=${solicitud.supervisor}&semana=${solicitud.semana}`,{
+                method: 'GET',
+            })
+            .then( response =>  response.json())
+            .then( responseJSON => {
+                console.log(responseJSON);
+                modalBlocked.hide();
+
+                    if (responseJSON.status == 'OK') {
+                        let cantidadEvaluaciones = responseJSON.data.CantCheckList;
+                        if (cantidadEvaluaciones == 0) {
+                            app.save_solicitud();
+                            console.log('Registrar');
+                        }else if (cantidadEvaluaciones >= 1) {
+                            console.log('Verifica si puede registrar en esta semana');
+                            modalBlocked.show();
+                            fetch(`views/modulos/ajax/API_supervisores.php?action=getCanDoEvaluation&evaluador=${sesionEvaluador}&evaluado=${solicitud.supervisor}&semana=${solicitud.semana}`)
+                            .then( response =>  response.json())
+                            .then( responseJSON => {
+                                console.log(responseJSON);
+                                modalBlocked.hide();
+                
+                                if (responseJSON.status == 'OK') {
+                                    let cantEvaluaciones = responseJSON.data.CantCheckList;
+                                    let EvaluadoName = responseJSON.data.EvaluadoName;
+                                    let EvaluadorName = responseJSON.data.EvaluadorName;
+                                    let semanaExist = responseJSON.data.MismaSemana;
+                
+                                    if (cantEvaluaciones < 4 && cantEvaluaciones != null && semanaExist == null) {
+                                        app.save_solicitud();
+                                    }else{
+                                        UIkit.modal.alert(`Evaluacion negada: El usuario ${EvaluadorName} ya ha realizado la evaluacion para la semana ${responseJSON.data.MismaSemana}, a ${EvaluadoName}. Espere a la siguiente semana para evaluar nuevamente`, { center: true, labels: { 'Ok': 'Ok' } }).on('hide.uk.modal', function () {});
+                                    }
+                                   
+                                }else{
+                                    alert('Error, no se puedo comprobar si la evaluacion actual es valida ')
+                                }
+
+                            })
+                            .catch( error => console.log(error))
+                        }else{
+                            alert('Error al validar evaluacion, informe a sistemas');
+                        }
+                    }
+
+                /*  */
             })
             .catch( error => console.log(error))
           
@@ -185,13 +240,8 @@ $(function() {
             return;
         }
 
-        if (solicitud.bodega === null) {
-            UIkit.modal.alert('Seleccione bodega por favor.');
-            return;
-        }
-
         UIkit.modal.confirm(`Confirme, desea registrar el documento ? </br> El puntaje actual es de ${ app.countScore() } / ${solicitud.checkItems.length} `, function() {
-            app.save_solicitud();
+            app.validaCanDoEvaluation();
         }, {labels: {'Ok': 'Si, registrar', 'Cancel': 'No'}});
 
        

@@ -9,12 +9,13 @@
     $ajaxController = new controllers\ajaxController();
 
     $arrayBodegas = $ajaxController->getAllBodegas();
-    $arraySupervisores = $ajaxController->getAllSupervisores();
-
+    $arraySupervisores = $ajaxController->getSupervisoresEvaluarBy($_SESSION["usuarioRUC"]);
+    
     $day = date('w');
     $week_start = date('Y-m-d', strtotime('-'.($day-1).' days'));
     $week_end = date('Y-m-d', strtotime('+'.(7-$day).' days'));
 
+   
 ?>
 
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
@@ -33,6 +34,8 @@
         <div id="page_content_inner">
 
             <h3 class="heading_a uk-margin-bottom">Registro semanal</h3>
+            <input id="txt_hidden_sessionEvaluador" name="txt_hidden_sessionEvaluador" type="hidden" value="<?php echo trim($_SESSION["usuarioRUC"])?>">
+
 
             <div class="uk-width-medium-8-10 uk-container-center">
                 <div class="md-card md-card-single">
@@ -78,7 +81,7 @@
                             <h2 class="heading_list">Semana y Bodega: </h2>
                             <div class="uk-grid" data-uk-grid-margin>
 
-                                <div class="uk-input-group uk-width-medium-2-4">
+                                <div class="uk-input-group uk-width-medium-4-4">
                                     <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
                                     <label class="uk-form-label">Semana: </label>
                                     <select id="selectSemana" name="selectSemana" class="md-input" data-uk-tooltip="{pos:'top'}" title="Seleccione semana">
@@ -87,19 +90,7 @@
                                     </select>
                                 </div>
 
-                                <div class="uk-input-group uk-width-medium-2-4">
-                                    <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-home"></i></span>
-                                    <label class="uk-form-label">Bodega: </label>
-                                    <select id="selectBodega" name="selectBodega" class="md-input" data-uk-tooltip="{pos:'top'}" title="Seleccione Bodega">
-                                        <option value="" disabled selected hidden>Seleccione por favor</option>
-                                        <?php
-                                            foreach ($arrayBodegas as $opcion) {
-                                                echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
-                                            }
-                                        ?>
-                                        
-                                    </select>
-                                </div>
+                                
                                 
                                
                             </div>
