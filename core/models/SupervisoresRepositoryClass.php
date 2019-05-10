@@ -222,7 +222,7 @@ class SupervisoresRepositoryClass {
         if ($checkedValue == 1) {
             return '<i class="md-list-addon-icon material-icons uk-text-success" data-codCheck="'.trim($codCheckItem).'" data-codCheckValue="1">check</i>';
         }elseif ($checkedValue == 0) {
-            return '<i class="md-list-addon-icon material-icons uk-text-danger" data-codCheck="'.trim($codCheckItem).'" data-codCheckValue="0">clear</i>';
+            return '<i class="md-list-addon-icon material-icons uk-text-danger" data-codCheckValue="0">clear</i>';
         }else{
             return 'error';
         }

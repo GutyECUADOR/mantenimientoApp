@@ -3,11 +3,12 @@ $(function() {
 
     var arrayItems1xmes= [];
     var arrayItems2xmes= [];
+    var arrayItems3xmes= [];
 
     app = {
         init: function() {
-           app.loadCodItems1XMes();
-           app.loadCodItems2XMes();
+            app.loadCodItems1XMes();
+           
         },
         countTotalScores(){
             let items = $('span[data-codcheckitem]');
@@ -31,29 +32,30 @@ $(function() {
         },
         countScoreOfItem(tipoItem){
             let items = $('i[data-codCheck="'+tipoItem+'"]'); //Recuperamos los items con el custom attribute
+            let contItems = items.length;
+            
+            console.log(tipoItem, contItems);
+            
             let totalScore = 0;
-            let contItems = 0;  //Determina cuantos checks en la fila existen
-            items.each(function(index) {
-               
-                    if ($(this).attr("data-codCheckValue")==1) {
-                        
-                        contItems++;     
-                        
-                        if (arrayItems1xmes.includes(tipoItem)) { // Si es del tipo 1 al mes y existe 1 registro retornar total maximo
-                            $('#total_'+tipoItem).html(totalScore);
-                            return totalScore = 20;
-                        }else if (arrayItems2xmes.includes(tipoItem) && contItems >=2) {
-                            $('#total_'+tipoItem).html(totalScore);
-                            return totalScore = 20;
-                        }else if (arrayItems2xmes.includes(tipoItem) && contItems == 1) {
-                            $('#total_'+tipoItem).html(totalScore);
-                            return totalScore = 10;
-                        }else{
-                            totalScore += 5;
-                        }
-                    }
-                });
 
+            if(contItems == 0){
+                totalScore = 0;
+            }else if (arrayItems1xmes.includes(tipoItem) && contItems == 1) {
+                totalScore = 20;
+            }else if (arrayItems2xmes.includes(tipoItem) && contItems == 1) { 
+                totalScore = 10;
+            }else if (arrayItems2xmes.includes(tipoItem) && contItems >= 2) { 
+                totalScore = 20;
+            }else if (arrayItems3xmes.includes(tipoItem) && contItems == 1) {
+                totalScore = 5;
+            }else if (arrayItems3xmes.includes(tipoItem) && contItems == 2) {
+                totalScore = 13; 
+            }else if (arrayItems3xmes.includes(tipoItem) && contItems >= 3) {
+                totalScore = 20
+            }else{
+                totalScore == 0;
+            }
+                  
             $('#total_'+tipoItem).html(totalScore);
             return totalScore;
         },
@@ -69,10 +71,13 @@ $(function() {
                         arrayItems1xmes.push(element.Codigo.trim());
                     });
 
-                    console.log(arrayItems1xmes);
-                    app.countTotalScores();
+                    
+                    //console.log('Items1xmes:', arrayItems1xmes);
+                    app.loadCodItems2XMes();
+                     
                 }else{
                     alert('No se ha podido cargar reglas de validacion, informe a sistemas');
+                    
                 }
                 
             })
@@ -90,8 +95,32 @@ $(function() {
                         arrayItems2xmes.push(element.Codigo.trim());
                     });
     
-                    console.log(arrayItems2xmes);
+                   
+                    //console.log('Items2xmes:', arrayItems2xmes);
+                    app.loadCodItems3XMes();
+                   
+                }else{
+                    alert('No se ha podido cargar reglas de validacion, informe a sistemas');
+                }
+                
+            })
+            .catch( error => console.log(error))
+        },
+        loadCodItems3XMes(){
+            fetch(`views/modulos/ajax/API_supervisores.php?action=getActividadesByCondicion&condicion=3XMES`)
+            .then( response => response.json())
+            .then(function (data){
+               
+                if (data.status == 'OK') {
+                    let arrayItems = data.respuesta;
+                
+                    arrayItems.forEach(function(element) {
+                        arrayItems3xmes.push(element.Codigo.trim());
+                    });
+    
+                    //console.log('Items3xmes:', arrayItems3xmes);
                     app.countTotalScores();
+                    
                 }else{
                     alert('No se ha podido cargar reglas de validacion, informe a sistemas');
                 }

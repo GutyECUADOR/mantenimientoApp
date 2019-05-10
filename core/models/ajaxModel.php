@@ -198,6 +198,24 @@ class ajaxModel  {
         }
     }
 
+    /*Retorna string con el numero de columnas encontradas*/
+    public function getFacturaEquipoByCodMNT($codMNT, $dataBaseName='KAO_wssp'){
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+       
+        $query = "
+            SELECT codFactura, codEquipo FROM dbo.mantenimientosEQ WHERE codMantenimiento = '$codMNT'
+        ";
+
+        $stmt = $this->db->prepare($query); 
+        if($stmt->execute()){
+           
+            return $stmt->fetchAll( \PDO::FETCH_ASSOC );;
+        }else{
+            return false;
+        }
+    }
+
 
     public function aprobarMantenimientoByCod($codMNT, $dataBaseName='KAO_wssp'){
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
@@ -553,13 +571,56 @@ class ajaxModel  {
 
     }
 
+    public function getVENCABByID($IDDocument, $codProducto) {
+        $query = " 
+        SELECT 
+            VEN_CAB.ID,
+            VEN_CAB.NUMERO,
+            VEN_CAB.TIPO,
+            VEN_CAB.FECHA,
+            VEN_CAB.CLIENTE,
+            RTRIM(LTRIM(REPLACE(CLIENTE.NOMBRE, NCHAR(0x00A0), ''))) as NOMBRE,
+            CLIENTE.RUC,
+            CLIENTE.DIRECCION1,
+            CLIENTE.TELEFONO1,
+            RTRIM(LTRIM(REPLACE(CLIENTE.EMAIL, NCHAR(0x00A0), ''))) as EMAIL,
+            VENDEDOR.CODIGO as CodigoVendedor,
+            VENDEDOR.NOMBRE as VendedorName,
+            ARTICULO.Codigo as CodigoArticulo,
+            ARTICULO.Nombre as NombreArticulo
+        FROM 
+            dbo.VEN_CAB 
+            INNER JOIN dbo.VEN_MOV as MOV on MOV.ID = VEN_CAB.ID
+            INNER JOIN dbo.COB_CLIENTES as CLIENTE on CLIENTE.CODIGO = VEN_CAB.CLIENTE
+            LEFT JOIN dbo.COB_VENDEDORES as VENDEDOR on VENDEDOR.CODIGO = VEN_CAB.CODVEN
+            INNER JOIN dbo.INV_ARTICULOS as ARTICULO on ARTICULO.Codigo = MOV.CODIGO
+            
+        WHERE VEN_CAB.ID='$IDDocument' and MOV.CODIGO = '$codProducto'
+
+        ";  // Final del Query SQL 
+        try{
+            $stmt = $this->db->prepare($query); 
+    
+                if($stmt->execute()){
+                    $resulset = $stmt->fetch( \PDO::FETCH_ASSOC );
+                    
+                }else{
+                    $resulset = false;
+                }
+            return $resulset;  
+        }catch(PDOException $exception){
+            return array('status' => 'error', 'mensaje' => $exception->getMessage() );
+        }
+   
+    }
+
 
     /*Retorna array con informacion de la empresa que se indique*/
     public function getDatosEmpresaFromWINFENIX ($dataBaseName='KAO_wssp'){
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX();
 
-        $query = "SELECT NomCia, Oficina, Ejercicio FROM dbo.DatosEmpresa";
+        $query = "SELECT NomCia, Oficina, Ejercicio, DirCia, TelCia, RucCia, Ciudad  FROM dbo.DatosEmpresa";
         $stmt = $this->db->prepare($query); 
 
         try{

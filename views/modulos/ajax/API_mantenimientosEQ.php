@@ -72,8 +72,8 @@ class ajax{
       return $this->ajaxController->isValidOrdenFisica($formData);
     }
 
-    public function sendEmail($mail, $data){
-        return $this->ajaxController->sendEmail($mail, $data);
+    public function sendEmail($mail, $codigoMNT){
+        return $this->ajaxController->sendEmail($mail, $codigoMNT);
     }
 
     public function searchCliente($value, $by){
@@ -378,7 +378,7 @@ class ajax{
           
           echo json_encode($rawdata);
 
-        break;
+            break;
 
         case 'saveMantenimientoExterno':
 
@@ -391,9 +391,9 @@ class ajax{
           }
         
         
-        echo json_encode($rawdata);
+            echo json_encode($rawdata);
 
-        break;
+            break;
 
         case 'anularExterno':
             /* Establece estado ANULADO (2) en la tabla mantenimientosEQ*/
@@ -414,11 +414,34 @@ class ajax{
                 , 'mensaje' => 'No se han indicado codigo de mantenimiento');
             }
         
-        echo json_encode($response);
-        break;
+            echo json_encode($response);
+            break;
+
+        case 'sendEmail':
+            /* Envia EMAIL segun codMNT*/
+            if (isset($_GET["email"]) && isset($_GET["codigoMNT"])) {
+                $mail = $_GET["email"];
+                $codigoMNT = $_GET["codigoMNT"];
+            
+                $respuesta = $ajax->sendEmail($mail, $codigoMNT);
+                if($respuesta){
+                $response = array('status' => 'OK'
+                            , 'mensaje' => 'Email enviado', 'data' => $respuesta);
+                }else{
+                $response = array('status' => 'FAIL'
+                            , 'mensaje' => 'Ha ocurrido un problema al realizar la petición');
+                }
+
+            }else{
+                $response = array('status' => 'FAIL'
+                , 'mensaje' => 'No se han indicado codigo de mantenimiento');
+            }
+        
+            echo json_encode($response);
+            break;
 
         case 'test':
-            $rawdata = array('status' => 'ok', 'mensaje' =>'el API ha podido responder la solicitud');
+            $rawdata = array('status' => 'ok', 'mensaje' =>'Prueba de API correcta');
             echo json_encode($rawdata);
             break;
 

@@ -1,4 +1,8 @@
 <?php
+     if (!isset($_SESSION["usuarioRUC"])){
+        header("Location:index.php?&action=login");  
+    }
+
     $supervisoresRepository = new models\SupervisoresRepositoryClass();
     $arraylistReportesSupervisores = $supervisoresRepository->getListActBasicasSup();
 
