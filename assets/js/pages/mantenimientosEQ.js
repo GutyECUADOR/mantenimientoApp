@@ -3,7 +3,7 @@ $(function() {
     altair_crud_table.init();
     altair_form_adv.date_range();
     fechaActual = new Date().toISOString().slice(0, 10);
-    console.log(fechaActual);
+    
 });
 
 
@@ -25,6 +25,7 @@ altair_crud_table = {
 
         var fechaInicial = $('#uk_dp_start').val();
         var fechaFinal = $('#uk_dp_end').val();
+        var bodegaSelect = $('#select_bodegas').val();
 
         /* Comprobacion de parametros no sean nullos y asignacion de valores si lo son*/
         if (fechaInicial == null || fechaInicial == "" || fechaFinal == null || fechaFinal == "") {
@@ -35,6 +36,8 @@ altair_crud_table = {
 
         console.log(fechaInicial);
         console.log(fechaFinal);
+        console.log(bodegaSelect);
+        
 
         $('#students_crud').jtable({
             title: 'Lista de Equipos pendientes',
@@ -287,7 +290,7 @@ altair_crud_table = {
                 },
 
             }
-        }).jtable('load', { fechaINI: fechaInicial, fechaFIN: fechaFinal })
+        }).jtable('load', { fechaINI: fechaInicial, fechaFIN: fechaFinal, bodega: bodegaSelect })
 
         // change buttons visual style in ui-dialog
         $('.ui-dialog-buttonset')

@@ -1,7 +1,12 @@
 <?php
     if (!isset($_SESSION["usuarioRUC"])){
            header("Location:index.php?&action=login");  
-        }   
+        }  
+        
+        $ajaxController = new controllers\ajaxController();
+        $arrayBodegas = $ajaxController->getAllBodegas();
+
+        
 ?>
 
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
@@ -24,7 +29,7 @@
                 <div class="md-card-content">
                     <h3 class="heading_a">Rango de Fechas</h3>
                     <div class="uk-grid" data-uk-grid-margin="">
-                        <div class="uk-width-large-1-3 uk-width-1-1 uk-row-first">
+                        <div class="uk-width-large-3-10 uk-width-1-1 uk-row-first">
                             <div class="uk-input-group">
                                 <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
                                 <div class="md-input-wrapper md-input-filled">
@@ -34,7 +39,7 @@
 
                             </div>
                         </div>
-                        <div class="uk-width-large-1-3 uk-width-medium-1-1 uk-grid-margin uk-row-first">
+                        <div class="uk-width-large-3-10 uk-width-medium-1-1 uk-grid-margin uk-row-first">
                             <div class="uk-input-group">
                                 <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
                                 <div class="md-input-wrapper md-input-filled">
@@ -45,7 +50,20 @@
                             </div>
                         </div>
 
-                        <div class="uk-width-medium-1-3">
+                        <div class="uk-width-medium-2-10">
+                            <div class="md-input-wrapper md-input-filled">
+                                <label>Locales/Bodegas</label>
+                                <select id="select_bodegas" data-md-selectize>
+                                    <?php
+                                        foreach ($arrayBodegas as $opcion) {
+                                            echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
+                                        }
+                                    ?>
+                                </select>
+                                </span></div>
+                        </div>
+
+                        <div class="uk-width-medium-2-10">
                             <a id="btn_searchEquipos" class="md-btn md-btn-primary md-btn-wave-light md-btn-icon waves-effect waves-button waves-light md-btn-block">
                                 <i class="uk-icon-search"></i> Buscar
                             </a>

@@ -84,6 +84,7 @@
                                 <th class="uk-width-1-10 uk-text-center">Fecha Programada</th>
                                 <th class="uk-width-1-10 uk-text-center">Num Rel.</th>
                                 <th class="uk-width-1-10 uk-text-center">Estado</th>
+                            
                             </tr>
                             </thead>
                             <tbody id="tbodyresults">
@@ -113,6 +114,17 @@
                                     <td class="uk-text-center"><?php echo $fechaFormat?></td>
                                     <td class="uk-text-center"><?php echo $equipo['NUMREL']?></td>
                                     <td class="uk-text-center"><span class="uk-badge <?php echo $colorBadge?>"><?php echo $status ?></span></td>
+                                    <td>
+                                        <div class="uk-button-dropdown" data-uk-dropdown="{pos:'bottom-right'}">
+                                            <a href="#" class="md-icon material-icons">&#xE5D4;</a>
+                                            <div class="uk-dropdown">
+                                                <ul class="uk-nav uk-nav-dropdown">
+                                                    <li><a href="#"><i class="material-icons">print</i> Imprimir Cotizacion</a></li>
+                                                    <li><a id="sendCotizacion"><i class="material-icons">email</i> Enviar Cotizacion</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
 
 

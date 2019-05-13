@@ -48,7 +48,7 @@
                                         <div class="uk-dropdown uk-dropdown-small">
                                             <ul class="uk-nav">
                                                 <li><a href="?&action=detailListActBasicasSup&cedula=<?php echo trim($item['Cedula'])?>&evaluador=<?php echo trim($item['Evaluador'])?>&fecha=<?php echo trim($item['fecha'])?>"><i class="material-icons">playlist_add_check</i> Ver detalle</a></li>
-                                                <li><a href="#"><i class="material-icons">print;</i> Imprimir Informe</a></li>
+                                                <li><a href="#"><i class="material-icons">print</i> Imprimir Informe</a></li>
                                             </ul>
                                         </div>
                                     </div>

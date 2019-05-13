@@ -18,8 +18,8 @@ class ajax{
       $this->ajaxController = new \controllers\ajaxController();
     }
 
-    public function listAction($fechaInicial, $fechaFinal, $paginas, $registros) {
-        return $this->ajaxController->getAllEquiposSinMantenimiento($fechaInicial , $fechaFinal, $paginas, $registros);
+    public function listAction($fechaInicial, $fechaFinal, $paginas, $registros, $bodega) {
+        return $this->ajaxController->getAllEquiposSinMantenimiento($fechaInicial , $fechaFinal, $paginas, $registros, $bodega);
     }
 
     public function updateAction($data) {
@@ -96,16 +96,18 @@ class ajax{
 
     switch ($HTTPaction) {
         case 'list':
-            if (isset($_POST["fechaINI"]) && isset($_POST["fechaFIN"])) {
+            if (isset($_POST["fechaINI"]) && isset($_POST["fechaFIN"]) && isset($_POST["bodega"])) {
             $fechaInicial = $_POST["fechaINI"];
             $fechaFinal = $_POST["fechaFIN"];
             $fechaInicial = date("Ymd", strtotime($fechaInicial));
             $fechaFinal = date("Ymd", strtotime($fechaFinal));
+            $bodega = $_POST["bodega"];
             $start = $_GET["jtStartIndex"];
             $pageSize = $_GET["jtPageSize"];
             }else{
                 $fechaInicial = date('Ymd');
                 $fechaFinal = date('Ymd');
+                $bodega = '014';
                 $start = 1;
                 $pageSize = 10;
             }
@@ -115,7 +117,7 @@ class ajax{
             /* $fechaInicial = '20180101';
             $fechaFinal = '20181130'; */ 
             
-            $resultset = $ajax->listAction($fechaInicial, $fechaFinal, $start, $pageSize);
+            $resultset = $ajax->listAction($fechaInicial, $fechaFinal, $start, $pageSize, $bodega);
             
             $rawdata['Result'] = "OK"; // Compo obligatorio para JTable
             $rawdata['TotalRecordCount'] = 10; // Compo obligatorio para JTable

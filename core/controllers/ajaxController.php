@@ -13,12 +13,12 @@ class ajaxController  {
     }
   
     /* Devuelve array en el formato requerido para el plugin JTable */
-    public function getAllEquiposSinMantenimiento($fechaInicio, $fechaFinal, $startIndex, $pageSize) {
+    public function getAllEquiposSinMantenimiento($fechaInicio, $fechaFinal, $startIndex, $pageSize, $bodega) {
 
         $ajaxModel = new \models\ajaxModel();
         //Respuesta de informacion de VEN_MOV
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
-        $arrayEquipos = $ajaxModel->getArraysMantenimientosEQ($dbEmpresa, $pageSize, $fechaInicio, $fechaFinal);
+        $arrayEquipos = $ajaxModel->getArraysMantenimientosEQ($dbEmpresa, $pageSize, $fechaInicio, $fechaFinal, $bodega);
         $arrayUTF8 = array();
         foreach ($arrayEquipos as $equipo) {
            
@@ -476,10 +476,14 @@ class ajaxController  {
                                         <p>Estimado, <b> '.$VEN_CAB["NOMBRE"].'</b> dueño de :<b>'.$VEN_CAB["NombreArticulo"].'</b>, le recordamos que:  </p>
 
                                         <p>
-                                            - Dentro de los 4 primeros meses posteriores a la compra, el cliente tiene derecho a 1 
-                                            chequeo de garantia sin costo alguno en nuestros locales de servicio tecnico; en Quito:
-                                            Av. Amazonas N31-61 y Calle Moreno Bellido; en Guayaquil: Piazza Ceibos Av. de los Bomberos S/N
-                                            local A-38 Telefono 043812193.
+                                            - Dentro de los 4 primeros meses posteriores a la compra, el cliente tiene derecho a 1 chequeo de garantía sin costo alguno en nuestros locales de servicio técnico; en Quito: Av. Amazonas N31-161 y Calle Moreno Bellido, Teléfono: 2239543; en Guayaquil: Piazza Ceibos Av. de los Bomberos S/N local A-38 Teléfono 043812193. Piazza Samborondón Local 5AK1 vía Samborondón Teléfono 042833054. 
+                                        </p>
+
+                                        <p>
+                                            - Terminado el tiempo de garantía el servicio técnico tendrá un costo por servicio, mantenimiento y repuestos.
+                                        </p>
+                                        <p>
+                                            - Esta garantía no se aplica en ningún caso, a cualquiera de las fallas que se deban al mal manejo, uso inadecuado del producto, manipulación indebida y reparación por técnicos no autorizados por Kao Sport Center.
                                         </p>
                                         <p>
                                         '. $customMesagge .'
@@ -491,7 +495,7 @@ class ajaxController  {
                                                 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                                 <tbody>
                                                     <tr>
-                                                    <td> <a href="'.SITIOWEB_ONLINE.'" target="_blank">Visitar '.$empresaData["NomCia"].'</a> </td>
+                                                    <td> <a href="'.SITIOWEB_ONLINE.'" target="_blank">Visitar tienda ONLINE</a> </td>
                                                     </tr>
                                                 </tbody>
                                                 </table>

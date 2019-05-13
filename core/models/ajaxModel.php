@@ -19,7 +19,7 @@ class ajaxModel  {
         en la tabla dbo.MantenimientosEQ, asegurar nombre de la base de datos a la que conectar.
     */
 
-    public function getArraysMantenimientosEQ($dataBaseName='KAO_wssp', $pageSize, $fechaInicial, $fechaFinal) {
+    public function getArraysMantenimientosEQ($dataBaseName='KAO_wssp', $pageSize, $fechaInicial, $fechaFinal, $codigoBodega) {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
@@ -42,6 +42,7 @@ class ajaxModel  {
             Cliente.TELEFONO1 as Telefono,
             Cliente.DIRECCION1 as Direccion,
             Cliente.EMAIL as Email,
+            Bodega.CODIGO as CodigoCodega,
             Bodega.NOMBRE as NombreBodega,
             Compra.ID + Compra.CODIGO as IDCompra 
             
@@ -58,6 +59,7 @@ class ajaxModel  {
             AND Compra.ANULADO = '0'
 			AND Producto.GarantiaCli != '0'
             AND fecha BETWEEN '".$fechaInicial."' AND '".$fechaFinal."' 
+            AND Bodega.CODIGO = '$codigoBodega'
         ORDER BY NombreCliente ASC
 
         ";  // Final del Query SQL 
