@@ -175,7 +175,7 @@ app = {
     },
     validaCotizacion: function (codigoMNT) {
 
-        var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Realizando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
+        var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Validando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
         modalBlocked.show();
     
         $.ajax({
@@ -189,10 +189,10 @@ app = {
                 console.log(respuesta);
                 console.log(respuesta.data.estado);
                 let IDDocument = respuesta.data.codVENCAB;
-                if (respuesta.data.estado == 0 || respuesta.data.estado == 1 ) {
+                if ( respuesta.data.estado == 1 ) {
                     window.open('./views/modulos/ajax/API_documentos.php?action=generaProforma&IDDocument='+IDDocument);
                 }else{
-                    alert('Cotizacion no validada.');
+                    alert('Cotizacion no valida.');
                 }
                 
             }, error: function (error) {
