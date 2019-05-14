@@ -560,6 +560,18 @@ class ajaxController  {
         return $response;
     }
 
+    /* Retorna informacion del VEN_CAB*/
+    public function getVEN_CABControllerWithOutProducto($IDDocument){
+        $response = $this->ajaxModel->getVENCABByIDWithOutProducto($IDDocument);
+        return $response;
+    }
+
+    /* Retorna la respuesta del modelo ajax*/
+    public function getVEN_MOVController($IDDocument){
+        $response = $this->ajaxModel->getVENMOVByID($IDDocument);
+        return $response;
+    }
+
     /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
     public function agendarMantenimiento($data){
         $ajaxModel = new \models\ajaxModel();
@@ -962,5 +974,145 @@ class ajaxController  {
         $response = $this->ajaxModel->persist_MantenimientoExterno($formDataObject);
         return $response;
     }
+
+    public function generaReporte($IDDocument, $outputMode = 'S'){
+
+        $empresaData = $this->getInfoEmpresaController();
+        $VEN_CAB = $this->getVEN_CABControllerWithOutProducto($IDDocument);
+        $VEN_MOV = $this->getVEN_MOVController($IDDocument);
+        
+         $html = '
+             
+             <div style="width: 100%;">
+         
+                 <div style="float: right; width: 75%;">
+                     <div id="informacion">
+                         <h4>'.$empresaData["NomCia"].'</h4>
+                         <h4>Direccion: '.$empresaData["DirCia"].'</h4>
+                         <h4>Telefono: '.$empresaData["TelCia"].'</h4>
+                         <h4>RUC: '.$empresaData["RucCia"].'</h4>
+                         <h4>Documento # '.$VEN_CAB["ID"].' </h4>
+                     </div>
+                 </div>
+         
+                 <div id="logo" style="float: left; width: 20%;">
+                     <img src="../../../assets/img/logo.png" alt="Logo">
+                 </div>
+         
+             </div>
+         
+             <div id="infoCliente" class="rounded">
+                 <div class="cabecera"><b>Fecha:</b> '. date('Y-m-d').'</div>
+                 <div class="cabecera"><b>Cliente:</b> '.$VEN_CAB["NOMBRE"].'</div>
+                 <div class="cabecera"><b>Direccion: </b> '.$VEN_CAB["DIRECCION1"].' </div>
+                 <div class="cabecera"><b>Telefono: </b> '.$VEN_CAB["TELEFONO1"].' </div>
+                 <div class="cabecera"><b>Email: </b> '.$VEN_CAB["EMAIL"].' </div>
+                 <div class="cabecera"><b>Vendedor: </b> '.$VEN_CAB["VendedorName"].' </div>
+             </div>
+         
+             <table class="items" width="100%" style="font-size: 9pt; border-collapse: collapse; " cellpadding="8">
+                 <thead>
+                     <tr>
+                         <td width="5%">Item</td>
+                         <td width="11%">Cod.</td>
+                         <td width="7%">Cant.</td>
+                         <td width="45%">Descripcion</td>
+                         <td width="6%">IVA</td>
+                         <td width="15%">P. Unit.</td>
+                         <td width="10%">% Desc.</td>
+                         <td width="10%">V. Desc.</td>
+                         <td width="15%">P. Total</td>
+                     </tr>
+                 </thead>
+             <tbody>
+         
+             <!-- ITEMS HERE -->
+             ';
+                 $cont = 1;
+                 foreach($VEN_MOV as $row){
+                    
+                     $html .= '
+         
+                     <tr>
+                         <td align="center">'.$cont.'</td>
+                         <td align="center">'.$row["CODIGO"].'</td>
+                         <td align="center">'.$row["CANTIDAD"].'</td>
+                         <td>'.$row["Nombre"].'</td>
+                         <td>'.$row["tipoiva"].'</td>
+                         <td>'.$row["PRECIO"].'</td>
+                         <td>'.$row["DESCU"].'</td>
+                         <td class="cost"> '.$row["DESCU"].' </td>
+                         <td class="cost"> '.$row["PRECIOTOT"].'</td>
+                     </tr>';
+                     $cont++;
+                     }
+         
+             $html .= ' 
+             
+         
+             <!-- END ITEMS HERE -->
+                 <tr>
+                 <td class="blanktotal" colspan="6" rowspan="6"></td>
+                 <td class="totals" colspan="2">Imponible 0%:</td>
+                 <td class="totals cost">'.$VEN_CAB["BASCERO"].'</td>
+                 </tr>
+         
+             
+                 <tr>
+                 <td class="totals" colspan="2">Imponible 12%:</td>
+                 <td class="totals cost">'.$VEN_CAB["BASIVA"].'</td>
+                 </tr>
+         
+                 <tr>
+                 <td class="totals" colspan="2">Subtotal:</td>
+                 <td class="totals cost">'.$VEN_CAB["SUBTOTAL"].'</td>
+                 </tr>
+         
+                 <tr>
+                 <td class="totals" colspan="2">Base Imponible:</b></td>
+                 <td class="totals cost">0</td>
+                 </tr>
+         
+                 <tr>
+                 <td class="totals" colspan="2">IVA:</td>
+                 <td class="totals cost">'.$VEN_CAB["IMPUESTO"].'</td>
+                 </tr>
+         
+                 <tr>
+                 <td class="totals" colspan="2"><b>Total Pagar:</b></td>
+                 <td class="totals cost"><b>'.$VEN_CAB["TOTAL"].'</b></td>
+                 </tr>
+         
+             </tbody>
+             </table>
+ 
+             <div style="width: 100%;">
+                 <p id="observacion">Observacion: '.$VEN_CAB["OBSERVA"].'</p> 
+             </div>
+         
+             
+         ';
+ 
+         //==============================================================
+         //==============================================================
+         //==============================================================
+ 
+         /* require_once '../../../vendor/autoload.php'; */
+         $mpdf = new \mPDF('c','A4');
+ 
+         // LOAD a stylesheet
+         $stylesheet = file_get_contents('../../../assets/css/reportesStyles.css');
+         
+         $mpdf->WriteHTML($stylesheet,1);	// The parameter 1 tells that this is css/style only and no body/html/text
+ 
+         $mpdf->WriteHTML($html);
+         
+         return $mpdf->Output('doc.pdf', $outputMode);
+ 
+         //==============================================================
+         //==============================================================
+         //==============================================================
+ 
+     }
     
 }

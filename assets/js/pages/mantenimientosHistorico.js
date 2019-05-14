@@ -1,16 +1,12 @@
-btn_search
 
 $(function() {
     
-    altair_form_adv.date_range();
+    app.date_range();
     fechaActual = new Date().toISOString().slice(0, 10);
-    console.log(fechaActual);
-
+    
     /* Funcion busca que despliega resultados de busqueda*/
     $('#btn_search').on('click', function (event) {
-    var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Realizando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
-    modalBlocked.show();
-    
+        
         let fechaInicial = $('#uk_dp_start').val();
         let fechaFinal = $('#uk_dp_end').val();
         let tiposDocs = $('#select_tiposDoc').val();
@@ -18,36 +14,31 @@ $(function() {
         if (fechaInicial == null || fechaInicial == "" || fechaFinal == null || fechaFinal == "") {
             fechaInicial = new Date().toISOString().slice(0, 10);
             fechaFinal = new Date().toISOString().slice(0, 10);
-
+            return;
         }
+
+        app.searchHistorico(fechaInicial, fechaFinal, tiposDocs);
 
         console.log(fechaInicial);
         console.log(fechaFinal);
         console.log(tiposDocs);
    
-    $.ajax({
-        url: 'views/modulos/ajax/API_estadisticas.php?action=getHistorico',
-        method: 'GET',
-        data: { fechaInicial: fechaInicial, fechaFinal:fechaFinal, tiposDocs:tiposDocs },
+   
 
-        success: function (response) {
-            console.log(response);
-            altair_form_adv.displayData(response);
-            
-        }, error: function (error) {
-            alert('No se pudo completar la operación, informe a sistemas. #' + error.status + ' ' + error.statusText);
-        },complete: function() {
-            modalBlocked.hide();
-        }
 
     });
 
-
+    // Boton de creacion de PDF en busqueda de documentos
+    $("#tbodyresults").on("click", '.generaPDF', function(event) {
+        let IDDocument = $(this).data("codigo");
+        console.log(IDDocument);
+        window.open('./views/modulos/ajax/API_documentos.php?action=generaProforma&IDDocument='+IDDocument);
+       
     });
 
 });
 
-altair_form_adv = {
+app = {
 
     // date range
     date_range: function() {
@@ -99,7 +90,7 @@ altair_form_adv = {
                 <td class="uk-text-center"> ${row.Cliente} </td>
                 <td class="uk-text-center"> ${row.CodProducto} </td>
                 <td class="uk-text-center"> ${row.FechaINI} </td>
-                <td class="uk-text-center"> <span class="uk-badge ${ altair_form_adv.getColorBadge(codEstado) }"> ${ altair_form_adv.getDescStatus(codEstado) } </span></td>
+                <td class="uk-text-center"> <span class="uk-badge ${ app.getColorBadge(codEstado) }"> ${ app.getDescStatus(codEstado) } </span></td>
             </tr>
                     `;
 
@@ -159,6 +150,28 @@ altair_form_adv = {
             break;
         }
        
+    },
+    searchHistorico: function (fechaInicial, fechaFinal, tiposDocs) {
+
+        var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Realizando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
+        modalBlocked.show();
+    
+        $.ajax({
+            url: 'views/modulos/ajax/API_estadisticas.php?action=getHistorico',
+            method: 'GET',
+            data: { fechaInicial: fechaInicial, fechaFinal:fechaFinal, tiposDocs:tiposDocs },
+    
+            success: function (response) {
+                console.log(response);
+                app.displayData(response);
+                
+            }, error: function (error) {
+                alert('No se pudo completar la operación, informe a sistemas. #' + error.status + ' ' + error.statusText);
+            },complete: function() {
+                modalBlocked.hide();
+            }
+    
+        });
     }
 
 } 

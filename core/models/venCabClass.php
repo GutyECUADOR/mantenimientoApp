@@ -31,7 +31,8 @@ class venCabClass {
     function calculaSubtotal(){
         $subtotal = 0;
         foreach ($this->productos as $producto) {
-            $subtotal += $producto->precio * $producto->cantidad;
+            $descuento = ($producto->precio * $producto->descuento)/100; // Estas propiedades son del objeto JS enviado por formData
+            $subtotal += $producto->precio - $descuento;
         }
         $this->subtotal = $subtotal;
         return $subtotal;
@@ -45,8 +46,7 @@ class venCabClass {
     }
     
     function calculaTOTAL(){
-        $descuento = ($this->subtotal * $this->porcentDescuento)/100;
-        $total = ($this->subtotal - $descuento ) + $this->impuesto ;
+        $total = $this->subtotal + $this->impuesto ;
         $this->total = round($total, 2);
         return round($total, 2);
     }

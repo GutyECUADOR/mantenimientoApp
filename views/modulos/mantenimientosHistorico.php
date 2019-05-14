@@ -119,8 +119,8 @@
                                             <a href="#" class="md-icon material-icons">&#xE5D4;</a>
                                             <div class="uk-dropdown">
                                                 <ul class="uk-nav uk-nav-dropdown">
-                                                    <li><a href="#"><i class="material-icons">print</i> Imprimir Cotizacion</a></li>
-                                                    <li><a id="sendCotizacion"><i class="material-icons">email</i> Enviar Cotizacion</a></li>
+                                                    <li><a class="generaPDF" data-codigo="992014V0700062208"><i class="material-icons">print</i> Imprimir Cotizacion</a></li>
+                                                    <li><a class="sendCotizacion"><i class="material-icons">email</i> Enviar Cotizacion</a></li>
                                                 </ul>
                                             </div>
                                         </div>

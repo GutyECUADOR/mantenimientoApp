@@ -267,8 +267,9 @@ altair_product_edit = {
     
                         success: function(response) {
                             
-                            response = JSON.parse(response);
                             console.log(response);
+                            response = JSON.parse(response);
+                            
                             console.log(getProductos().length + ' productos');
                            
                             if (response.status === 'OK' && getProductos().length === 0) {
