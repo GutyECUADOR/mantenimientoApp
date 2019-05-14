@@ -303,6 +303,28 @@ class ajaxModel  {
         }
     }
 
+    public function getMantenimientoByCodMNTmodel($codMNT, $dataBaseName='KAO_wssp'){
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX();
+
+        $query = "
+            SELECT
+                CAB.*,
+                MOV.*
+            
+            FROM dbo.mantenimientosEQ  as CAB
+                LEFT JOIN dbo.mov_mantenimientosEQ as MOV on MOV.codMantenimiento = CAB.codMantenimiento 
+            WHERE CAB.codMantenimiento = '$codMNT'
+        ";
+
+        $stmt = $this->db->prepare($query); 
+        if($stmt->execute()){
+            return $stmt->fetch( \PDO::FETCH_ASSOC);
+        }else{
+            return false;
+        }
+    }
+
     public function getArraysTiposDOCMantenimientos($dataBaseName='KAO_wssp') {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp

@@ -31,8 +31,8 @@ $(function() {
     // Boton de creacion de PDF en busqueda de documentos
     $("#tbodyresults").on("click", '.generaPDF', function(event) {
         let IDDocument = $(this).data("codigo");
-        console.log(IDDocument);
-        window.open('./views/modulos/ajax/API_documentos.php?action=generaProforma&IDDocument='+IDDocument);
+
+        app.validaCotizacion(IDDocument);
        
     });
 
@@ -164,6 +164,36 @@ app = {
             success: function (response) {
                 console.log(response);
                 app.displayData(response);
+                
+            }, error: function (error) {
+                alert('No se pudo completar la operación, informe a sistemas. #' + error.status + ' ' + error.statusText);
+            },complete: function() {
+                modalBlocked.hide();
+            }
+    
+        });
+    },
+    validaCotizacion: function (codigoMNT) {
+
+        var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Realizando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
+        modalBlocked.show();
+    
+        $.ajax({
+            url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=getMantenimientoByCodMNT',
+            method: 'GET',
+            data: { codigoMNT: codigoMNT },
+    
+            success: function (response) {
+                console.log(response);
+                let respuesta = JSON.parse(response);
+                console.log(respuesta);
+                console.log(respuesta.data.estado);
+                let IDDocument = respuesta.data.codVENCAB;
+                if (respuesta.data.estado == 0 || respuesta.data.estado == 1 ) {
+                    window.open('./views/modulos/ajax/API_documentos.php?action=generaProforma&IDDocument='+IDDocument);
+                }else{
+                    alert('Cotizacion no validada.');
+                }
                 
             }, error: function (error) {
                 alert('No se pudo completar la operación, informe a sistemas. #' + error.status + ' ' + error.statusText);

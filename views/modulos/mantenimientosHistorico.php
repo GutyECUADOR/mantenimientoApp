@@ -75,15 +75,15 @@
                         <table class="uk-table uk-table-nowrap table_check uk-table-hover">
                             <thead>
                             <tr>
-                                <th class="uk-width-1-10 uk-text-center">#</th>
-                                <th class="uk-width-2-10 uk-text-center">ID Factura</th>
-                                <th class="uk-width-1-10 uk-text-center">ID Mant.</th>
-                                <th class="uk-width-1-10 uk-text-center">Mant Fisico.</th>
-                                <th class="uk-width-2-10 uk-text-center">Cliente</th>
-                                <th class="uk-width-1-10 uk-text-center">Equipo</th>
-                                <th class="uk-width-1-10 uk-text-center">Fecha Programada</th>
-                                <th class="uk-width-1-10 uk-text-center">Num Rel.</th>
-                                <th class="uk-width-1-10 uk-text-center">Estado</th>
+                                <th class="uk-width-1-10">#</th>
+                                <th class="uk-width-2-10">ID Factura</th>
+                                <th class="uk-width-1-10">ID Mant.</th>
+                                <th class="uk-width-1-10">Mant Fisico.</th>
+                                <th class="uk-width-2-10">Cliente</th>
+                                <th class="uk-width-1-10">Equipo</th>
+                                <th class="uk-width-1-10">Fecha Programada</th>
+                                <th class="uk-width-1-10">Num Rel.</th>
+                                <th class="uk-width-1-10">Estado</th>
                             
                             </tr>
                             </thead>
@@ -105,21 +105,21 @@
                             ?>
 
                                 <tr class="">
-                                    <td class="uk-text-center"><?php echo $contador?></td>
-                                    <td class="uk-text-center"><?php echo $equipo['CodigoFac']?></td>
-                                    <td class="uk-text-center"><?php echo $equipo['CodMNT']?></td>
-                                    <td class="uk-text-center"><?php echo $equipo['CodOrdenFisica']?></td>
-                                    <td class="uk-text-center"><?php echo $equipo['Cliente']?></td>
-                                    <td class="uk-text-center"><?php echo $equipo['CodProducto']?></td>
-                                    <td class="uk-text-center"><?php echo $fechaFormat?></td>
-                                    <td class="uk-text-center"><?php echo $equipo['NUMREL']?></td>
-                                    <td class="uk-text-center"><span class="uk-badge <?php echo $colorBadge?>"><?php echo $status ?></span></td>
+                                    <td ><?php echo $contador?></td>
+                                    <td ><?php echo $equipo['CodigoFac']?></td>
+                                    <td ><?php echo $equipo['CodMNT']?></td>
+                                    <td ><?php echo $equipo['CodOrdenFisica']?></td>
+                                    <td ><?php echo $equipo['Cliente']?></td>
+                                    <td ><?php echo $equipo['CodProducto']?></td>
+                                    <td ><?php echo $fechaFormat?></td>
+                                    <td ><?php echo $equipo['NUMREL']?></td>
+                                    <td ><span class="uk-badge <?php echo $colorBadge?>"><?php echo $status ?></span></td>
                                     <td>
                                         <div class="uk-button-dropdown" data-uk-dropdown="{pos:'bottom-right'}">
                                             <a href="#" class="md-icon material-icons">&#xE5D4;</a>
                                             <div class="uk-dropdown">
                                                 <ul class="uk-nav uk-nav-dropdown">
-                                                    <li><a class="generaPDF" data-codigo="992014V0700062208"><i class="material-icons">print</i> Imprimir Cotizacion</a></li>
+                                                    <li><a class="generaPDF" data-codigo="<?php echo $equipo['CodMNT']?>"><i class="material-icons">print</i> Imprimir Cotizacion</a></li>
                                                     <li><a class="sendCotizacion"><i class="material-icons">email</i> Enviar Cotizacion</a></li>
                                                 </ul>
                                             </div>

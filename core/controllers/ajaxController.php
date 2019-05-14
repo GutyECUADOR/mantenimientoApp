@@ -15,10 +15,9 @@ class ajaxController  {
     /* Devuelve array en el formato requerido para el plugin JTable */
     public function getAllEquiposSinMantenimiento($fechaInicio, $fechaFinal, $startIndex, $pageSize, $bodega) {
 
-        $ajaxModel = new \models\ajaxModel();
         //Respuesta de informacion de VEN_MOV
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
-        $arrayEquipos = $ajaxModel->getArraysMantenimientosEQ($dbEmpresa, $pageSize, $fechaInicio, $fechaFinal, $bodega);
+        $arrayEquipos = $this->ajaxModel->getArraysMantenimientosEQ($dbEmpresa, $pageSize, $fechaInicio, $fechaFinal, $bodega);
         $arrayUTF8 = array();
         foreach ($arrayEquipos as $equipo) {
            
@@ -574,8 +573,7 @@ class ajaxController  {
 
     /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
     public function agendarMantenimiento($data){
-        $ajaxModel = new \models\ajaxModel();
-        $response = $ajaxModel->insertNewMantenimiento($data);
+        $response = $this->ajaxModel->insertNewMantenimiento($data);
         $mailCliente = trim($data['Email']);
         $newCod = $response['newCod']; 
         $statusOK = $response['status']; // Comprobamos que la respuesta desde el modelo de OK
@@ -589,7 +587,7 @@ class ajaxController  {
 
     /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
     public function agendarExtraMantenimiento($formData){
-        $ajaxModel = new \models\ajaxModel();
+
         $mantenimiento = new \models\MantenimientosClass();
         $dataBaseName = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
         $codMNT = $formData->codMantenimientoModal;
@@ -612,15 +610,15 @@ class ajaxController  {
             'Tecnico' => $arrayMantenimiento['CIEncargado']
             );
 
-        $response = $ajaxModel->insertNewMantenimiento($data);
+        $response = $this->ajaxModel->insertNewMantenimiento($data);
         return $response;
     }
 
     /* Verifica si existe el codigo de ordenfisica en mantenimientosEQ*/
     public function isValidOrdenFisica ($formData){
-        $ajaxModel = new \models\ajaxModel();
+       
         $codEmpresa = $_SESSION["codEmpresaAUTH"];
-        $response = $ajaxModel->isDisponibleOrdenFisica($formData, $codEmpresa);
+        $response = $this->ajaxModel->isDisponibleOrdenFisica($formData, $codEmpresa);
 
         if ($response <= 0) {
             return true;
@@ -632,52 +630,53 @@ class ajaxController  {
 
     /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
      public function anularMantenimiento($data){
-        $ajaxModel = new \models\ajaxModel();
-        $response = $ajaxModel->anulaMantenimientoByCod($data);
+        $response = $this->ajaxModel->anulaMantenimientoByCod($data);
         return $response;
     }
 
     /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
     public function anularMantenimientoExterno($data){
-        $ajaxModel = new \models\ajaxModel();
-        $response = $ajaxModel->anulaMantenimientoExternoByCod($data);
+        $response = $this->ajaxModel->anulaMantenimientoExternoByCod($data);
         return $response;
     }
 
     
     /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
     public function aprobarMantenimiento($data){
-        $ajaxModel = new \models\ajaxModel();
-        $response = $ajaxModel->aprobarMantenimientoByCod($data);
+        $response = $this->ajaxModel->aprobarMantenimientoByCod($data);
         return $response;
     }
 
     /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
     public function aprobarMantenimientoExtenoByCod($data){
-        $ajaxModel = new \models\ajaxModel();
-        $response = $ajaxModel->aprobarMantenimientoExtenoByCod($data);
+        $response = $this->ajaxModel->aprobarMantenimientoExtenoByCod($data);
         return $response;
     }
 
 
     /* Realiza peticion al modelo para setear estado 3 al registro de la tabla mantenimientosEQ*/
     public function omitirMantenimiento($data){
-        $ajaxModel = new \models\ajaxModel();
-        $response = $ajaxModel->omitirMantenimientoByCod($data);
+        
+        $response = $this->ajaxModel->omitirMantenimientoByCod($data);
+        return $response;
+    }
+
+    /* Realiza peticion al modelo para setear estado 3 al registro de la tabla mantenimientosEQ*/
+    public function getMantenimientoByCodMNTController($codMNT){
+        $response = $this->ajaxModel->getMantenimientoByCodMNTmodel($codMNT);
         return $response;
     }
 
     /* Retorna la respuesta del modelo ajax*/
     public function getTiposMantenimientos(){
-        $ajaxModel = new \models\ajaxModel();
-        $response = $ajaxModel->getArraysTiposDOCMantenimientos();
+        $response = $this->ajaxModel->getArraysTiposDOCMantenimientos();
         return $response;
     }
     
     /* Retorna la respuesta del modelo ajax*/
     public function getAllTecnicos(){
-        $ajaxModel = new \models\ajaxModel();
-        $response = $ajaxModel->getArraysTecnicos('SBIOKAO');
+       
+        $response = $this->ajaxModel->getArraysTecnicos('SBIOKAO');
         return $response;
     }
 
@@ -689,16 +688,16 @@ class ajaxController  {
 
     /* Retorna la respuesta del modelo ajax*/
     public function getAllSupervisores(){
-        $ajaxModel = new \models\ajaxModel();
-        $response = $ajaxModel->getArraysSupervisores('SBIOKAO');
+        
+        $response = $this->ajaxModel->getArraysSupervisores('SBIOKAO');
         return $response;
     }
 
     /* Retorna la respuesta del modelo ajax*/
     public function getAllBodegas(){
-        $ajaxModel = new \models\ajaxModel();
+      
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
-        $response = $ajaxModel->getArraysBodegas($dbEmpresa);
+        $response = $this->ajaxModel->getArraysBodegas($dbEmpresa);
         return $response;
     }
 
@@ -710,36 +709,35 @@ class ajaxController  {
 
     /* Retorna la respuesta del modelo ajax*/
     public function getProductoByCod($codProducto){
-        $ajaxModel = new \models\ajaxModel();
+       
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
-        $response = $ajaxModel->getArrayProducto($dbEmpresa, $codProducto);
+        $response = $this->ajaxModel->getArrayProducto($dbEmpresa, $codProducto);
         return $response;
     }
 
     /*Envia informacion al modelo para actualizar, ejecuta insert en WINFENIX, VEN_CAB y VEN_MOV */
     public function updateMantenimientoByCod($formData, $productosArray){
         date_default_timezone_set('America/Lima');
-        $ajaxModel = new \models\ajaxModel();
         $VEN_CAB = new \models\venCabClass();
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
         $tipoDOC = 'COT';
         //Actualizacion a WSSP - MantenimientosEQ
-        $response_WSSP = $ajaxModel->updateMantenimientoEQ($formData);
+        $response_WSSP = $this->ajaxModel->updateMantenimientoEQ($formData);
        
         if (!empty($productosArray)) {
             
             //Obtenemos informacion de la empresa
-            $datosEmpresa = $ajaxModel->getDatosEmpresaFromWINFENIX($dbEmpresa);
-            $codIMPORTKAO = trim($ajaxModel->getDatosClienteWINFENIXByRUC('1790417581001', $dbEmpresa)['CODIGO']);
-            $serieDocs = $ajaxModel->getDatosDocumentsWINFENIXByTypo($tipoDOC, $dbEmpresa)['Serie'];
+            $datosEmpresa = $this->ajaxModel->getDatosEmpresaFromWINFENIX($dbEmpresa);
+            $codIMPORTKAO = trim($this->ajaxModel->getDatosClienteWINFENIXByRUC('1790417581001', $dbEmpresa)['CODIGO']);
+            $serieDocs = $this->ajaxModel->getDatosDocumentsWINFENIXByTypo($tipoDOC, $dbEmpresa)['Serie'];
             
             if (!$codIMPORTKAO || is_null($codIMPORTKAO)) {
                 $codIMPORTKAO = '9999999999999';
             }
 
             //Crea mos nuevo codigo de VEN_CAB (secuencial)
-            $newCodigo = $ajaxModel->getNextNumDocWINFENIX($tipoDOC, $dbEmpresa); // Recuperamos secuencial de SP de Winfenix
-            $newCodigoWith0 = $ajaxModel->formatoNextNumDocWINFENIX($dbEmpresa, $newCodigo); // Asignamos formato con 0000X
+            $newCodigo = $this->ajaxModel->getNextNumDocWINFENIX($tipoDOC, $dbEmpresa); // Recuperamos secuencial de SP de Winfenix
+            $newCodigoWith0 = $this->ajaxModel->formatoNextNumDocWINFENIX($dbEmpresa, $newCodigo); // Asignamos formato con 0000X
 
             $new_cod_VENCAB = $datosEmpresa['Oficina'].$datosEmpresa['Ejercicio'].$tipoDOC.$newCodigoWith0;
             
@@ -771,9 +769,9 @@ class ajaxController  {
             $VEN_CAB->setObservacion('MantenimientosApp #'.$formData->codMantenimiento);
             
              //Registro en VEN_CAB y MOV mantenimientosEQ
-            $response_VEN_CAB = $ajaxModel->insertVEN_CAB($VEN_CAB, $dbEmpresa);
+            $response_VEN_CAB = $this->ajaxModel->insertVEN_CAB($VEN_CAB, $dbEmpresa);
 
-            $response_MOV_MNT = $ajaxModel->insertMOVMantenimientoEQ($formData, $new_cod_VENCAB);
+            $response_MOV_MNT = $this->ajaxModel->insertMOVMantenimientoEQ($formData, $new_cod_VENCAB);
             
             $arrayVEN_MOVinsets = array();
 
@@ -802,7 +800,7 @@ class ajaxController  {
                     $VEN_MOV->setPrecioTOTAL($VEN_MOV->calculaPrecioTOTAL());
                     $VEN_MOV->setObservacion('');
                     
-                    $response_VEN_MOV = $ajaxModel->insertVEN_MOV($VEN_MOV, $dbEmpresa);
+                    $response_VEN_MOV = $this->ajaxModel->insertVEN_MOV($VEN_MOV, $dbEmpresa);
                     
                     array_push($arrayVEN_MOVinsets, $response_VEN_MOV);
                     
@@ -832,27 +830,26 @@ class ajaxController  {
     /*Envia informacion al modelo para actualizar, ejecuta insert en WINFENIX, VEN_CAB y VEN_MOV */
     public function updateMantenimientoExternoByCod($formData, $productosArray){
         date_default_timezone_set('America/Lima');
-        $ajaxModel = new \models\ajaxModel();
         $VEN_CAB = new \models\venCabClass();
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
         $tipoDOC = 'COT';
         //Actualizacion a WSSP - MantenimientosEQ
-        $response_WSSP = $ajaxModel->updateMantenimientoExterno($formData);
+        $response_WSSP = $this->ajaxModel->updateMantenimientoExterno($formData);
        
         if (!empty($productosArray)) {
             
             //Obtenemos informacion de la empresa
-            $datosEmpresa = $ajaxModel->getDatosEmpresaFromWINFENIX($dbEmpresa);
-            $codIMPORTKAO = trim($ajaxModel->getDatosClienteWINFENIXByRUC('1790417581001', $dbEmpresa)['CODIGO']);
-            $serieDocs = $ajaxModel->getDatosDocumentsWINFENIXByTypo($tipoDOC, $dbEmpresa)['Serie'];
+            $datosEmpresa = $this->ajaxModel->getDatosEmpresaFromWINFENIX($dbEmpresa);
+            $codIMPORTKAO = trim($this->ajaxModel->getDatosClienteWINFENIXByRUC('1790417581001', $dbEmpresa)['CODIGO']);
+            $serieDocs = $this->ajaxModel->getDatosDocumentsWINFENIXByTypo($tipoDOC, $dbEmpresa)['Serie'];
             
             if (!$codIMPORTKAO || is_null($codIMPORTKAO)) {
                 $codIMPORTKAO = '9999999999999';
             }
 
             //Crea mos nuevo codigo de VEN_CAB (secuencial)
-            $newCodigo = $ajaxModel->getNextNumDocWINFENIX($tipoDOC, $dbEmpresa); // Recuperamos secuencial de SP de Winfenix
-            $newCodigoWith0 = $ajaxModel->formatoNextNumDocWINFENIX($dbEmpresa, $newCodigo); // Asignamos formato con 0000X
+            $newCodigo = $this->ajaxModel->getNextNumDocWINFENIX($tipoDOC, $dbEmpresa); // Recuperamos secuencial de SP de Winfenix
+            $newCodigoWith0 = $this->ajaxModel->formatoNextNumDocWINFENIX($dbEmpresa, $newCodigo); // Asignamos formato con 0000X
 
             $new_cod_VENCAB = $datosEmpresa['Oficina'].$datosEmpresa['Ejercicio'].$tipoDOC.$newCodigoWith0;
             
@@ -880,10 +877,10 @@ class ajaxController  {
             $VEN_CAB->setObservacion('MantenimientosApp #'.$formData->codMantenimiento);
             
              //Registro en VEN_CAB y MOV mantenimientosEQ
-            $response_VEN_CAB = $ajaxModel->insertVEN_CAB($VEN_CAB, $dbEmpresa);
+            $response_VEN_CAB = $this->ajaxModel->insertVEN_CAB($VEN_CAB, $dbEmpresa);
 
             // Registro en mov_mantenimientosEQ
-            $response_MOV_MNT = $ajaxModel->insertMOVMantenimientoEQ($formData, $new_cod_VENCAB);
+            $response_MOV_MNT = $this->ajaxModel->insertMOVMantenimientoEQ($formData, $new_cod_VENCAB);
             
             $arrayVEN_MOVinsets = array();
 
@@ -905,7 +902,7 @@ class ajaxController  {
                     $VEN_MOV->setPrecioTOTAL($VEN_MOV->calculaPrecioTOTAL());
                     $VEN_MOV->setObservacion('');
                     
-                    $response_VEN_MOV = $ajaxModel->insertVEN_MOV($VEN_MOV, $dbEmpresa);
+                    $response_VEN_MOV = $this->ajaxModel->insertVEN_MOV($VEN_MOV, $dbEmpresa);
                     
                     array_push($arrayVEN_MOVinsets, $response_VEN_MOV);
                     
@@ -934,18 +931,15 @@ class ajaxController  {
 
     /* AJAX ESTADISTICAS - Get conteo de mantenimientos */
     public function getCountMantenimientosController($codEmpresa){
-        $ajaxModel = new \models\ajaxModel();
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
-        $response = $ajaxModel->getCountMantenimientos($codEmpresa);
+        $response = $this->ajaxModel->getCountMantenimientos($codEmpresa);
         return $response;
     }
 
     /* AJAX ESTADISTICAS - Get conteo de mantenimientos */
     public function getHistoricoController($fechaINI, $fechaFIN, $codEmpresa, $tiposDocs){
-        $ajaxModel = new \models\ajaxModel();
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
-       
-        $response = $ajaxModel->getHistorico($dbEmpresa, $fechaINI, $fechaFIN, $codEmpresa, $tiposDocs);
+        $response = $this->ajaxModel->getHistorico($dbEmpresa, $fechaINI, $fechaFIN, $codEmpresa, $tiposDocs);
         return $response;
     }
     
