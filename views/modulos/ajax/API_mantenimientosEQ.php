@@ -46,7 +46,11 @@ class ajax{
 
     public function getMantenimientoByCodMNT($codMNT){
         return $this->ajaxController->getMantenimientoByCodMNTController($codMNT);
-      }
+    }
+
+    public function getMantenimientoByCodMNTExt($codMNT){
+        return $this->ajaxController->getMantenimientoByCodMNTExtController($codMNT);
+    }
 
     public function listTipoMantenimientosAction(){
       return $this->ajaxController->getTiposMantenimientos();
@@ -429,6 +433,28 @@ class ajax{
                 $codigoMNT = $_GET["codigoMNT"];
             
                 $respuesta = $ajax->getMantenimientoByCodMNT($codigoMNT);
+                if($respuesta){
+                $response = array('status' => 'OK'
+                            , 'data' => $respuesta);
+                }else{
+                $response = array('status' => 'FAIL'
+                            , 'mensaje' => 'Ha ocurrido un problema al realizar la petición');
+                }
+
+            }else{
+                $response = array('status' => 'FAIL'
+                , 'mensaje' => 'No se han indicado codigo de mantenimiento');
+            }
+        
+            echo json_encode($response);
+            break;
+
+        case 'getMantenimientoByCodMNTExt':
+            /* Retorna el CAB del mantenimiento WSSP*/
+            if (isset($_GET["codigoMNT"])) {
+                $codigoMNT = $_GET["codigoMNT"];
+            
+                $respuesta = $ajax->getMantenimientoByCodMNTExt($codigoMNT);
                 if($respuesta){
                 $response = array('status' => 'OK'
                             , 'data' => $respuesta);

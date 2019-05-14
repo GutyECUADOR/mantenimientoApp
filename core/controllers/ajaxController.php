@@ -667,6 +667,12 @@ class ajaxController  {
         return $response;
     }
 
+    /* Realiza peticion al modelo para setear estado 3 al registro de la tabla mantenimientosEQ*/
+    public function getMantenimientoByCodMNTExtController($codMNT){
+        $response = $this->ajaxModel->getMantenimientoByCodMNTExtmodel($codMNT);
+        return $response;
+    }
+
     /* Retorna la respuesta del modelo ajax*/
     public function getTiposMantenimientos(){
         $response = $this->ajaxModel->getArraysTiposDOCMantenimientos();

@@ -6,7 +6,7 @@
     /* CREACION DE INSTANCIA USADA PARA ESTA VISTA*/  
     $codEmpresa = trim($_SESSION["empresaAUTH"]);  // Nombre de la db asiganda en el login
     $mantenimientos = new models\MantenimientosClass();
-    $arrayMantenimientos = $mantenimientos->getMantenimientosHistorico(100, $codEmpresa); //Devuelve array de mantenimientos
+    $arrayMantenimientos = $mantenimientos->getMantenimientosHistoricoEXT(100, $codEmpresa); //Devuelve array de mantenimientos
    
 ?>
 
@@ -23,7 +23,7 @@
     <!-- CONTENIDO DE LA SECCION -->    
     <div id="page_content">
         <div id="page_content_inner">
-            <h3 class="heading_b uk-margin-bottom">Historico de mantenimientos internos</h3>
+            <h3 class="heading_b uk-margin-bottom">Historico de mantenimientos externos</h3>
             <div class="md-card">
                 <div class="md-card-content">
                     <h3 class="heading_a">Filtros de busqueda</h3>
@@ -76,7 +76,6 @@
                             <thead>
                             <tr>
                                 <th class="uk-width-1-10">#</th>
-                                <th class="uk-width-2-10">ID Factura</th>
                                 <th class="uk-width-1-10">ID Mant.</th>
                                 <th class="uk-width-1-10">Mant Fisico.</th>
                                 <th class="uk-width-2-10">Cliente</th>
@@ -94,9 +93,9 @@
                                 if (is_array($arrayMantenimientos)) {
                                     $contador = 0;
                                 foreach ($arrayMantenimientos as $equipo) {
-                                    $fechaSpam = new DateTime($equipo['FechaINI']);
+                                    $fechaSpam = new DateTime($equipo['fechaCreacion']);
                                     $fechaFormat = date_format($fechaSpam, "Y-m-d");
-                                    $codStatus = $equipo['Estado'];
+                                    $codStatus = $equipo['estado'];
                                     $status = $mantenimientos->getDescStatus($codStatus);
                                     $colorBadge = $mantenimientos->getColorBadge($codStatus);
                                     $contador++;
@@ -106,20 +105,19 @@
 
                                 <tr class="">
                                     <td ><?php echo $contador?></td>
-                                    <td ><?php echo $equipo['CodigoFac']?></td>
-                                    <td ><?php echo $equipo['CodMNT']?></td>
-                                    <td ><?php echo $equipo['CodOrdenFisica']?></td>
-                                    <td ><?php echo $equipo['Cliente']?></td>
-                                    <td ><?php echo $equipo['CodProducto']?></td>
+                                    <td ><?php echo $equipo['codMantExt']?></td>
+                                    <td ><?php echo $equipo['codOrdenFisica']?></td>
+                                    <td ><?php echo $equipo['ClienteName']?></td>
+                                    <td ><?php echo $equipo['serieModelo']?></td>
                                     <td ><?php echo $fechaFormat?></td>
-                                    <td ><?php echo $equipo['NUMREL']?></td>
+                                    <td ></td>
                                     <td ><span class="uk-badge <?php echo $colorBadge?>"><?php echo $status ?></span></td>
                                     <td>
                                         <div class="uk-button-dropdown" data-uk-dropdown="{pos:'bottom-right'}">
                                             <a href="#" class="md-icon material-icons">&#xE5D4;</a>
                                             <div class="uk-dropdown">
                                                 <ul class="uk-nav uk-nav-dropdown">
-                                                    <li><a class="generaPDF" data-codigo="<?php echo $equipo['CodMNT']?>"><i class="material-icons">print</i> Imprimir Cotizacion</a></li>
+                                                    <li><a class="generaPDF" data-codigo="<?php echo $equipo['codMantExt']?>"><i class="material-icons">print</i> Imprimir Cotizacion</a></li>
                                                     <li><a class="sendCotizacion"><i class="material-icons">email</i> Enviar Cotizacion</a></li>
                                                 </ul>
                                             </div>
@@ -178,7 +176,7 @@
 <!-- altair common functions/helpers -->
 <script src="<?php echo ROOT_PATH; ?>assets/js/altair_admin_common.min.js"></script>
 
-<script src="<?php echo ROOT_PATH; ?>assets/js/pages/mantenimientosHistorico.js"></script>
+<script src="<?php echo ROOT_PATH; ?>assets/js/pages/mantenimientosHistoricoEXT.js"></script>
 
 <!--  theme color functions -->
 <script src="<?php echo ROOT_PATH; ?>assets/js/configTheme.js"></script>

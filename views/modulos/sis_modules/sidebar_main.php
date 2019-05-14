@@ -41,7 +41,7 @@
                             <li><a href="?&action=mantenimientosAG">Mantenimientos Agendados</a></li>
                             <li><a href="?&action=mantenimientosHistorico">Historico Internos</a></li>
                             <li><a href="?&action=mantenimientosEXT">Equipos externos</a></li>
-                            <li><a href="?&action=mantenimientosEXTHistorico">Historico Externos</a></li>
+                            <li><a href="?&action=mantenimientosHistoricoEXT">Historico Externos</a></li>
                         
                         </ul>
                     

@@ -197,6 +197,48 @@ class MantenimientosClass {
     }
 
     /*
+        Recupera los registros de la tabla mantenimientosEQ en KAO_wssp
+        - Indicar base de datos (empresa) de la cual realizar la consulta o retornara false de encontrar dicho nombre de DB
+    */
+    public function getMantenimientosHistoricoEXT($cantidad=100, $dataBaseName='KAO_wssp') {
+
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
+        
+        $codEmpresa = $this->getCodeDBByName($dataBaseName)['Codigo']; // Usado para filtro de resultados. codigo de la DB
+
+        //Query de consulta con parametros para bindear si es necesario.
+        $query = "
+        SELECT TOP $cantidad 
+            cliente.RUC,
+            cliente.NOMBRE  as ClienteName,
+            Mant.*
+        FROM 
+            dbo.COB_CLIENTES as Cliente
+            INNER JOIN KAO_wssp.dbo.mantExternosEQ_CAB as Mant  on Mant.cliente COLLATE Modern_Spanish_CI_AS = Cliente.RUC
+        WHERE Mant.empresa = '$codEmpresa'
+        ORDER BY Mant.codMantExt
+        ";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+    
+        $arrayResultados = array();
+
+            if($stmt->execute()){
+                while ($row = $stmt->fetch( \PDO::FETCH_ASSOC )) {
+                    array_push($arrayResultados, $row);
+                }
+                return $arrayResultados;
+                
+            }else{
+                $resulset = false;
+            }
+        return $resulset;  
+
+   
+    }
+
+    /*
         Recupera el registro con el codigo indicado tabla mantenimientosEQ en KAO_wssp
     */
     public function getMantenimientoByCod($dataBaseName='KAO_wssp', $codMantenimiento) {
