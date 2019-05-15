@@ -61,7 +61,9 @@ class ajaxController  {
     /* ATECION LOS DATOS DE CUERPO Y LOGS DEBEN NO DEBEN SER MODIFICADOS ESTAS DIRECCIONADOS PARA AJAX */
     public function sendEmail($email, $codMNT){
        
-        $IDDocument = '992014V0700062208';
+        $dataMNT = $this->getMantenimientoByCodMNTController($codMNT);
+        $IDDocument = $dataMNT['codFactura'];
+        $codProducto = $dataMNT['codEquipo'];
         
         $correoCliente = $email;
 
@@ -88,7 +90,7 @@ class ajaxController  {
             $mail->CharSet = "UTF-8";
             $mail->isHTML(true);                                  // Set email format to HTML
             $mail->Subject = 'KAO Sport - Mantenimiento de Equipos - ' . $codMNT;
-            $mail->Body    = $this->getBodyHTMLofEmail($IDDocument);
+            $mail->Body    = $this->getBodyHTMLofEmail($IDDocument, $codProducto);
         
             $mail->send();
             $detalleMail = 'Correo ha sido enviado a : '. $correoCliente;
@@ -143,9 +145,9 @@ class ajaxController  {
     }
 
 
-    protected function getBodyHTMLofEmail($IDDocument, $customMesagge=''){
+    protected function getBodyHTMLofEmail($IDDocument, $codProducto, $customMesagge=''){
         $empresaData = $this->getInfoEmpresaController();
-        $VEN_CAB = $this->getVEN_CABController($IDDocument, '05-9950B');
+        $VEN_CAB = $this->getVEN_CABController($IDDocument, $codProducto);
         if (empty($customMesagge)) {
             $customMesagge = BODY_EMAIL_TEXT;
         }
@@ -555,7 +557,9 @@ class ajaxController  {
 
     /* Retorna informacion del VEN_CAB*/
     public function getVEN_CABController($IDDocument, $codProducto){
-        $response = $this->ajaxModel->getVENCABByID($IDDocument, $codProducto);
+        $dataBaseName = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
+        
+        $response = $this->ajaxModel->getVENCABByID($IDDocument, $codProducto, $dataBaseName);
         return $response;
     }
 
