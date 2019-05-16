@@ -146,7 +146,7 @@ class MantenimientosClass {
         Recupera los registros de la tabla mantenimientosEQ en KAO_wssp
         - Indicar base de datos (empresa) de la cual realizar la consulta o retornara false de encontrar dicho nombre de DB
     */
-    public function getMantenimientosHistorico($cantidad=100, $dataBaseName='KAO_wssp') {
+    public function getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $cantidad=100, $dataBaseName='KAO_wssp') {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
@@ -173,9 +173,12 @@ class MantenimientosClass {
             INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE = Cliente.CODIGO 
             LEFT JOIN dbo.VEN_CAB as CAB on CAB.ID = Compra.ID
                         
-            WHERE codEmpresa = '$codEmpresa'
-                    
-        ORDER BY CodMNT ASC
+        WHERE 
+            codEmpresa = '$codEmpresa'
+            AND Mant.fechaInicio BETWEEN '$fechaINI' AND '$fechaFIN'   
+            
+        ORDER BY CodMNT DESC
+
         ";  // Final del Query SQL 
 
         $stmt = $this->db->prepare($query); 
@@ -217,7 +220,7 @@ class MantenimientosClass {
             dbo.COB_CLIENTES as Cliente
             INNER JOIN KAO_wssp.dbo.mantExternosEQ_CAB as Mant  on Mant.cliente COLLATE Modern_Spanish_CI_AS = Cliente.RUC
         WHERE Mant.empresa = '$codEmpresa'
-        ORDER BY Mant.codMantExt
+        ORDER BY Mant.codMantExt DESC
         ";  // Final del Query SQL 
 
         $stmt = $this->db->prepare($query); 

@@ -489,7 +489,7 @@ class ajaxController  {
                                         <p>Estimado, <b> '.$VEN_CAB["NOMBRE"].'</b> dueño de :<b>'.$VEN_CAB["NombreArticulo"].'</b>, le recordamos que:  </p>
 
                                         <p>
-                                            - Dentro de los 4 primeros meses posteriores a la compra, el cliente tiene derecho a 1 chequeo de garantía sin costo alguno en nuestros locales de servicio técnico; en Quito: Av. Amazonas N31-161 y Calle Moreno Bellido, Teléfono: 2239543; en Guayaquil: Piazza Ceibos Av. de los Bomberos S/N local A-38 Teléfono 043812193. Piazza Samborondón Local 5AK1 vía Samborondón Teléfono 042833054. 
+                                            - Dentro de los 4 primeros meses posteriores a la compra, el cliente tiene derecho a 1 chequeo de garantía sin costo alguno en nuestros locales de servicio técnico; en Quito: Av. Amazonas N31-161 y Calle Moreno Bellido, Teléfono: 2239543; en Guayaquil: Piazza Samborondón Local 5AK1 vía Samborondón Teléfono 042833054. 
                                         </p>
 
                                         <p>
@@ -734,6 +734,13 @@ class ajaxController  {
        
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
         $response = $this->ajaxModel->getArrayProducto($dbEmpresa, $codProducto);
+        return $response;
+    }
+
+    /* Retorna la respuesta del modelo ajax*/
+    public function getDefaultBodegaByCedula($cedulaUsuario){
+        $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
+        $response = $this->ajaxModel->getDefaultBodegaByCedulaModel($cedulaUsuario, $dbEmpresa);
         return $response;
     }
 

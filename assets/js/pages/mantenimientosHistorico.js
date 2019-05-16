@@ -3,7 +3,8 @@ $(function() {
     
     app.date_range();
     fechaActual = new Date().toISOString().slice(0, 10);
-    
+    app.searchHistorico(fechaActual, fechaActual, null);
+
     /* Funcion busca que despliega resultados de busqueda*/
     $('#btn_search').on('click', function (event) {
         
@@ -96,13 +97,27 @@ app = {
             let codEstado = (parseInt(row.Estado));
             let rowHTML = `
             <tr class="">
-                <td class="uk-text-center"> ${ contador } </td>
-                <td class="uk-text-center"> ${row.CodigoFac} </td>
-                <td class="uk-text-center"> ${row.CodMNT} </td>
-                <td class="uk-text-center"> ${row.Cliente} </td>
-                <td class="uk-text-center"> ${row.CodProducto} </td>
-                <td class="uk-text-center"> ${row.FechaINI} </td>
-                <td class="uk-text-center"> <span class="uk-badge ${ app.getColorBadge(codEstado) }"> ${ app.getDescStatus(codEstado) } </span></td>
+                <td> ${ contador } </td>
+                <td> ${row.CodigoFac} </td>
+                <td> ${row.CodMNT} </td>
+                <td> ${row.CodOrdenFisica} </td>
+                <td> ${row.Cliente} </td>
+                <td> ${row.CodProducto} </td>
+                <td> ${row.FechaINI} </td>
+                <td> ${row.NUMREL} </td>
+                <td> <span class="uk-badge ${ app.getColorBadge(codEstado) }"> ${ app.getDescStatus(codEstado) } </span></td>
+                <td>
+                    <div class="uk-button-dropdown" data-uk-dropdown="{pos:'bottom-right'}">
+                        <a href="#" class="md-icon material-icons">&#xE5D4;</a>
+                        <div class="uk-dropdown">
+                            <ul class="uk-nav uk-nav-dropdown">
+                                <li><a class="generaPDF" data-codigo="${row.CodMNT}"><i class="material-icons">print</i> Imprimir Cotizacion</a></li>
+                                <li><a class="sendCotizacion" data-codigo="${row.CodMNT}"><i class="material-icons">email</i> Enviar Cotizacion</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+
             </tr>
                     `;
 
@@ -163,7 +178,7 @@ app = {
         }
        
     },
-    searchHistorico: function (fechaInicial, fechaFinal, tiposDocs) {
+    searchHistorico: function (fechaINI, fechaFIN, tiposDocs) {
 
         var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Realizando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
         modalBlocked.show();
@@ -171,7 +186,7 @@ app = {
         $.ajax({
             url: 'views/modulos/ajax/API_estadisticas.php?action=getHistorico',
             method: 'GET',
-            data: { fechaInicial: fechaInicial, fechaFinal:fechaFinal, tiposDocs:tiposDocs },
+            data: { fechaINI: fechaINI, fechaFIN:fechaFIN, tiposDocs:tiposDocs },
     
             success: function (response) {
                 console.log(response);
