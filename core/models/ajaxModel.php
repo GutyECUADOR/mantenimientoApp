@@ -517,6 +517,42 @@ class ajaxModel  {
 
    
     }
+
+    public function getDefaultBodegaByCedulaModel($cedulaUsuario, $dataBaseName='KAO_wssp') {
+
+        $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
+        $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
+        
+        //Query de consulta con parametros para bindear si es necesario.
+        $query = "
+        SELECT TOP 1
+            u.Codigo as UsuarioWinfenix,
+            u.Nombre as NombreUsuario,
+            u.UserID as Cedula,
+            XASIGNA.DATO as BodegaDefecto
+        FROM 
+            dbo.XASIGDATOUSER AS XASIGNA
+            
+        INNER JOIN dbo.USUARIOS as u ON XASIGNA.USERCOD = u.Codigo
+        
+        WHERE 
+            u.UserID = '$cedulaUsuario' 
+            and XASIGNA.GESTION = 'VEN' 
+            AND XASIGNA.DATO LIKE 'C%' 
+            AND XASIGNA.DATO IN (SELECT Codigo FROM VEN_TIPOS WHERE TIPODOC= 'C' )
+        
+        ";  // Final del Query SQL 
+
+        $stmt = $this->db->prepare($query); 
+    
+            if($stmt->execute()){
+                return $stmt->fetch( \PDO::FETCH_ASSOC );
+                
+            }else{
+                return $resulset = false;
+            }
+        
+    }
     
     /* Actualiza tabla mantenimientosEQ con la informacion que llega del formulario editMantenimiento*/
     public function updateMantenimientoEQ($formData, $dataBaseName='KAO_wssp'){

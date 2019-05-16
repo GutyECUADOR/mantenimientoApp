@@ -749,7 +749,10 @@ class ajaxController  {
         date_default_timezone_set('America/Lima');
         $VEN_CAB = new \models\venCabClass();
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
-        $tipoDOC = 'COT';
+        
+        $defaultBodega = $this->getDefaultBodegaByCedula($_SESSION["usuarioRUC"])['BodegaDefecto'];
+        $tipoDOC = (!empty($defaultBodega)) ? $defaultBodega : 'COT' ;
+       
         //Actualizacion a WSSP - MantenimientosEQ
         $response_WSSP = $this->ajaxModel->updateMantenimientoEQ($formData);
        
@@ -861,7 +864,10 @@ class ajaxController  {
         date_default_timezone_set('America/Lima');
         $VEN_CAB = new \models\venCabClass();
         $dbEmpresa = (!isset($_SESSION["empresaAUTH"])) ? $this->defaulDataBase : $_SESSION["empresaAUTH"] ;
-        $tipoDOC = 'COT';
+        
+        $defaultBodega = $this->getDefaultBodegaByCedula($_SESSION["usuarioRUC"])['BodegaDefecto'];
+        $tipoDOC = (!empty($defaultBodega)) ? $defaultBodega : 'COT' ;
+
         //Actualizacion a WSSP - MantenimientosEQ
         $response_WSSP = $this->ajaxModel->updateMantenimientoExterno($formData);
        
