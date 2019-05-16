@@ -59,29 +59,35 @@ class ajaxController  {
 
     /* Envia correo por PHPMailer */
     /* ATECION LOS DATOS DE CUERPO Y LOGS DEBEN NO DEBEN SER MODIFICADOS ESTAS DIRECCIONADOS PARA AJAX */
-    public function sendEmail($email, $codMNT){
+    public function sendEmail($email, $codMNT, $addcotizacionPDF=false){
        
         $dataMNT = $this->getMantenimientoByCodMNTController($codMNT);
-        $IDDocument = $dataMNT['codFactura'];
-        $codProducto = $dataMNT['codEquipo'];
-        
+        $IDDocument = $dataMNT['codFactura']; ////Olbigatorio indica la factura en la que se compro el equipo
+        $codProducto = $dataMNT['codEquipo']; //Olbigatorio indica le equipo que fue revisado
+        $cotizacionID = $dataMNT['codVENCAB']; //Olbigatorio indica el documento de la cotizacion del equipo
+
         $correoCliente = $email;
 
+        //Correo de sender
+        
+        $smtpserver = DEFAULT_SMTP;
+        $userEmail = DEFAULT_SENDER_EMAIL;
+        $pwdEmail = DEFAULT_EMAILPASS; 
 
         $mail = new PHPMailer(true);  // Passing `true` enables exceptions
         try {
             //Server settings
             $mail->SMTPDebug = false;                                 // Enable verbose debug output 0->off 2->debug
             $mail->isSMTP();                                      // Set mailer to use SMTP
-            $mail->Host = 'smtp-mail.outlook.com';  // Specify main and backup SMTP servers
+            $mail->Host = $smtpserver;  // Specify main and backup SMTP servers
             $mail->SMTPAuth = true;                               // Enable SMTP authentication
-            $mail->Username = 'kaomantenimientos@hotmail.com';                 // SMTP username
-            $mail->Password = 'kaomnt2019$$';                           // SMTP password
+            $mail->Username = $userEmail;                 // SMTP username
+            $mail->Password = $pwdEmail;                           // SMTP password
             $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
             $mail->Port = 587;                                    // TCP port to connect to
 
             //Recipients
-            $mail->setFrom('kaomantenimientos@hotmail.com', 'Administrador KAO');
+            $mail->setFrom($userEmail, 'Administrador KAO');
             $mail->addAddress($correoCliente, 'Cliente KAO');     // Add a recipient
             $mail->addAddress('soporteweb@sudcompu.net', 'Sistemas');
             $mail->addAddress('mantenimiento@kaosportcenter.com', 'Administrador KAO');
@@ -92,6 +98,12 @@ class ajaxController  {
             $mail->Subject = 'KAO Sport - Mantenimiento de Equipos - ' . $codMNT;
             $mail->Body    = $this->getBodyHTMLofEmail($IDDocument, $codProducto);
         
+            // Adjuntos
+            if ($addcotizacionPDF) {
+                $mail->addStringAttachment($this->generaReporte($cotizacionID), 'cotizacion_'.$cotizacionID.'.pdf');
+            }
+            
+
             $mail->send();
             $detalleMail = 'Correo ha sido enviado a : '. $correoCliente;
            

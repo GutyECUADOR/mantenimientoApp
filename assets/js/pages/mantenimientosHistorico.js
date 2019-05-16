@@ -36,6 +36,18 @@ $(function() {
        
     });
 
+
+    // Boton de creacion de PDF en busqueda de documentos
+    $("#tbodyresults").on("click", '.sendCotizacion', function(event) {
+        let codMNT = $(this).data("codigo");
+
+        UIkit.modal.prompt('Email:', '', function(emailIngresado){ 
+            console.log(emailIngresado, codMNT);
+            app.sendEmailWithCotizacion(emailIngresado, codMNT, true);
+
+        }, { center: true, labels: { 'Ok': 'Enviar', 'Cancel': 'Cancelar' } });
+    });
+
 });
 
 app = {
@@ -202,6 +214,36 @@ app = {
             }
     
         });
-    }
+    },
+    sendEmailWithCotizacion: function (email, codigoMNT) {
+
+        var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Enviando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
+        modalBlocked.show();
+    
+        $.ajax({
+            url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=sendEmailWithCotizacion',
+            method: 'GET',
+            data: { email: email, codigoMNT: codigoMNT},
+    
+            success: function (response) {
+                console.log(response);
+                let respuesta = JSON.parse(response);
+                console.log(respuesta);
+
+                if (respuesta.data.status == 'ok') {
+                    UIkit.modal.alert(respuesta.data.mensaje , { center: true, labels: { 'Ok': 'Ok', 'Cancel': 'Cancelar' } });
+                }else{
+                    UIkit.modal.alert('Ups, algo ha salido mal, reintente. Si el problema persiste informe a sistemas.',  { center: true, labels: { 'Ok': 'Ok', 'Cancel': 'Cancelar' } })
+                }
+
+               
+            }, error: function (error) {
+                alert('No se pudo completar la operación, informe a sistemas. #' + error.status + ' ' + error.statusText);
+            },complete: function() {
+                modalBlocked.hide();
+            }
+    
+        });
+    },
 
 } 

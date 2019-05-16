@@ -15,4 +15,6 @@ define("CONFIG_FILE","./config/configuraciones.xml");
 define("BODY_EMAIL_TEXT","- Favor comuníquese a los teléfonos indicados, para más detalles o reagendar el mismo, gracias. ");
 define("LOGO_ONLINE","http://kaosport.com/logokao.png");
 define("SITIOWEB_ONLINE","http://www.kaosportcenter.com");
-
+define("DEFAULT_SMTP","smtp-mail.outlook.com");
+define("DEFAULT_SENDER_EMAIL","kaomantenimientos@hotmail.com");
+define("DEFAULT_EMAILPASS","kaomnt2019$$");

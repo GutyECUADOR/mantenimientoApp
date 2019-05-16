@@ -120,7 +120,7 @@
                                             <div class="uk-dropdown">
                                                 <ul class="uk-nav uk-nav-dropdown">
                                                     <li><a class="generaPDF" data-codigo="<?php echo $equipo['CodMNT']?>"><i class="material-icons">print</i> Imprimir Cotizacion</a></li>
-                                                    <li><a class="sendCotizacion"><i class="material-icons">email</i> Enviar Cotizacion</a></li>
+                                                    <li><a class="sendCotizacion" data-codigo="<?php echo $equipo['CodMNT']?>"><i class="material-icons">email</i> Enviar Cotizacion</a></li>
                                                 </ul>
                                             </div>
                                         </div>

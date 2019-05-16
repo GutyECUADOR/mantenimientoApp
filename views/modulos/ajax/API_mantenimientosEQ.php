@@ -4,6 +4,7 @@ session_start();
 require_once '../../../libs/PHPMailer/src/Exception.php';
 require_once '../../../libs/PHPMailer/src/PHPMailer.php';
 require_once '../../../libs/PHPMailer/src/SMTP.php';
+require_once '../../../libs/mpdf/mpdf.php';
 require_once '../../../core/controllers/ajaxController.php';
 require_once '../../../core/models/ajaxModel.php';
 require_once '../../../core/models/MantenimientosClass.php';
@@ -82,6 +83,10 @@ class ajax{
 
     public function sendEmail($mail, $codigoMNT){
         return $this->ajaxController->sendEmail($mail, $codigoMNT);
+    }
+
+    public function sendEmailWithCotizacion($mail, $codigoMNT){
+        return $this->ajaxController->sendEmail($mail, $codigoMNT, true);
     }
 
     public function searchCliente($value, $by){
@@ -478,6 +483,29 @@ class ajax{
                 $codigoMNT = $_GET["codigoMNT"];
             
                 $respuesta = $ajax->sendEmail($mail, $codigoMNT);
+                if($respuesta){
+                $response = array('status' => 'OK'
+                            , 'mensaje' => 'Email enviado', 'data' => $respuesta);
+                }else{
+                $response = array('status' => 'FAIL'
+                            , 'mensaje' => 'Ha ocurrido un problema al realizar la petición');
+                }
+
+            }else{
+                $response = array('status' => 'FAIL'
+                , 'mensaje' => 'No se han indicado codigo de mantenimiento');
+            }
+        
+            echo json_encode($response);
+            break;
+
+        case 'sendEmailWithCotizacion':
+            /* Envia EMAIL segun codMNT*/
+            if (isset($_GET["email"]) && isset($_GET["codigoMNT"])) {
+                $mail = $_GET["email"];
+                $codigoMNT = $_GET["codigoMNT"];
+            
+                $respuesta = $ajax->sendEmailWithCotizacion($mail, $codigoMNT);
                 if($respuesta){
                 $response = array('status' => 'OK'
                             , 'mensaje' => 'Email enviado', 'data' => $respuesta);
