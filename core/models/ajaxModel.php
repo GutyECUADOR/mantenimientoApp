@@ -60,7 +60,7 @@ class ajaxModel  {
 			AND Producto.GarantiaCli != '0'
             AND fecha BETWEEN '".$fechaInicial."' AND '".$fechaFinal."' 
             AND Bodega.CODIGO = '$codigoBodega'
-        ORDER BY NombreCliente ASC
+        ORDER BY Producto, NombreCliente ASC
 
         ";  // Final del Query SQL 
 
