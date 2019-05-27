@@ -3,11 +3,6 @@
            header("Location:index.php?&action=login");  
         }   
 
-    /* CREACION DE INSTANCIA USADA PARA ESTA VISTA*/  
-    $codEmpresa = trim($_SESSION["empresaAUTH"]);  // Nombre de la db asiganda en el login
-    $mantenimientos = new models\MantenimientosClass();
-    $arrayMantenimientos = $mantenimientos->getMantenimientosHistoricoEXT(100, $codEmpresa); //Devuelve array de mantenimientos
-   
 ?>
 
 
@@ -88,57 +83,8 @@
                             </thead>
                             <tbody id="tbodyresults">
 
-                        
-                          <?php
-                                if (is_array($arrayMantenimientos)) {
-                                    $contador = 0;
-                                foreach ($arrayMantenimientos as $equipo) {
-                                    $fechaSpam = new DateTime($equipo['fechaCreacion']);
-                                    $fechaFormat = date_format($fechaSpam, "Y-m-d");
-                                    $codStatus = $equipo['estado'];
-                                    $status = $mantenimientos->getDescStatus($codStatus);
-                                    $colorBadge = $mantenimientos->getColorBadge($codStatus);
-                                    $contador++;
-                                    
-                                
-                            ?>
+                                <!-- AJAX result response aqui -->
 
-                                <tr class="">
-                                    <td ><?php echo $contador?></td>
-                                    <td ><?php echo $equipo['codMantExt']?></td>
-                                    <td ><?php echo $equipo['codOrdenFisica']?></td>
-                                    <td ><?php echo $equipo['ClienteName']?></td>
-                                    <td ><?php echo $equipo['serieModelo']?></td>
-                                    <td ><?php echo $fechaFormat?></td>
-                                    <td ></td>
-                                    <td ><span class="uk-badge <?php echo $colorBadge?>"><?php echo $status ?></span></td>
-                                    <td>
-                                        <div class="uk-button-dropdown" data-uk-dropdown="{pos:'bottom-right'}">
-                                            <a href="#" class="md-icon material-icons">&#xE5D4;</a>
-                                            <div class="uk-dropdown">
-                                                <ul class="uk-nav uk-nav-dropdown">
-                                                    <li><a class="generaPDF" data-codigo="<?php echo $equipo['codMantExt']?>"><i class="material-icons">print</i> Imprimir Cotizacion</a></li>
-                                                    <li><a class="sendCotizacion"><i class="material-icons">email</i> Enviar Cotizacion</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-
-                                <?php
-                                   
-                                    } // FIN del ciclo for
-                                    }else{
-                                        echo '
-                                            <script>
-                                                alert("No se pudo establecer conexion con la tabla requerida o existe un error en la sintaxis SQL.");
-                                            </script>
-                                        ';
-                                    }
-                                    // FIN DEL IF
-                            ?> 
-                                
                             </tbody>
                         </table>
                     </div>

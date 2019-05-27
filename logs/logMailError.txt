@@ -38,3 +38,7 @@ User: ::1 - January 15, 2019, 12:42 pm
 PCid: DELLPROGRA15
 Detail: SMTP Error: Could not authenticate. No se pudo enviar correo a: guti06@hotmail.es
 -------------------------
+User: ::1 - May 27, 2019, 10:52 am
+PCid: SISTEMAS01
+Detail: Message body empty No se pudo enviar correo a: soporteweb@sudcompu.net
+-------------------------

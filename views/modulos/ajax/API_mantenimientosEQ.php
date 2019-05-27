@@ -89,6 +89,10 @@ class ajax{
         return $this->ajaxController->sendEmail($mail, $codigoMNT, true);
     }
 
+    public function sendEmailWithCotizacionExt($mail, $codigoMNT){
+        return $this->ajaxController->sendEmailMantExterno($mail, $codigoMNT, true);
+    }
+
     public function searchCliente($value, $by){
         return $this->ajaxController->searchClienteController($value, $by);
     }
@@ -522,6 +526,30 @@ class ajax{
             echo json_encode($response);
             break;
 
+        case 'sendEmailWithCotizacionExt':
+            /* Envia EMAIL segun codMNT*/
+            if (isset($_GET["email"]) && isset($_GET["codigoMNT"])) {
+                $mail = $_GET["email"];
+                $codigoMNT = $_GET["codigoMNT"];
+            
+                $respuesta = $ajax->sendEmailWithCotizacionExt($mail, $codigoMNT);
+                if($respuesta){
+                $response = array('status' => 'OK'
+                            , 'mensaje' => 'Email enviado', 'data' => $respuesta);
+                }else{
+                $response = array('status' => 'FAIL'
+                            , 'mensaje' => 'Ha ocurrido un problema al realizar la petición');
+                }
+
+            }else{
+                $response = array('status' => 'FAIL'
+                , 'mensaje' => 'No se han indicado codigo de mantenimiento');
+            }
+        
+            echo json_encode($response);
+            break;
+
+        
         case 'test':
             $rawdata = array('status' => 'ok', 'mensaje' =>'Prueba de API correcta');
             echo json_encode($rawdata);

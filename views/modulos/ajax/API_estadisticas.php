@@ -20,7 +20,11 @@ class ajax{
 
     public function getHistorico($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa) {
       return $this->mantenimientosClass->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, 100, $codEmpresa );
-  }
+    }
+
+    public function getHistoricoExternos($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa) {
+      return $this->mantenimientosClass->getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, 100, $codEmpresa );
+    }
 
 }
 
@@ -52,7 +56,26 @@ class ajax{
                           'horaINI' => 'recuperado historico', 
                           'data' => $respuesta
                         );
-        echo json_encode($rawdata);
+          echo json_encode($rawdata);
+
+        break;
+
+        case 'getHistoricoExternos':
+          $fechaINI = $_GET["fechaINI"];
+          $fechaFIN = $_GET["fechaFIN"];
+          $tiposDocs = $_GET["tiposDocs"];
+
+          $fechaFormatINI = date('Ymd', strtotime($fechaINI));
+          $fechaFormatFIN = date('Ymd', strtotime($fechaFIN));
+
+          $codEmpresa = $_SESSION["empresaAUTH"];
+          $respuesta = $ajax->getHistoricoExternos($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $codEmpresa);
+          $rawdata = array('status' => 'OK', 
+                          'mensaje' => $fechaFormatINI, 
+                          'horaINI' => 'recuperado historico', 
+                          'data' => $respuesta
+                        );
+          echo json_encode($rawdata);
 
         break;
 

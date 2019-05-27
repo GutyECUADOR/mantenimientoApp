@@ -156,6 +156,100 @@ class ajaxController  {
 
     }
 
+    public function sendEmailMantExterno($email, $codMNT, $addcotizacionPDF=false){
+       
+        $dataMNT = $this->getMantenimientoByCodMNTControllerExt($codMNT);
+        $cotizacionID = $dataMNT['codVENCAB']; //Olbigatorio indica el documento de la cotizacion del equipo
+
+        $correoCliente = $email;
+
+        //Correo de sender
+        
+        $smtpserver = DEFAULT_SMTP;
+        $userEmail = DEFAULT_SENDER_EMAIL;
+        $pwdEmail = DEFAULT_EMAILPASS; 
+
+        $mail = new PHPMailer(true);  // Passing `true` enables exceptions
+        try {
+            //Server settings
+            $mail->SMTPDebug = false;                                 // Enable verbose debug output 0->off 2->debug
+            $mail->isSMTP();                                      // Set mailer to use SMTP
+            $mail->Host = $smtpserver;  // Specify main and backup SMTP servers
+            $mail->SMTPAuth = true;                               // Enable SMTP authentication
+            $mail->Username = $userEmail;                 // SMTP username
+            $mail->Password = $pwdEmail;                           // SMTP password
+            $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+            $mail->Port = 587;                                    // TCP port to connect to
+
+            //Recipients
+            $mail->setFrom($userEmail, 'Administrador KAO');
+            $mail->addAddress($correoCliente, 'Cliente KAO');     // Add a recipient
+            $mail->addAddress('soporteweb@sudcompu.net', 'Sistemas');
+            $mail->addAddress('mantenimiento@kaosportcenter.com', 'Administrador KAO');
+           
+            //Content
+            $mail->CharSet = "UTF-8";
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->Subject = 'KAO Sport - Mantenimiento de Equipos - ' . $codMNT;
+            $mail->Body    = 'Se adjunta cotizacion.';
+        
+            // Adjuntos
+            if ($addcotizacionPDF) {
+                $mail->addStringAttachment($this->generaReporte($cotizacionID), 'cotizacion_'.$cotizacionID.'.pdf');
+            }
+            
+
+            $mail->send();
+            $detalleMail = 'Correo ha sido enviado a : '. $correoCliente;
+           
+            $pcID = php_uname('n'); // Obtiene el nombre del PC
+
+
+            function getIP(){
+                if( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] )) $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+                else if( isset( $_SERVER ['HTTP_VIA'] ))  $ip = $_SERVER['HTTP_VIA'];
+                else if( isset( $_SERVER ['REMOTE_ADDR'] ))  $ip = $_SERVER['REMOTE_ADDR'];
+                else $ip = null ;
+                return $ip;
+            }
+
+            $ip = getIP();
+
+                $log  = "User: ".$ip.' - '.date("F j, Y, g:i a").PHP_EOL.
+                "PCid: ".$pcID.PHP_EOL.
+                "Detail: ".$detalleMail.PHP_EOL.
+                "-------------------------".PHP_EOL;
+                //Save string to log, use FILE_APPEND to append.
+
+                file_put_contents('../../../logs/logMailOK.txt', $log, FILE_APPEND );
+            
+            return array('status' => 'ok', 'mensaje' => $detalleMail ); 
+
+        } catch (Exception $e) {
+
+            function getIP(){
+                if( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] )) $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+                else if( isset( $_SERVER ['HTTP_VIA'] ))  $ip = $_SERVER['HTTP_VIA'];
+                else if( isset( $_SERVER ['REMOTE_ADDR'] ))  $ip = $_SERVER['REMOTE_ADDR'];
+                else $ip = null ;
+                return $ip;
+            }
+
+            $ip = getIP();
+
+                $pcID = php_uname('n'); // Obtiene el nombre del PC
+                $log  = "User: ".$ip.' - '.date("F j, Y, g:i a").PHP_EOL.
+                "PCid: ".$pcID.PHP_EOL.
+                "Detail: ".$mail->ErrorInfo .' No se pudo enviar correo a: ' . $correoCliente . PHP_EOL.
+                "-------------------------".PHP_EOL;
+                //Save string to log, use FILE_APPEND to append.
+                file_put_contents('../../../logs/logMailError.txt', $log, FILE_APPEND);
+                $detalleMail = 'Error al enviar el correo. Mailer Error: '. $mail->ErrorInfo;
+                return array('status' => 'false', 'mensaje' => $detalleMail ); 
+            
+        }
+
+    }
 
     protected function getBodyHTMLofEmail($IDDocument, $codProducto, $customMesagge=''){
         $empresaData = $this->getInfoEmpresaController();
@@ -680,6 +774,12 @@ class ajaxController  {
     /* Realiza peticion al modelo para setear estado 3 al registro de la tabla mantenimientosEQ*/
     public function getMantenimientoByCodMNTController($codMNT){
         $response = $this->ajaxModel->getMantenimientoByCodMNTmodel($codMNT);
+        return $response;
+    }
+
+    /* Realiza peticion al modelo para setear estado 3 al registro de la tabla mantenimientosEQ*/
+    public function getMantenimientoByCodMNTControllerExt($codMNT){
+        $response = $this->ajaxModel->getMantenimientoByCodMNTmodelExt($codMNT);
         return $response;
     }
 
