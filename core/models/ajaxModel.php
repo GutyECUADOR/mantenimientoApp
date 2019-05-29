@@ -285,6 +285,7 @@ class ajaxModel  {
 
         $codFactura = $data['CodigoFac'];
         $codProducto = $data['CodProducto'];
+        $comentario = $data['RazonAnulacion'];
         $fechaHoraINI = date('Ymd');
         $fechaHoraFIN =  date('Ymd');
 
@@ -292,7 +293,7 @@ class ajaxModel  {
         INSERT INTO 
             dbo.mantenimientosEQ 
         VALUES 
-            ('$newCod','OMT','0','$codFactura','$codProducto','$codEmpresa','$fechaHoraINI','$fechaHoraFIN',0,'No requiere','NA',3);
+            ('$newCod','OMT','0','$codFactura','$codProducto','$codEmpresa','$fechaHoraINI','$fechaHoraFIN',0,'$comentario','NA',3);
         ";
 
         $stmt = $this->db->prepare($query); 

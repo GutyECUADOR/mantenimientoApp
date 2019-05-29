@@ -197,10 +197,12 @@ class ajax{
         case 'omite':
             $CodigoFac = trim($_POST['CodigoFac']);
             $CodProducto = trim($_POST['CodProducto']);
+            $RazonAnulacion = trim($_POST['RazonAnulacion']);
 
             $data = array(
                 'CodigoFac' => $CodigoFac,
-                'CodProducto' => $CodProducto
+                'CodProducto' => $CodProducto,
+                'RazonAnulacion' => $RazonAnulacion
             );
 
             $respuesta = $ajax->omitirAction($data);

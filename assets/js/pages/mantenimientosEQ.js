@@ -4,20 +4,37 @@ $(function() {
     altair_form_adv.date_range();
     fechaActual = new Date().toISOString().slice(0, 10);
     
+    $('#btn_searchEquipos').click(function() {
+        altair_crud_table.init();
+    });
+
+
+    $('#btn_test').click(function() {
+
+        var customModal = UIkit.modal($('#modal_razonOmitir'), { modal: false, keyboard: false, bgclose: false, center: true });
+        customModal.show();
+        $('#btnAnulaOmite').click(function() {
+            let opcionSelected = $('#select_razonAnulacion option:selected').text();
+            console.log(opcionSelected);
+        });    
+        
+
+        
+    });
+
+
+
+
+    /* Evita problema de doble calendario en firefox*/
+    $('input[type=date]').on('click', function(event) {
+        var isFirefox = typeof InstallTrigger !== 'undefined';
+        if (isFirefox) {
+            event.preventDefault();
+        }
+    });
 });
 
 
-$('#btn_searchEquipos').click(function() {
-    altair_crud_table.init();
-});
-
-/* Evita problema de doble calendario en firefox*/
-$('input[type=date]').on('click', function(event) {
-    var isFirefox = typeof InstallTrigger !== 'undefined';
-    if (isFirefox) {
-        event.preventDefault();
-    }
-});
 
 altair_crud_table = {
     init: function() {
@@ -39,7 +56,7 @@ altair_crud_table = {
         console.log(bodegaSelect);
         
 
-        $('#students_crud').jtable({
+        $('#equipos_table_crud').jtable({
             title: 'Lista de Equipos pendientes',
             paging: true, //Enable paging
             pageSize: 10, //Set page size (default: 10)
@@ -127,7 +144,7 @@ altair_crud_table = {
                 console.log(mailinfo);
 
                 UIkit.modal.alert(registroinfo + '\n'+ mailinfo, {center: true, labels: {'Ok': 'Ok'}}).on('hide.uk.modal', function() {
-                    $('#students_crud').jtable('reload');
+                    $('#equipos_table_crud').jtable('reload');
                 });
 
 
@@ -136,22 +153,35 @@ altair_crud_table = {
                 console.log(data);
                 let CodigoFac = data.record.CodigoFac;
                 let CodProducto = data.record.CodProducto;
+              
+                var customModal = UIkit.modal($('#modal_razonOmitir'), { modal: false, keyboard: false, bgclose: false, center: true });
+                customModal.show();
+                
+                $('#btnAnulaOmite').click(function() {
+                    let opcionSelected = $('#select_razonAnulacion option:selected').text();
+                    console.log(opcionSelected);
 
-                $.ajax({
-                    type: 'post',
-                    url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=omite',
-
-                    data: { CodigoFac: CodigoFac, CodProducto: CodProducto },
-
-                    success: function(response) {
-                        let resDecode = JSON.parse(response);
-                        console.log(resDecode);
-                    }
+                    $.ajax({
+                        type: 'post',
+                        url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=omite',
+    
+                        data: { CodigoFac: CodigoFac, CodProducto: CodProducto, RazonAnulacion: opcionSelected},
+    
+                        success: function(response) {
+                            let resDecode = JSON.parse(response);
+                            console.log(resDecode);
+                        },
+                        complete: function() {
+                            customModal.hide();
+                            $('#equipos_table_crud').jtable('reload');
+                          
+                        }
+                    });
+    
                 });
 
-                setTimeout(() => {
-                    $('#students_crud').jtable('reload');
-                }, 3000);
+                
+                
             },
             fields: {
                 FechaCompra: {
