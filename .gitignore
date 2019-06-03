@@ -3,3 +3,5 @@ conexion.php
 core/models/conexion.php
 logs/logMailError.txt
 core/models/conexion.php
+
+/vendor/

@@ -1,8 +1,11 @@
 <?php
 date_default_timezone_set('America/Lima');
 session_start();
+
+require_once  '../../../vendor/autoload.php';
+
+
 require_once '../../../config/global.php';
-require_once '../../../libs/mpdf/mpdf.php';
 require_once '../../../core/models/conexion.php';
 require_once '../../../core/controllers/ajaxController.php';
 require_once '../../../core/models/ajaxModel.php';
