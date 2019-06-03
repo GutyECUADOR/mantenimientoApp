@@ -6,6 +6,7 @@ require_once '../../../libs/mpdf/mpdf.php';
 require_once '../../../core/models/conexion.php';
 require_once '../../../core/controllers/ajaxController.php';
 require_once '../../../core/models/ajaxModel.php';
+require_once '../../../core/models/MantenimientosClass.php';
 
 class ajax{
   private $ajaxController;
@@ -44,7 +45,22 @@ class ajax{
             echo json_encode($rawdata);
           }
         
-          break;
+        break;
+
+        case 'generaReporteMantInternos':
+          if (isset($_GET['fechaINI'])) {
+            $fechaINI = $_GET['fechaINI'];
+            $fechaFIN = '20190630';
+          
+            $ExcelDocument = $ajax->generaExcelMantInternos($fechaINI, $fechaFIN);
+            echo $ExcelDocument;
+            
+          }else{
+            $rawdata = array('status' => 'ERROR', 'mensaje' => 'No se ha indicado parámetros.');
+            echo json_encode($rawdata);
+          }
+        
+        break;
 
         case 'searchDocumentos':
           if (isset($_GET['fechaINI']) && isset($_GET['fechaFIN']) && isset($_GET['stringBusqueda']) ) {

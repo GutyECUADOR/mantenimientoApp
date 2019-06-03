@@ -101,7 +101,7 @@ app = {
                 <td class="uk-text-center"> ${row.codOrdenFisica} </td>
                 <td class="uk-text-center"> ${row.ClienteName} </td>
                 <td class="uk-text-center"> ${row.serieModelo} </td>
-                <td class="uk-text-center"> ${row.fechaEntrega} </td>
+                <td class="uk-text-center"> ${row.fechaPrometida} </td>
                 <td class="uk-text-center">  </td>
                 <td class="uk-text-center"> <span class="uk-badge ${ app.getColorBadge(codEstado) }"> ${ app.getDescStatus(codEstado) } </span></td>
                 <td>
