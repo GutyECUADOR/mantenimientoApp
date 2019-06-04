@@ -4,12 +4,8 @@ session_start();
 
 require_once  '../../../vendor/autoload.php';
 
-
-require_once '../../../config/global.php';
-require_once '../../../core/models/conexion.php';
-require_once '../../../core/controllers/ajaxController.php';
-require_once '../../../core/models/ajaxModel.php';
-require_once '../../../core/models/MantenimientosClass.php';
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ajax{
   private $ajaxController;
@@ -23,7 +19,30 @@ class ajax{
 
     public function generaProforma($IDDocument) {
       return $this->ajaxController->generaReporte($IDDocument, 'I');
-  }
+    }
+
+    public function generaExcelMantInternos($select_empresa) {
+   
+    
+      $spreadsheet = new Spreadsheet();
+      $worksheet = $spreadsheet->getActiveSheet();
+      $worksheet->setCellValue('A1', 'Valores Originales')
+          ->setCellValue('A2', '-15')
+          ->setCellValue('A3', '-30')
+          ->setCellValue('A4', '50');
+
+      $worksheet->setCellValue('B2', '=ABS(A2)')
+          ->setCellValue('B3', '=ABS(A3)')
+          ->setCellValue('B4', '=ABS(A4)');
+
+      header('Content-Type: application/vnd.ms-excel');
+      header('Content-Disposition: attachment;filename="'. 'reporteEquipos' . date('Y-m-d') .'.xls"'); 
+      header('Cache-Control: max-age=0');
+      $writer = new Xlsx($spreadsheet);
+      $writer->save('php://output');
+    }
+
+   
 
    
 }
@@ -51,12 +70,11 @@ class ajax{
         break;
 
         case 'generaReporteMantInternos':
-          if (isset($_GET['fechaINI'])) {
-            $fechaINI = $_GET['fechaINI'];
-            $fechaFIN = '20190630';
-          
-            $ExcelDocument = $ajax->generaExcelMantInternos($fechaINI, $fechaFIN);
-            echo $ExcelDocument;
+          if (isset($_GET['select_empresa'])) {
+            $select_empresa = $_GET['select_empresa'];
+           
+            $ajax->generaExcelMantInternos($select_empresa);
+           
             
           }else{
             $rawdata = array('status' => 'ERROR', 'mensaje' => 'No se ha indicado parámetros.');

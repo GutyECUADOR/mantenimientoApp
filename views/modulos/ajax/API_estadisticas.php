@@ -1,9 +1,8 @@
 <?php
 date_default_timezone_set('America/Lima');
 session_start();
-require_once '../../../core/controllers/ajaxController.php';
-require_once '../../../core/models/ajaxModel.php';
-require_once '../../../core/models/MantenimientosClass.php';
+
+require_once  '../../../vendor/autoload.php';
 
 class ajax{
   private $ajaxController;

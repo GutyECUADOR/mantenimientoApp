@@ -70,7 +70,10 @@
                             <i class="md-icon material-icons"></i>
                             <div class="uk-dropdown uk-dropdown-small uk-dropdown-bottom" aria-hidden="true" style="min-width: 160px; top: 32px; left: 0px;" tabindex="">
                                 <ul class="uk-nav">
-                                    <li><a href="#">Imprimir reporte</a></li>
+                                    <li><a data-uk-modal="{target:'#modal_generarExcel'}"><i class="material-icons">picture_as_pdf</i> Imprimir PDF</a></li>
+                                    <li><a data-uk-modal="{target:'#modal_generarExcel'}"><i class="material-icons">print</i> Imprimir Excel</a></li>
+
+                                   
                                 </ul>
                             </div>
                         </div>
@@ -107,6 +110,32 @@
                 </div>
             </div>    
         </div>
+    </div>
+
+    <div id="modal_generarExcel" uk-modal class="uk-modal">
+            <div class="uk-modal-dialog">
+                <h2 class="heading_a"><i class="material-icons">print</i> Generar reporte de equipos - Excel </h2>
+                <p>Indique filtros de busqueda.</p>
+                <div class="uk-overflow-container">
+                    <form action="" class="uk-form-stacked">
+                        <div class="uk-form-row">
+                            <select id="select_empresa" class="md-input">
+                                <option value="002">KINDRED</option>
+                                <option value="006">COMERCIALIZADORA KINSMAN</option>
+                                <option value="008">PRUEBAS KINDRED</option>
+                                
+                               
+                            </select>
+                        </div>
+                    </form>
+                    
+                </div>
+
+                <div class="uk-modal-footer uk-text-right">
+                    <button type="button" class="md-btn md-btn-flat uk-modal-close">Cancelar</button>
+                    <button type="submit" class="md-btn md-btn-flat md-btn-flat-primary showInformeExcel">Generar</button>
+                </div>
+            </div>
     </div>
   
 <!-- google web fonts -->

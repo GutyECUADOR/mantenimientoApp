@@ -37,7 +37,6 @@ $(function() {
        
     });
 
-
     // Boton de creacion de PDF en busqueda de documentos
     $("#tbodyresults").on("click", '.sendCotizacion', function(event) {
         let codMNT = $(this).data("codigo");
@@ -47,6 +46,12 @@ $(function() {
             app.sendEmailWithCotizacion(emailIngresado, codMNT, true);
 
         }, { center: true, labels: { 'Ok': 'Enviar', 'Cancel': 'Cancelar' } });
+    });
+
+     /*Funcion para generar el reporte segun codigo de mantenimiento*/
+     $('.showInformeExcel').on('click', function(event) {
+        window.open('views/modulos/ajax/API_documentos.php?action=generaReporteMantInternos&select_empresa=008' );
+          
     });
 
 });
