@@ -9,6 +9,15 @@
             "email": "guti06@hotmail.es"
         }
     ],
+    "autoload": {
+        "classmap": [
+          "core/models",
+          "core/controllers"
+        ],
+        "files": [
+            "config/global.php"
+        ]
+    },
     "require": {
         "mpdf/mpdf": "^8.0",
         "phpmailer/phpmailer": "^6.0",

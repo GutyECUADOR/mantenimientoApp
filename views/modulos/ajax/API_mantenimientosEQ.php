@@ -1,16 +1,8 @@
 <?php
 date_default_timezone_set('America/Lima');
 session_start();
-require_once '../../../libs/PHPMailer/src/Exception.php';
-require_once '../../../libs/PHPMailer/src/PHPMailer.php';
-require_once '../../../libs/PHPMailer/src/SMTP.php';
-require_once '../../../libs/mpdf/mpdf.php';
-require_once '../../../core/controllers/ajaxController.php';
-require_once '../../../core/models/ajaxModel.php';
-require_once '../../../core/models/MantenimientosClass.php';
-require_once '../../../core/models/venCabClass.php';
-require_once '../../../core/models/venMovClass.php';
-require_once '../../../config/global.php';
+
+require_once '../../../vendor/autoload.php';
 
 class ajax{
   private $ajaxController;

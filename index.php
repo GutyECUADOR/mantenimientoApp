@@ -2,57 +2,8 @@
     date_default_timezone_set('America/Lima');
     @ob_start();
     session_start();
-    require_once './config/global.php';
-    require_once './libs/PHPMailer/src/Exception.php';
-    require_once './libs/PHPMailer/src/PHPMailer.php';
-    require_once './libs/PHPMailer/src/SMTP.php';
-    require_once './core/models/conexion.php';
-    require_once './core/controllers/mainController.php';
-    require_once './core/models/mainModel.php';
-    require_once './core/controllers/loginController.php';
-    require_once './core/models/loginModel.php';
-    require_once './core/controllers/ajaxController.php';
-    require_once './core/models/ajaxModel.php';
-    require_once './core/models/MantenimientosClass.php';
-    require_once './core/models/venCabClass.php';
-    require_once './core/models/venMovClass.php';
-    require_once './core/models/SupervisoresRepositoryClass.php';
 
-    /* TEST Conexion */    
-    /* require_once './core/models/conexion.php';
-    $conexion = new models\conexion();
-    var_dump($conexion->getInstanciaCNX()); */
-
-    /* TEST LoginModel */ 
-    /* $login = new models\loginModel();
-    $arrayDatos = array("usuario"=>'0400882940',"password"=>'12346');
-    $dbname = $login->validaIngreso($arrayDatos);
-    var_dump($login->getAllDataBaseList()); */
-
-    /* TEST LoginController */ 
-   /*  $login = new controllers\loginController();
-    $login->showAllDataBaseList(); */
-
-    /*   
-    $ajaxModel = new models\ajaxModel(); 
-    
-    $test = $ajaxModel->getDatosClienteWINFENIXByRUC('1790417581001', $dbEmpresa)['CODIGO'];
-    var_dump($test); */
-    /* $newCodigo = $ajaxModel->getNextNumDocWINFENIX('C02', 'FALVAREZ_V7'); // Recuperamos secuencial de SP de Winfenix
-    var_dump($newCodigo);*/ 
-
-    /* TEST AjaxController */ 
-    /* $ajax = new controllers\ajaxController();
-    var_dump($ajax->sendEmail('gutiecuador@gmail.com')); */
-    
-
-     /* TEST MantenimientosClass */ 
-    /* $mantenimientos = new models\MantenimientosClass();
-    $resulset = $mantenimientos->getMantenimientosAgendados('modelo', 100);
-    $resulset = $mantenimientos->getCodeDBByName('KINDRED_V7')['Codigo'];
-    $resulset = $mantenimientos->getDataMantenimiento('modelo','MNT00012');
-    var_dump($resulset); */
-    
+    require_once  'vendor/autoload.php';
 
     $app = new controllers\mainController();
     $app->loadtemplate();

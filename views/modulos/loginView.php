@@ -47,13 +47,7 @@
                 <div class="uk-margin-medium-top">
                     <button type="submit" class="md-btn md-btn-primary md-btn-block md-btn-large">Ingresar</a>
                 </div>
-                <div class="uk-margin-top">
-                    <a href="#" id="login_help_show" class="uk-float-right">Necesitas Ayuda?</a>
-                    <span class="icheck-inline">
-                        <input type="checkbox" name="login_page_stay_signed" id="login_page_stay_signed" data-md-icheck />
-                        <label for="login_page_stay_signed" class="inline-label">Mantener Sesión</label>
-                    </span>
-                </div>
+               
             </form>
         </div>
 

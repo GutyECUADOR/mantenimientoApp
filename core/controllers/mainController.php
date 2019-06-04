@@ -6,7 +6,6 @@ class mainController {
     
     public function __construct()
     {
-        require_once 'core/models/mainModel.php';
         $this->mainmodel = new \models\mainModel();
     }
     
