@@ -65,6 +65,21 @@
             </div>
 
             <div class="md-card uk-margin-medium-bottom">
+                    <div class="md-card-toolbar">
+                        <div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}" aria-haspopup="true" aria-expanded="false">
+                            <i class="md-icon material-icons"></i>
+                            <div class="uk-dropdown uk-dropdown-small uk-dropdown-bottom" aria-hidden="true" style="min-width: 160px; top: 32px; left: 0px;" tabindex="">
+                                <ul class="uk-nav">
+                                    <li><a class="showInformePDF"><i class="material-icons">picture_as_pdf</i> Imprimir PDF</a></li>
+                                    <li><a class="showInformeExcel"><i class="material-icons">print</i> Generar Excel</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <h3 class="md-card-toolbar-heading-text large">
+                            Resultados
+                        </h3>
+
+                    </div>
                 <div class="md-card-content">
                     <div class="uk-overflow-container">
                         <table class="uk-table uk-table-nowrap table_check uk-table-hover">

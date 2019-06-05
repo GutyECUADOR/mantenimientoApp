@@ -1,6 +1,9 @@
 <?php namespace models;
 require_once 'conexion.php';
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class MantenimientosClass {
 
     private $instanciaDB;
@@ -146,7 +149,7 @@ class MantenimientosClass {
         Recupera los registros de la tabla mantenimientosEQ en KAO_wssp
         - Indicar base de datos (empresa) de la cual realizar la consulta o retornara false de encontrar dicho nombre de DB
     */
-    public function getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $cantidad=100, $dataBaseName='KAO_wssp') {
+    public function getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $cantidad=1000, $dataBaseName='KAO_wssp') {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
@@ -155,22 +158,25 @@ class MantenimientosClass {
 
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
-            SELECT 
+        SELECT 
             Compra.ID as CodigoFac,
             Mant.codMantenimiento as CodMNT,
             Mant.codOrdenFisica as CodOrdenFisica,
             Mant.codEquipo as CodProducto,
+            Producto.Nombre as NombreProducto,
             Cliente.NOMBRE as Cliente,
             Mant.tipo as TipoMant,
             Mant.fechaInicio as FechaINI,
             CAB.NUMREL as NUMREL,
+            Mant.comentario as Comentario,
             Mant.estado as Estado
-            
                     
+                            
         FROM
             dbo.VEN_CAB as Compra
             INNER JOIN KAO_wssp.dbo.mantenimientosEQ as Mant ON Mant.codFactura COLLATE Modern_Spanish_CI_AS = Compra.ID
             INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE = Cliente.CODIGO 
+            INNER JOIN dbo.INV_ARTICULOS as Producto on Producto.Codigo COLLATE Modern_Spanish_CI_AS = Mant.codEquipo
             LEFT JOIN dbo.VEN_CAB as CAB on CAB.ID = Compra.ID
                         
         WHERE 
@@ -203,7 +209,7 @@ class MantenimientosClass {
         Recupera los registros de la tabla mantenimientosEQ en KAO_wssp
         - Indicar base de datos (empresa) de la cual realizar la consulta o retornara false de encontrar dicho nombre de DB
     */
-    public function getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, $cantidad=100, $dataBaseName='KAO_wssp') {
+    public function getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, $cantidad=1000, $dataBaseName='KAO_wssp') {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
@@ -470,6 +476,37 @@ class MantenimientosClass {
        
     }
 
+    public function getDescTipoMant($codigo) {
+        
+        switch ($codigo) {
+            case 'MNO':
+            return 'Mant. Orden de Serivcios';
+            break;
+            
+            case 'OMT':
+            return 'Mant. Omitido';
+            break;
+
+            case 'MNC':
+            return 'Mant. Correctivo';
+            break;
+            
+            case 'MNP':
+            return 'Mant. Preventivo';
+            break;
+
+            default:
+            return 'No difinida';
+            
+            break;
+        }
+       
+    }
+
+    public function pipeFormatDate($fecha) {
+        return date('Y-m-d', strtotime($fecha));
+    }
+
     public function getColorBadge($codigo) {
         
         switch ($codigo) {
@@ -496,31 +533,6 @@ class MantenimientosClass {
         }
        
     }
-
-    /* public function getPrimerDiaMes(){
-        $query = "SELECT FORMAT( DATEADD(month, DATEDIFF(month, 0, GETDATE()), 0), 'yyyyMMdd')  AS StartOfMonth"; 
-        $stmt = $this->db->prepare($query); 
-       
-            if($stmt->execute()){
-                $resulset = $stmt->fetch( \PDO::FETCH_ASSOC );
-            }else{
-                $resulset = false;
-            }
-        return $resulset;  
-    }
-
-    public function getUltimoDiaMes(){
-        $query = "SELECT FORMAT( DATEADD(month, ((YEAR(GETDATE()) - 1900) * 12) + MONTH(GETDATE()), -1), 'yyyyMMdd', 'en-US' ) AS EndOfMonth"; 
-        $stmt = $this->db->prepare($query); 
-       
-            if($stmt->execute()){
-                $resulset = $stmt->fetch( \PDO::FETCH_ASSOC );
-            }else{
-                $resulset = false;
-            }
-        return $resulset;  
-    } */
-
 
     public function getDataMantenimiento($dataBaseName='KAO_wssp', $codMantenimiento=null) {
 
@@ -596,6 +608,149 @@ class MantenimientosClass {
    
     }
 
+    public function generaInformeMantInternosPDF($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa, $outputMode = 'S'){
+
+        $equiposHistorico = $this->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $cantidad=1000, $codEmpresa);
+        
+         $html = '
+             
+             <div style="width: 100%;">
+         
+                 <div style="float: right; width: 100%;">
+                     <div id="informacion">
+                        
+                         <h4>REPORTE - MANTENIMIENTO DE EQUIPOS INTERNOS</h4>
+                         <h4>EMPRESA:  '.$codEmpresa.'</h4>
+                         <h4>FECHA: '.$fechaINI.'- '.$fechaFIN.'</h4>
+                        
+                     </div>
+                 </div>
+         
+                
+             </div>
+         
+             
+             <table class="items" width="100%" style="font-size: 9pt; border-collapse: collapse; " cellpadding="8">
+                 <thead>
+                     <tr>
+                         <td width="3%">#</td>
+                         <td width="13%">Factura.</td>
+                         <td width="8%">Cod Mant.</td>
+                         <td width="7%">Mant. Fisico</td>
+                         <td width="10%">Cod. Equipo</td>
+                         <td width="15%">Equipo</td>
+                         <td width="15%">Cliente</td>
+                         <td width="8%">Fecha Agendada.</td>
+                         <td width="8%">Tipo</td>
+                         <td width="7%">Estado</td>
+                         <td width="15%">Comentario</td>
+                     </tr>
+                 </thead>
+             <tbody>
+         
+             <!-- ITEMS HERE -->
+             ';
+
+                $cont = 1;
+                 foreach($equiposHistorico as $row){
+                    
+                     $html .= '
+         
+                     <tr>
+                         <td align="center">'.$cont.'</td>
+                         <td>'.$row["CodigoFac"].'</td>
+                         <td>'.$row["CodMNT"].'</td>
+                         <td>'.$row["CodOrdenFisica"].'</td>
+                         <td>'.$row["CodProducto"].'</td>
+                         <td>'.$row["NombreProducto"].'</td>
+                         <td>'.$row["Cliente"].'</td>
+                         <td>'.$this->pipeFormatDate($row["FechaINI"]).'</td>
+                         <td>'.$this->getDescTipoMant(trim($row["TipoMant"])).'</td>
+                         <td>'.$this->getDescStatus($row["Estado"]).'</td>
+                         <td>'.$row["Comentario"].'</td>
+                       
+                     </tr>';
+                     $cont++;
+                     }
+                
+             $html .= ' 
+             
+             
+         
+             <!-- END ITEMS HERE -->
+                
+         
+             </tbody>
+             </table>
+ 
+             
+         
+             
+         ';
+ 
+         //==============================================================
+         //==============================================================
+         //==============================================================
+ 
+         /* require_once '../../../vendor/autoload.php'; */
+         $mpdf = new \Mpdf\Mpdf(['orientation' => 'L']);
+ 
+         // LOAD a stylesheet
+         $stylesheet = file_get_contents('../../../assets/css/reportesStyles.css');
+         
+         $mpdf->WriteHTML($stylesheet,1);	// The parameter 1 tells that this is css/style only and no body/html/text
+ 
+         $mpdf->WriteHTML($html);
+         
+         return $mpdf->Output('doc.pdf', $outputMode);
+ 
+         //==============================================================
+         //==============================================================
+         //==============================================================
+ 
+    }
+
+    public function generaInformeMantInternosExcel($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa){
+
+        $equiposHistorico = $this->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $cantidad=1000, $codEmpresa);
+        
+        $spreadsheet = new Spreadsheet();
+        $worksheet = $spreadsheet->getActiveSheet();
+        $worksheet->setCellValue('A1', '#')
+            ->setCellValue('B1', 'Factura')
+            ->setCellValue('C1', 'Cod. Mantenimiento')
+            ->setCellValue('D1', 'Mant. Fisico')
+            ->setCellValue('E1', 'Cod. Equipo')
+            ->setCellValue('F1', 'Equipo')
+            ->setCellValue('G1', 'Cliente')
+            ->setCellValue('H1', 'Fecha Agendada')
+            ->setCellValue('I1', 'Tipo')
+            ->setCellValue('J1', 'Estado')
+            ->setCellValue('K1', 'Comentario');
+
+            $cont = 2;
+            foreach($equiposHistorico as $row){
+
+                $worksheet->setCellValue('A'.$cont, '')
+                ->setCellValue('B'.$cont, $row['CodigoFac'])
+                ->setCellValue('C'.$cont, $row['CodMNT'])
+                ->setCellValue('D'.$cont, $row['CodOrdenFisica'])
+                ->setCellValue('E'.$cont, $row['CodProducto'])
+                ->setCellValue('F'.$cont, $row['NombreProducto'])
+                ->setCellValue('G'.$cont, $row['Cliente'])
+                ->setCellValue('H'.$cont, $this->pipeFormatDate($row["FechaINI"]))
+                ->setCellValue('I'.$cont, $this->getDescTipoMant(trim($row["TipoMant"])))
+                ->setCellValue('J'.$cont, $this->getDescStatus($row["Estado"]))
+                ->setCellValue('K'.$cont, $row["Comentario"]);
+              
+                $cont++;
+            }
+
+       
+
+        return $spreadsheet;
+ 
+    }
 
     function getDateNow() { 
       return date('Y-m-d');

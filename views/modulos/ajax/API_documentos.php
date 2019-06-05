@@ -9,10 +9,12 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ajax{
   private $ajaxController;
+  private $mantenimientosClass;
    
     public function __construct() {
       /*Creamos instancia general del controlador*/
       $this->ajaxController = new \controllers\ajaxController();
+      $this->mantenimientosClass = new models\MantenimientosClass();
     }
 
     /*Métodos disponibles del API */
@@ -21,20 +23,14 @@ class ajax{
       return $this->ajaxController->generaReporte($IDDocument, 'I');
     }
 
-    public function generaExcelMantInternos($select_empresa) {
+    public function generaInformeMantInternosPDF($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa) {
+      return $this->mantenimientosClass->generaInformeMantInternosPDF($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa, 'I');
+    }
+
+    public function generaInformeMantInternosExcel($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa) {
    
-    
-      $spreadsheet = new Spreadsheet();
-      $worksheet = $spreadsheet->getActiveSheet();
-      $worksheet->setCellValue('A1', 'Valores Originales')
-          ->setCellValue('A2', '-15')
-          ->setCellValue('A3', '-30')
-          ->setCellValue('A4', '50');
-
-      $worksheet->setCellValue('B2', '=ABS(A2)')
-          ->setCellValue('B3', '=ABS(A3)')
-          ->setCellValue('B4', '=ABS(A4)');
-
+      $spreadsheet = $this->mantenimientosClass->generaInformeMantInternosExcel($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa);
+      
       header('Content-Type: application/vnd.ms-excel');
       header('Content-Disposition: attachment;filename="'. 'reporteEquipos' . date('Y-m-d') .'.xls"'); 
       header('Cache-Control: max-age=0');
@@ -69,11 +65,37 @@ class ajax{
         
         break;
 
-        case 'generaReporteMantInternos':
-          if (isset($_GET['select_empresa'])) {
-            $select_empresa = $_GET['select_empresa'];
+        case 'generaInformeMantInternosPDF':
+          if (isset($_SESSION["empresaAUTH"])) {
+            $fechaINI = $_GET['fechaINI'];
+            $fechaFIN = $_GET['fechaFIN'];
+            $codEmpresa = $_SESSION["empresaAUTH"];
+            $tiposDocs = $_GET['tiposDocs'];
            
-            $ajax->generaExcelMantInternos($select_empresa);
+            $fechaFormatINI = date('Ymd', strtotime($fechaINI));
+            $fechaFormatFIN = date('Ymd', strtotime($fechaFIN));
+          
+            $PDFDocument = $ajax->generaInformeMantInternosPDF($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $codEmpresa);
+            echo $PDFDocument;
+            
+          }else{
+            $rawdata = array('status' => 'ERROR', 'mensaje' => 'No se ha indicado parámetros o no ha iniciado sesion.');
+            echo json_encode($rawdata);
+          }
+        
+        break;
+
+        case 'generaInformeMantInternosExcel':
+          if (isset($_SESSION["empresaAUTH"])) {
+            $fechaINI = $_GET['fechaINI'];
+            $fechaFIN = $_GET['fechaFIN'];
+            $codEmpresa = $_SESSION["empresaAUTH"];
+            $tiposDocs = $_GET['tiposDocs'];
+           
+            $fechaFormatINI = date('Ymd', strtotime($fechaINI));
+            $fechaFormatFIN = date('Ymd', strtotime($fechaFIN));
+           
+            $ajax->generaInformeMantInternosExcel($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $codEmpresa);
            
             
           }else{

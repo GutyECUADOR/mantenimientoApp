@@ -18,11 +18,11 @@ class ajax{
     }
 
     public function getHistorico($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa) {
-      return $this->mantenimientosClass->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, 100, $codEmpresa );
+      return $this->mantenimientosClass->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, 1000, $codEmpresa );
     }
 
     public function getHistoricoExternos($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa) {
-      return $this->mantenimientosClass->getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, 100, $codEmpresa );
+      return $this->mantenimientosClass->getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, 1000, $codEmpresa );
     }
 
 }

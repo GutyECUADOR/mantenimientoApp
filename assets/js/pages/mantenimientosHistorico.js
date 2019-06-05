@@ -15,7 +15,6 @@ $(function() {
         if (fechaInicial == null || fechaInicial == "" || fechaFinal == null || fechaFinal == "") {
             fechaInicial = new Date().toISOString().slice(0, 10);
             fechaFinal = new Date().toISOString().slice(0, 10);
-            return;
         }
 
         app.searchHistorico(fechaInicial, fechaFinal, tiposDocs);
@@ -48,9 +47,30 @@ $(function() {
         }, { center: true, labels: { 'Ok': 'Enviar', 'Cancel': 'Cancelar' } });
     });
 
-     /*Funcion para generar el reporte segun codigo de mantenimiento*/
+    
+     $('.showInformePDF').on('click', function(event) {
+        let fechaInicial = $('#uk_dp_start').val();
+        let fechaFinal = $('#uk_dp_end').val();
+        let tiposDocs = $('#select_tiposDoc').val();
+        /* Comprobacion de parametros no sean nullos y asignacion de valores si lo son*/
+        if (fechaInicial == null || fechaInicial == "" || fechaFinal == null || fechaFinal == "") {
+            fechaInicial = new Date().toISOString().slice(0, 10);
+            fechaFinal = new Date().toISOString().slice(0, 10);
+        }
+        window.open(`views/modulos/ajax/API_documentos.php?action=generaInformeMantInternosPDF&fechaINI=${fechaInicial}&fechaFIN=${fechaFinal}&tiposDocs=${tiposDocs}`);
+          
+    });
+    
      $('.showInformeExcel').on('click', function(event) {
-        window.open('views/modulos/ajax/API_documentos.php?action=generaReporteMantInternos&select_empresa=008' );
+        let fechaInicial = $('#uk_dp_start').val();
+        let fechaFinal = $('#uk_dp_end').val();
+        let tiposDocs = $('#select_tiposDoc').val();
+        /* Comprobacion de parametros no sean nullos y asignacion de valores si lo son*/
+        if (fechaInicial == null || fechaInicial == "" || fechaFinal == null || fechaFinal == "") {
+            fechaInicial = new Date().toISOString().slice(0, 10);
+            fechaFinal = new Date().toISOString().slice(0, 10);
+        }
+        window.open(`views/modulos/ajax/API_documentos.php?action=generaInformeMantInternosExcel&fechaINI=${fechaInicial}&fechaFIN=${fechaFinal}&tiposDocs=${tiposDocs}`);
           
     });
 
@@ -108,7 +128,7 @@ app = {
                 <td> ${row.CodOrdenFisica} </td>
                 <td> ${row.Cliente} </td>
                 <td> ${row.CodProducto} </td>
-                <td> ${row.FechaINI} </td>
+                <td> ${row.FechaINI.slice(0,10)} </td>
                 <td> ${row.NUMREL} </td>
                 <td> <span class="uk-badge ${ app.getColorBadge(codEstado) }"> ${ app.getDescStatus(codEstado) } </span></td>
                 <td>

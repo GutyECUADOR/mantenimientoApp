@@ -65,15 +65,13 @@
             </div>
 
             <div class="md-card uk-margin-medium-bottom">
-            <div class="md-card-toolbar">
+                    <div class="md-card-toolbar">
                         <div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}" aria-haspopup="true" aria-expanded="false">
                             <i class="md-icon material-icons"></i>
                             <div class="uk-dropdown uk-dropdown-small uk-dropdown-bottom" aria-hidden="true" style="min-width: 160px; top: 32px; left: 0px;" tabindex="">
                                 <ul class="uk-nav">
-                                    <li><a data-uk-modal="{target:'#modal_generarExcel'}"><i class="material-icons">picture_as_pdf</i> Imprimir PDF</a></li>
-                                    <li><a data-uk-modal="{target:'#modal_generarExcel'}"><i class="material-icons">print</i> Imprimir Excel</a></li>
-
-                                   
+                                    <li><a class="showInformePDF"><i class="material-icons">picture_as_pdf</i> Imprimir PDF</a></li>
+                                    <li><a class="showInformeExcel"><i class="material-icons">print</i> Generar Excel</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -112,6 +110,31 @@
         </div>
     </div>
 
+    <div id="modal_generarPDF" uk-modal class="uk-modal">
+            <div class="uk-modal-dialog">
+                <h2 class="heading_a"><i class="material-icons">print</i> Generar reporte de equipos - PDF </h2>
+                <p>Indique filtros de busqueda.</p>
+                <div class="uk-overflow-container">
+                    <form action="" class="uk-form-stacked">
+                        <div class="uk-form-row">
+                            <select id="select_empresa" class="md-input">
+                                <option value="ALL">TODOS LOS EQUIPOS</option>
+                                <option value="OMITIDOS">EQUIPOS OMITIDOS</option>
+                               
+                               
+                            </select>
+                        </div>
+                    </form>
+                    
+                </div>
+
+                <div class="uk-modal-footer uk-text-right">
+                    <button type="button" class="md-btn md-btn-flat uk-modal-close">Cancelar</button>
+                    <button type="submit" class="md-btn md-btn-flat md-btn-flat-primary showInformePDF">Generar</button>
+                </div>
+            </div>
+    </div>
+
     <div id="modal_generarExcel" uk-modal class="uk-modal">
             <div class="uk-modal-dialog">
                 <h2 class="heading_a"><i class="material-icons">print</i> Generar reporte de equipos - Excel </h2>
@@ -137,6 +160,7 @@
                 </div>
             </div>
     </div>
+
   
 <!-- google web fonts -->
 <script>
