@@ -17,8 +17,8 @@ class ajax{
         return $this->ajaxController->getCountMantenimientosController($codEmpresa);
     }
 
-    public function getHistorico($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa) {
-      return $this->mantenimientosClass->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, 1000, $codEmpresa );
+    public function getHistorico($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, $codEmpresa) {
+      return $this->mantenimientosClass->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, 1000, $codEmpresa );
     }
 
     public function getHistoricoExternos($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa) {
@@ -41,20 +41,30 @@ class ajax{
         break;
 
         case 'getHistorico':
-          $fechaINI = $_GET["fechaINI"];
-          $fechaFIN = $_GET["fechaFIN"];
-          $tiposDocs = $_GET["tiposDocs"];
 
-          $fechaFormatINI = date('Ymd', strtotime($fechaINI));
-          $fechaFormatFIN = date('Ymd', strtotime($fechaFIN));
-
-          $codEmpresa = $_SESSION["empresaAUTH"];
-          $respuesta = $ajax->getHistorico($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $codEmpresa);
-          $rawdata = array('status' => 'OK', 
-                          'mensaje' => $fechaFormatINI, 
-                          'horaINI' => 'recuperado historico', 
-                          'data' => $respuesta
-                        );
+          if (isset($_GET["fechaINI"]) && isset($_GET["fechaFIN"]) && isset($_GET["tiposDocs"]) && isset($_GET["rucCliente"]) ) {
+            $fechaINI = $_GET["fechaINI"];
+            $fechaFIN = $_GET["fechaFIN"];
+            $tiposDocs = $_GET["tiposDocs"];
+            $rucCliente = $_GET["rucCliente"];
+  
+            $fechaFormatINI = date('Ymd', strtotime($fechaINI));
+            $fechaFormatFIN = date('Ymd', strtotime($fechaFIN));
+  
+            $codEmpresa = $_SESSION["empresaAUTH"];
+            $respuesta = $ajax->getHistorico($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $rucCliente, $codEmpresa);
+            $rawdata = array('status' => 'OK', 
+                            'mensaje' => $fechaFormatINI, 
+                            'horaINI' => 'recuperado historico', 
+                            'data' => $respuesta
+                          );
+          }else{
+            $rawdata = array('status' => 'FAIL', 
+                'mensaje' => 'No se indicaron todos los parametros', 
+                'data' => ''
+              );
+          }
+          
           echo json_encode($rawdata);
 
         break;

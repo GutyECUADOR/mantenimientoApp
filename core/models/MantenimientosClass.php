@@ -149,13 +149,15 @@ class MantenimientosClass {
         Recupera los registros de la tabla mantenimientosEQ en KAO_wssp
         - Indicar base de datos (empresa) de la cual realizar la consulta o retornara false de encontrar dicho nombre de DB
     */
-    public function getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $cantidad=1000, $dataBaseName='KAO_wssp') {
+    public function getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $rucCliente='', $cantidad=1000, $dataBaseName='KAO_wssp') {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
         
         $codEmpresa = $this->getCodeDBByName($dataBaseName)['Codigo']; // Usado para filtro de resultados. codigo de la DB
 
+        $filtroDOC = $this->getFiltroTiposDoc($tiposDocs);
+        $filtroRUC = $this->getFiltroRUC($rucCliente);
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
         SELECT 
@@ -165,6 +167,7 @@ class MantenimientosClass {
             Mant.codEquipo as CodProducto,
             Producto.Nombre as NombreProducto,
             Cliente.NOMBRE as Cliente,
+            Cliente.RUC,
             Mant.tipo as TipoMant,
             Mant.fechaInicio as FechaINI,
             CAB.NUMREL as NUMREL,
@@ -182,20 +185,21 @@ class MantenimientosClass {
         WHERE 
             codEmpresa = '$codEmpresa'
             AND Mant.fechaInicio BETWEEN '$fechaINI' AND '$fechaFIN'   
+            ".$filtroDOC."
+            ".$filtroRUC."
             
+
         ORDER BY CodMNT DESC
 
         ";  // Final del Query SQL 
 
         $stmt = $this->db->prepare($query); 
     
-        $arrayResultados = array();
+      
 
             if($stmt->execute()){
-                while ($row = $stmt->fetch( \PDO::FETCH_ASSOC )) {
-                    array_push($arrayResultados, $row);
-                }
-                return $arrayResultados;
+                $resulset = $stmt->fetchAll( \PDO::FETCH_ASSOC );
+                
                 
             }else{
                 $resulset = false;
@@ -608,9 +612,9 @@ class MantenimientosClass {
    
     }
 
-    public function generaInformeMantInternosPDF($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa, $outputMode = 'S'){
+    public function generaInformeMantInternosPDF($fechaINI, $fechaFIN, $tiposDocs, $ruc, $codEmpresa, $outputMode = 'S'){
 
-        $equiposHistorico = $this->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $cantidad=1000, $codEmpresa);
+        $equiposHistorico = $this->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $ruc, $cantidad=1000, $codEmpresa);
         
          $html = '
              
@@ -710,9 +714,9 @@ class MantenimientosClass {
  
     }
 
-    public function generaInformeMantInternosExcel($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa){
+    public function generaInformeMantInternosExcel($fechaINI, $fechaFIN, $tiposDocs, $ruc, $codEmpresa){
 
-        $equiposHistorico = $this->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $cantidad=1000, $codEmpresa);
+        $equiposHistorico = $this->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $ruc, $cantidad=1000, $codEmpresa);
         
         $spreadsheet = new Spreadsheet();
         $worksheet = $spreadsheet->getActiveSheet();
@@ -755,6 +759,34 @@ class MantenimientosClass {
     function getDateNow() { 
       return date('Y-m-d');
     }
+
+    private function getFiltroTiposDoc($tipoDOC){
+        switch ($tipoDOC) {
+            case 'ALL':
+                return 'AND Mant.estado IN(0,1,2,3)';
+                break;
+            case 'PND':
+                return 'AND Mant.estado IN(0)';
+                break;
+
+            case 'ANUL':
+                return 'AND Mant.estado IN(2,3)';
+                break;    
+            
+            default:
+                return 'AND Mant.estado IN(0,1,2,3)';
+                break;
+        }
+    }
+
+    private function getFiltroRUC($RUC){
+      if (!empty($RUC)) {
+        return "AND Cliente.RUC LIKE '$RUC%'";
+      }else{
+          return '';
+      }
+    }
+
 
     
 }

@@ -23,13 +23,13 @@ class ajax{
       return $this->ajaxController->generaReporte($IDDocument, 'I');
     }
 
-    public function generaInformeMantInternosPDF($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa) {
-      return $this->mantenimientosClass->generaInformeMantInternosPDF($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa, 'I');
+    public function generaInformeMantInternosPDF($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, $codEmpresa) {
+      return $this->mantenimientosClass->generaInformeMantInternosPDF($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, $codEmpresa, 'I');
     }
 
-    public function generaInformeMantInternosExcel($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa) {
+    public function generaInformeMantInternosExcel($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, $codEmpresa) {
    
-      $spreadsheet = $this->mantenimientosClass->generaInformeMantInternosExcel($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa);
+      $spreadsheet = $this->mantenimientosClass->generaInformeMantInternosExcel($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, $codEmpresa);
       
       header('Content-Type: application/vnd.ms-excel');
       header('Content-Disposition: attachment;filename="'. 'reporteEquipos' . date('Y-m-d') .'.xls"'); 
@@ -71,11 +71,12 @@ class ajax{
             $fechaFIN = $_GET['fechaFIN'];
             $codEmpresa = $_SESSION["empresaAUTH"];
             $tiposDocs = $_GET['tiposDocs'];
+            $rucCliente = $_GET["rucCliente"];
            
             $fechaFormatINI = date('Ymd', strtotime($fechaINI));
             $fechaFormatFIN = date('Ymd', strtotime($fechaFIN));
           
-            $PDFDocument = $ajax->generaInformeMantInternosPDF($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $codEmpresa);
+            $PDFDocument = $ajax->generaInformeMantInternosPDF($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $rucCliente, $codEmpresa);
             echo $PDFDocument;
             
           }else{
@@ -91,11 +92,12 @@ class ajax{
             $fechaFIN = $_GET['fechaFIN'];
             $codEmpresa = $_SESSION["empresaAUTH"];
             $tiposDocs = $_GET['tiposDocs'];
+            $rucCliente = $_GET["rucCliente"];
            
             $fechaFormatINI = date('Ymd', strtotime($fechaINI));
             $fechaFormatFIN = date('Ymd', strtotime($fechaFIN));
            
-            $ajax->generaInformeMantInternosExcel($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $codEmpresa);
+            $ajax->generaInformeMantInternosExcel($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $rucCliente, $codEmpresa);
            
             
           }else{

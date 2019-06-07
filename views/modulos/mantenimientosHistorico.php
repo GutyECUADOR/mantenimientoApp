@@ -15,6 +15,23 @@
       <?php include 'sis_modules/sidebar_main.php'?>
     <!-- main sidebar end -->
 
+    <!-- ribbon options bar -->
+    <div id="top_bar">
+        <div class="md-top-bar">
+            <div class="uk-width-large-8-10 uk-container-center">
+                <div class="uk-clearfix">
+                    <div class="md-top-bar-actions-left">
+                        
+                        <div class="md-btn-group">
+                            <a data-uk-modal="{target:'#modal_advancedSearch'}" class="md-btn md-btn-flat md-btn-small md-btn-wave" data-uk-tooltip="{pos:'bottom'}" title="Filtros de Busqueda"><i class="material-icons">note_add</i>Busqueda Avanzada</a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- CONTENIDO DE LA SECCION -->    
     <div id="page_content">
         <div id="page_content_inner">
@@ -59,6 +76,7 @@
                             <a id="btn_search" class="md-btn md-btn-primary md-btn-wave-light md-btn-icon waves-effect waves-button waves-light md-btn-block">
                                 <i class="uk-icon-search"></i> Buscar
                             </a>
+                           
                         </div>
                     </div>
                 </div>
@@ -110,19 +128,15 @@
         </div>
     </div>
 
-    <div id="modal_generarPDF" uk-modal class="uk-modal">
+    <div id="modal_advancedSearch" uk-modal class="uk-modal">
             <div class="uk-modal-dialog">
-                <h2 class="heading_a"><i class="material-icons">print</i> Generar reporte de equipos - PDF </h2>
+                <h2 class="heading_a"><i class="material-icons">search</i> Busqueda Avanzada </h2>
                 <p>Indique filtros de busqueda.</p>
-                <div class="uk-overflow-container">
+                <div class="uk-row">
                     <form action="" class="uk-form-stacked">
                         <div class="uk-form-row">
-                            <select id="select_empresa" class="md-input">
-                                <option value="ALL">TODOS LOS EQUIPOS</option>
-                                <option value="OMITIDOS">EQUIPOS OMITIDOS</option>
-                               
-                               
-                            </select>
+                            <label for="advanced_cedula">Cedula o RUC del cliente</label>
+                            <input id="advanced_cedula" class="md-input" type="text" value="">
                         </div>
                     </form>
                     
@@ -130,33 +144,7 @@
 
                 <div class="uk-modal-footer uk-text-right">
                     <button type="button" class="md-btn md-btn-flat uk-modal-close">Cancelar</button>
-                    <button type="submit" class="md-btn md-btn-flat md-btn-flat-primary showInformePDF">Generar</button>
-                </div>
-            </div>
-    </div>
-
-    <div id="modal_generarExcel" uk-modal class="uk-modal">
-            <div class="uk-modal-dialog">
-                <h2 class="heading_a"><i class="material-icons">print</i> Generar reporte de equipos - Excel </h2>
-                <p>Indique filtros de busqueda.</p>
-                <div class="uk-overflow-container">
-                    <form action="" class="uk-form-stacked">
-                        <div class="uk-form-row">
-                            <select id="select_empresa" class="md-input">
-                                <option value="002">KINDRED</option>
-                                <option value="006">COMERCIALIZADORA KINSMAN</option>
-                                <option value="008">PRUEBAS KINDRED</option>
-                                
-                               
-                            </select>
-                        </div>
-                    </form>
-                    
-                </div>
-
-                <div class="uk-modal-footer uk-text-right">
-                    <button type="button" class="md-btn md-btn-flat uk-modal-close">Cancelar</button>
-                    <button type="submit" class="md-btn md-btn-flat md-btn-flat-primary showInformeExcel">Generar</button>
+                    <button id="btn_search_advanced" type="button" class="md-btn md-btn-flat md-btn-flat-primary">Buscar</button>
                 </div>
             </div>
     </div>
