@@ -50,7 +50,7 @@ $(function() {
     });
 
     
-     $('.showInformePDF').on('click', function(event) {
+    $('.showInformePDF').on('click', function(event) {
         let fechaInicial = $('#uk_dp_start').val();
         let fechaFinal = $('#uk_dp_end').val();
         let tiposDocs = $('#select_tiposDoc').val();
@@ -65,7 +65,7 @@ $(function() {
           
     });
     
-     $('.showInformeExcel').on('click', function(event) {
+    $('.showInformeExcel').on('click', function(event) {
         let fechaInicial = $('#uk_dp_start').val();
         let fechaFinal = $('#uk_dp_end').val();
         let tiposDocs = $('#select_tiposDoc').val();

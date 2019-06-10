@@ -21,8 +21,8 @@ class ajax{
       return $this->mantenimientosClass->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, 1000, $codEmpresa );
     }
 
-    public function getHistoricoExternos($fechaINI, $fechaFIN, $tiposDocs, $codEmpresa) {
-      return $this->mantenimientosClass->getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, 1000, $codEmpresa );
+    public function getHistoricoExternos($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, $codEmpresa) {
+      return $this->mantenimientosClass->getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, 1000, $codEmpresa );
     }
 
 }
@@ -70,20 +70,32 @@ class ajax{
         break;
 
         case 'getHistoricoExternos':
+
+          if (isset($_GET["fechaINI"]) && isset($_GET["fechaFIN"]) && isset($_GET["tiposDocs"]) && isset($_GET["rucCliente"]) ) {
           $fechaINI = $_GET["fechaINI"];
           $fechaFIN = $_GET["fechaFIN"];
           $tiposDocs = $_GET["tiposDocs"];
+          $rucCliente = $_GET["rucCliente"];
 
           $fechaFormatINI = date('Ymd', strtotime($fechaINI));
           $fechaFormatFIN = date('Ymd', strtotime($fechaFIN));
 
           $codEmpresa = $_SESSION["empresaAUTH"];
-          $respuesta = $ajax->getHistoricoExternos($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $codEmpresa);
+          $respuesta = $ajax->getHistoricoExternos($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $rucCliente, $codEmpresa);
           $rawdata = array('status' => 'OK', 
                           'mensaje' => $fechaFormatINI, 
                           'horaINI' => 'recuperado historico', 
                           'data' => $respuesta
                         );
+
+          }else{
+            $rawdata = array('status' => 'FAIL', 
+                'mensaje' => 'No se indicaron todos los parametros', 
+                'data' => ''
+              );
+          }
+                      
+          
           echo json_encode($rawdata);
 
         break;

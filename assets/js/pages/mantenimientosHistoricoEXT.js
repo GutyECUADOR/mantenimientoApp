@@ -3,14 +3,16 @@ $(function() {
     
     app.date_range();
     fechaActual = new Date().toISOString().slice(0, 10);
-    app.searchHistorico(fechaActual, fechaActual, null);
+    app.searchHistorico(fechaActual, fechaActual, null, '');
 
     /* Funcion busca que despliega resultados de busqueda*/
-    $('#btn_search').on('click', function (event) {
+    $('#btn_search, #btn_search_advanced').on('click', function (event) {
         
         let fechaInicial = $('#uk_dp_start').val();
         let fechaFinal = $('#uk_dp_end').val();
         let tiposDocs = $('#select_tiposDoc').val();
+        let rucAdvanced = $('#advanced_cedula').val();
+
         /* Comprobacion de parametros no sean nullos y asignacion de valores si lo son*/
         if (fechaInicial == null || fechaInicial == "" || fechaFinal == null || fechaFinal == "") {
             fechaInicial = new Date().toISOString().slice(0, 10);
@@ -18,7 +20,7 @@ $(function() {
             return;
         }
 
-        app.searchHistorico(fechaInicial, fechaFinal, tiposDocs);
+        app.searchHistorico(fechaInicial, fechaFinal, tiposDocs, rucAdvanced);
 
         console.log(fechaInicial);
         console.log(fechaFinal);
@@ -46,6 +48,37 @@ $(function() {
             app.sendEmailWithCotizacion(emailIngresado, codMNT, true);
 
         }, { center: true, labels: { 'Ok': 'Enviar', 'Cancel': 'Cancelar' } });
+    });
+
+
+    $('.showInformePDF').on('click', function(event) {
+        let fechaInicial = $('#uk_dp_start').val();
+        let fechaFinal = $('#uk_dp_end').val();
+        let tiposDocs = $('#select_tiposDoc').val();
+        let rucAdvanced = $('#advanced_cedula').val();
+
+        /* Comprobacion de parametros no sean nullos y asignacion de valores si lo son*/
+        if (fechaInicial == null || fechaInicial == "" || fechaFinal == null || fechaFinal == "") {
+            fechaInicial = new Date().toISOString().slice(0, 10);
+            fechaFinal = new Date().toISOString().slice(0, 10);
+        }
+        window.open(`views/modulos/ajax/API_documentos.php?action=generaInformeMantExternosPDF&fechaINI=${fechaInicial}&fechaFIN=${fechaFinal}&tiposDocs=${tiposDocs}&rucCliente=${rucAdvanced}`);
+          
+    });
+    
+    $('.showInformeExcel').on('click', function(event) {
+        let fechaInicial = $('#uk_dp_start').val();
+        let fechaFinal = $('#uk_dp_end').val();
+        let tiposDocs = $('#select_tiposDoc').val();
+        let rucAdvanced = $('#advanced_cedula').val();
+
+        /* Comprobacion de parametros no sean nullos y asignacion de valores si lo son*/
+        if (fechaInicial == null || fechaInicial == "" || fechaFinal == null || fechaFinal == "") {
+            fechaInicial = new Date().toISOString().slice(0, 10);
+            fechaFinal = new Date().toISOString().slice(0, 10);
+        }
+        window.open(`views/modulos/ajax/API_documentos.php?action=generaInformeMantExternosExcel&fechaINI=${fechaInicial}&fechaFIN=${fechaFinal}&tiposDocs=${tiposDocs}&rucCliente=${rucAdvanced}`);
+          
     });
 
 });
@@ -176,7 +209,7 @@ app = {
         }
        
     },
-    searchHistorico: function (fechaINI, fechaFIN, tiposDocs) {
+    searchHistorico: function (fechaINI, fechaFIN, tiposDocs, rucCliente) {
 
         var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Realizando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
         modalBlocked.show();
@@ -184,7 +217,7 @@ app = {
         $.ajax({
             url: 'views/modulos/ajax/API_estadisticas.php?action=getHistoricoExternos',
             method: 'GET',
-            data: { fechaINI: fechaINI, fechaFIN:fechaFIN, tiposDocs:tiposDocs },
+            data: { fechaINI: fechaINI, fechaFIN:fechaFIN, tiposDocs:tiposDocs, rucCliente:rucCliente },
     
             success: function (response) {
                 console.log(response);

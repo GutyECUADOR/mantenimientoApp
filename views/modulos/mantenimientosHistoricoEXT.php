@@ -15,6 +15,23 @@
       <?php include 'sis_modules/sidebar_main.php'?>
     <!-- main sidebar end -->
 
+    <!-- ribbon options bar -->
+    <div id="top_bar">
+        <div class="md-top-bar">
+            <div class="uk-width-large-8-10 uk-container-center">
+                <div class="uk-clearfix">
+                    <div class="md-top-bar-actions-left">
+                        
+                        <div class="md-btn-group">
+                            <a data-uk-modal="{target:'#modal_advancedSearch'}" class="md-btn md-btn-flat md-btn-small md-btn-wave" data-uk-tooltip="{pos:'bottom'}" title="Filtros de Busqueda"><i class="material-icons">note_add</i>Busqueda Avanzada</a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- CONTENIDO DE LA SECCION -->    
     <div id="page_content">
         <div id="page_content_inner">
@@ -109,6 +126,27 @@
         </div>
     </div>
   
+    <div id="modal_advancedSearch" uk-modal class="uk-modal">
+            <div class="uk-modal-dialog">
+                <h2 class="heading_a"><i class="material-icons">search</i> Busqueda Avanzada </h2>
+                <p>Indique filtros de busqueda.</p>
+                <div class="uk-row">
+                    <form action="" class="uk-form-stacked">
+                        <div class="uk-form-row">
+                            <label for="advanced_cedula">Cedula o RUC del cliente</label>
+                            <input id="advanced_cedula" class="md-input" type="text" value="">
+                        </div>
+                    </form>
+                    
+                </div>
+
+                <div class="uk-modal-footer uk-text-right">
+                    <button type="button" class="md-btn md-btn-flat uk-modal-close">Cancelar</button>
+                    <button id="btn_search_advanced" type="button" class="md-btn md-btn-flat md-btn-flat-primary">Buscar</button>
+                </div>
+            </div>
+    </div>
+
 <!-- google web fonts -->
 <script>
     WebFontConfig = {

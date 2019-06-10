@@ -213,12 +213,15 @@ class MantenimientosClass {
         Recupera los registros de la tabla mantenimientosEQ en KAO_wssp
         - Indicar base de datos (empresa) de la cual realizar la consulta o retornara false de encontrar dicho nombre de DB
     */
-    public function getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, $cantidad=1000, $dataBaseName='KAO_wssp') {
+    public function getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, $rucCliente='', $cantidad=1000, $dataBaseName='KAO_wssp') {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
         
         $codEmpresa = $this->getCodeDBByName($dataBaseName)['Codigo']; // Usado para filtro de resultados. codigo de la DB
+
+        $filtroDOC = $this->getFiltroTiposDoc($tiposDocs);
+        $filtroRUC = $this->getFiltroRUC($rucCliente);
 
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
@@ -229,7 +232,12 @@ class MantenimientosClass {
         FROM 
             dbo.COB_CLIENTES as Cliente
             INNER JOIN KAO_wssp.dbo.mantExternosEQ_CAB as Mant  on Mant.cliente COLLATE Modern_Spanish_CI_AS = Cliente.RUC
-        WHERE Mant.empresa = '$codEmpresa' and fechaCreacion BETWEEN '$fechaINI' AND '$fechaFIN'
+        WHERE 
+            Mant.empresa = '$codEmpresa' 
+            AND fechaCreacion BETWEEN '$fechaINI' AND '$fechaFIN'
+            ".$filtroDOC."
+            ".$filtroRUC."
+        
         ORDER BY Mant.codMantExt DESC
         ";  // Final del Query SQL 
 
@@ -714,6 +722,106 @@ class MantenimientosClass {
  
     }
 
+    public function generaInformeMantExternosPDF($fechaINI, $fechaFIN, $tiposDocs, $ruc, $codEmpresa, $outputMode = 'S'){
+
+        $equiposHistorico = $this->getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, $ruc, $cantidad=1000, $codEmpresa);
+        
+         $html = '
+             
+             <div style="width: 100%;">
+         
+                 <div style="float: right; width: 100%;">
+                     <div id="informacion">
+                        
+                         <h4>REPORTE - MANTENIMIENTO DE EQUIPOS EXTERNOS</h4>
+                         <h4>EMPRESA:  '.$codEmpresa.'</h4>
+                         <h4>FECHA: '.$fechaINI.'- '.$fechaFIN.'</h4>
+                        
+                     </div>
+                 </div>
+         
+                
+             </div>
+         
+             
+             <table class="items" width="100%" style="font-size: 9pt; border-collapse: collapse; " cellpadding="8">
+                 <thead>
+                     <tr>
+                         <td width="5%">#</td>
+                         <td width="10%">CI/RUC.</td>
+                         <td width="15%">Cliente.</td>
+                         <td width="15%">Equipo</td>
+                         <td width="8%">Cod. Mant</td>
+                         <td width="8%">Cod. Mant Fisico</td>
+                         <td width="10%">Fecha Agendada</td>
+                         <td width="10%">Fecha Entrega</td>
+                         <td width="15%">comentario</td>
+                         <td width="7%">Estado</td>
+                     </tr>
+                 </thead>
+             <tbody>
+         
+             <!-- ITEMS HERE -->
+             ';
+
+                $cont = 1;
+                 foreach($equiposHistorico as $row){
+                    
+                     $html .= '
+         
+                     <tr>
+                         <td align="center">'.$cont.'</td>
+                         <td>'.$row["RUC"].'</td>
+                         <td>'.$row["ClienteName"].'</td>
+                         <td>'.$row["serieModelo"].'</td>
+                         <td>'.$row["codMantExt"].'</td>
+                         <td>'.$row["codOrdenFisica"].'</td>
+                         <td>'.$this->pipeFormatDate($row["fechaPrometida"]).'</td>
+                         <td>'.$this->pipeFormatDate($row["fechaEntrega"]).'</td>
+                         <td>'.$row["comentario"].'</td>
+                         <td>'.$this->getDescStatus($row["estado"]).'</td>
+                       
+                     </tr>';
+                     $cont++;
+                     }
+                
+             $html .= ' 
+             
+             
+         
+             <!-- END ITEMS HERE -->
+                
+         
+             </tbody>
+             </table>
+ 
+             
+         
+             
+         ';
+ 
+         //==============================================================
+         //==============================================================
+         //==============================================================
+ 
+         /* require_once '../../../vendor/autoload.php'; */
+         $mpdf = new \Mpdf\Mpdf(['orientation' => 'L']);
+ 
+         // LOAD a stylesheet
+         $stylesheet = file_get_contents('../../../assets/css/reportesStyles.css');
+         
+         $mpdf->WriteHTML($stylesheet,1);	// The parameter 1 tells that this is css/style only and no body/html/text
+ 
+         $mpdf->WriteHTML($html);
+         
+         return $mpdf->Output('doc.pdf', $outputMode);
+ 
+         //==============================================================
+         //==============================================================
+         //==============================================================
+ 
+    }
+
     public function generaInformeMantInternosExcel($fechaINI, $fechaFIN, $tiposDocs, $ruc, $codEmpresa){
 
         $equiposHistorico = $this->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $ruc, $cantidad=1000, $codEmpresa);
@@ -747,6 +855,46 @@ class MantenimientosClass {
                 ->setCellValue('J'.$cont, $this->getDescStatus($row["Estado"]))
                 ->setCellValue('K'.$cont, $row["Comentario"]);
               
+                $cont++;
+            }
+
+       
+
+        return $spreadsheet;
+ 
+    }
+
+    public function generaInformeMantExternosExcel($fechaINI, $fechaFIN, $tiposDocs, $ruc, $codEmpresa){
+
+        $equiposHistorico = $this->getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, $ruc, $cantidad=1000, $codEmpresa);
+        
+        $spreadsheet = new Spreadsheet();
+        $worksheet = $spreadsheet->getActiveSheet();
+        $worksheet->setCellValue('A1', 'CI/RUC')
+            ->setCellValue('B1', 'Cliente')
+            ->setCellValue('C1', 'Equipo')
+            ->setCellValue('D1', 'Cod. Mantenimiento')
+            ->setCellValue('E1', 'Cod. Mant. Fisico')
+            ->setCellValue('F1', 'Fecha Creacion')
+            ->setCellValue('G1', 'Fecha Agendada')
+            ->setCellValue('H1', 'Fecha Entrega')
+            ->setCellValue('I1', 'Comentario')
+            ->setCellValue('J1', 'Estado');
+         
+            $cont = 2;
+            foreach($equiposHistorico as $row){
+
+                $worksheet->setCellValue('A'.$cont, $row['RUC'])
+                ->setCellValue('B'.$cont, $row['ClienteName'])
+                ->setCellValue('C'.$cont, $row['serieModelo'])
+                ->setCellValue('D'.$cont, $row['codMantExt'])
+                ->setCellValue('E'.$cont, $row['codOrdenFisica'])
+                ->setCellValue('F'.$cont, $this->pipeFormatDate($row["fechaCreacion"]))
+                ->setCellValue('G'.$cont, $this->pipeFormatDate($row["fechaPrometida"]))
+                ->setCellValue('H'.$cont, $this->pipeFormatDate($row["fechaEntrega"]))
+                ->setCellValue('I'.$cont, $row['comentario'])
+                ->setCellValue('J'.$cont, $this->getDescStatus($row["estado"]));
+               
                 $cont++;
             }
 
