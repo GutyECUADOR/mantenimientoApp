@@ -172,8 +172,8 @@ class MantenimientosClass {
             Mant.fechaInicio as FechaINI,
             CAB.NUMREL as NUMREL,
             Mant.comentario as Comentario,
-            Mant.estado as Estado
-                    
+            Mant.estado as Estado,
+            MOV_MNT.codVENCAB as numRELCOT
                             
         FROM
             dbo.VEN_CAB as Compra
@@ -181,9 +181,10 @@ class MantenimientosClass {
             INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE = Cliente.CODIGO 
             INNER JOIN dbo.INV_ARTICULOS as Producto on Producto.Codigo COLLATE Modern_Spanish_CI_AS = Mant.codEquipo
             LEFT JOIN dbo.VEN_CAB as CAB on CAB.ID = Compra.ID
+            LEFT JOIN KAO_wssp.dbo.mov_mantenimientosEQ as MOV_MNT on MOV_MNT.codMantenimiento = Mant.codMantenimiento
                         
         WHERE 
-            codEmpresa = '$codEmpresa'
+            Mant.codEmpresa = '$codEmpresa'
             AND Mant.fechaInicio BETWEEN '$fechaINI' AND '$fechaFIN'   
             ".$filtroDOC."
             ".$filtroRUC."
@@ -228,10 +229,12 @@ class MantenimientosClass {
         SELECT TOP $cantidad 
             cliente.RUC,
             cliente.NOMBRE  as ClienteName,
-            Mant.*
+            Mant.*,
+        	MOV_MNT.codVENCAB as numRELCOT
         FROM 
             dbo.COB_CLIENTES as Cliente
             INNER JOIN KAO_wssp.dbo.mantExternosEQ_CAB as Mant  on Mant.cliente COLLATE Modern_Spanish_CI_AS = Cliente.RUC
+            INNER JOIN KAO_wssp.dbo.mov_mantenimientosEQ as MOV_MNT on MOV_MNT.codMantenimiento = Mant.codMantExt
         WHERE 
             Mant.empresa = '$codEmpresa' 
             AND fechaCreacion BETWEEN '$fechaINI' AND '$fechaFIN'

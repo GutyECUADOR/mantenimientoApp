@@ -135,7 +135,7 @@ app = {
                 <td> ${row.Cliente} </td>
                 <td> ${row.CodProducto} </td>
                 <td> ${row.FechaINI.slice(0,10)} </td>
-                <td> ${row.NUMREL} </td>
+                <td> ${row.numRELCOT} / ${row.NUMREL} </td>
                 <td> <span class="uk-badge ${ app.getColorBadge(codEstado) }"> ${ app.getDescStatus(codEstado) } </span></td>
                 <td>
                     <div class="uk-button-dropdown" data-uk-dropdown="{pos:'bottom-right'}">
