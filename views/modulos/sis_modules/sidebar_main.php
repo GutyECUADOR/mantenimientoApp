@@ -2,17 +2,16 @@
         
         <div class="sidebar_main_header">
             <div class="sidebar_logo">
-                <a href="index.html" class="sSidebar_hide sidebar_logo_large">
-                    <!-- Logo Main -->
-                    <!--  <img class="logo_regular" src="assets/img/logo_main.png" alt="" height="15" width="71"/> -->
+                <a class="sSidebar_hide sidebar_logo_large">
+                  
+                    <img class="logo_regular" src="assets/img/logo_dark.png" alt="" height="15" width="71"/>
                     
                 </a>
-                <a href="index.html" class="sSidebar_show sidebar_logo_small">
-                    <img class="logo_regular" src="assets/img/logo_main_small.png" alt="" height="32" width="32"/>
-                    <img class="logo_light" src="assets/img/logo_main_small_light.png" alt="" height="32" width="32"/>
-                </a>
             </div>
-            <!-- Lang switcher -->
+            <div class="sidebar_actions">
+                <strong><?php echo $_SESSION["empresaAUTH"];?></strong>
+            </div>
+            
         </div>
         
         <?php

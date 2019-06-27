@@ -1125,7 +1125,7 @@ class ajaxController  {
                  </div>
          
                  <div id="logo" style="float: left; width: 20%;">
-                     <img src="../../../assets/img/logo.png" alt="Logo">
+                     <img src="../../../assets/img/logo_dark.png" alt="Logo">
                  </div>
          
              </div>

@@ -129,14 +129,16 @@ app = {
             let codEstado = (parseInt(row.estado));
             let rowHTML = `
             <tr class="">
-                <td class="uk-text-center"> ${ contador } </td>
-                <td class="uk-text-center"> ${row.codMantExt} </td>
-                <td class="uk-text-center"> ${row.codOrdenFisica} </td>
-                <td class="uk-text-center"> ${row.ClienteName} </td>
-                <td class="uk-text-center"> ${row.serieModelo} </td>
-                <td class="uk-text-center"> ${row.fechaPrometida} </td>
-                <td class="uk-text-center"> ${row.numRELCOT} </td>
-                <td class="uk-text-center"> <span class="uk-badge ${ app.getColorBadge(codEstado) }"> ${ app.getDescStatus(codEstado) } </span></td>
+                <td> ${ contador } </td>
+                <td> ${row.codMantExt} </td>
+                <td> ${row.codOrdenFisica} </td>
+                <td> ${row.RUC} </td>
+                <td> ${row.ClienteName} </td>
+                <td> ${row.serieModelo} </td>
+                <td> ${row.fechaPrometida.slice(0,10)} </td>
+                <td> ${ app.isnullvalue(row.numRELCOT) } </td>
+                <td> ${ app.isnullvalue(row.facturaCOT) } </td>
+                <td> <span class="uk-badge ${ app.getColorBadge(codEstado) }"> ${ app.getDescStatus(codEstado) } </span></td>
                 <td>
                     <div class="uk-button-dropdown" data-uk-dropdown="{pos:'bottom-right'}">
                         <a href="#" class="md-icon material-icons">&#xE5D4;</a>
@@ -182,6 +184,15 @@ app = {
             break;
         }
        
+    },
+    isnullvalue: function (valor) {
+        
+        if (valor == null) {
+            return '-'
+        }else{
+            return valor;
+        }
+        
     },
     getDescStatus: function ($codigo) {
         

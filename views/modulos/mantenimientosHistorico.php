@@ -104,13 +104,14 @@
                             <thead>
                             <tr>
                                 <th class="uk-width-1-10">#</th>
-                                <th class="uk-width-2-10">ID Factura</th>
+                                <th class="uk-width-2-10">ID Factura Venta</th>
                                 <th class="uk-width-1-10">ID Mant.</th>
                                 <th class="uk-width-1-10">Mant Fisico.</th>
                                 <th class="uk-width-2-10">Cliente</th>
                                 <th class="uk-width-1-10">Equipo</th>
                                 <th class="uk-width-1-10">Fecha Programada</th>
-                                <th class="uk-width-1-10">Num Rel.</th>
+                                <th class="uk-width-1-10">Num Cotizacion.</th>
+                                <th class="uk-width-1-10">Num Fact Cotizacion.</th>
                                 <th class="uk-width-1-10">Estado</th>
                             
                             </tr>
