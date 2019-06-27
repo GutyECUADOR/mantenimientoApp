@@ -233,7 +233,8 @@ class MantenimientosClass {
             cliente.NOMBRE  as ClienteName,
             Mant.*,
             MOV_MNT.codVENCAB as numRELCOT,
-            cobro.ID as facturaCOT
+            cobro.ID as facturaCOT,
+		    cobro.TOTAL as totalFac
         FROM 
             dbo.COB_CLIENTES as Cliente
             INNER JOIN KAO_wssp.dbo.mantExternosEQ_CAB as Mant  on Mant.cliente COLLATE Modern_Spanish_CI_AS = Cliente.RUC
@@ -883,10 +884,13 @@ class MantenimientosClass {
             ->setCellValue('D1', 'Cod. Mantenimiento')
             ->setCellValue('E1', 'Cod. Mant. Fisico')
             ->setCellValue('F1', 'Fecha Creacion')
-            ->setCellValue('G1', 'Fecha Agendada')
+            ->setCellValue('G1', 'Fecha Prometida')
             ->setCellValue('H1', 'Fecha Entrega')
-            ->setCellValue('I1', 'Comentario')
-            ->setCellValue('J1', 'Estado');
+            ->setCellValue('I1', 'Num. Cotizacion')
+            ->setCellValue('J1', 'Num Factura Cotizacion')
+            ->setCellValue('K1', 'Valor Factura')
+            ->setCellValue('L1', 'Comentario')
+            ->setCellValue('M1', 'Estado');
          
             $cont = 2;
             foreach($equiposHistorico as $row){
@@ -899,8 +903,11 @@ class MantenimientosClass {
                 ->setCellValue('F'.$cont, $this->pipeFormatDate($row["fechaCreacion"]))
                 ->setCellValue('G'.$cont, $this->pipeFormatDate($row["fechaPrometida"]))
                 ->setCellValue('H'.$cont, $this->pipeFormatDate($row["fechaEntrega"]))
-                ->setCellValue('I'.$cont, $row['comentario'])
-                ->setCellValue('J'.$cont, $this->getDescStatus($row["estado"]));
+                ->setCellValue('I'.$cont, $row['numRELCOT'])
+                ->setCellValue('J'.$cont, $row['facturaCOT'])
+                ->setCellValue('K'.$cont, $row['totalFac'])
+                ->setCellValue('L'.$cont, $row['comentario'])
+                ->setCellValue('M'.$cont, $this->getDescStatus($row["estado"]));
                
                 $cont++;
             }

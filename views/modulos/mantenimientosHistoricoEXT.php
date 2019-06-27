@@ -108,7 +108,9 @@
                                 <th class="uk-width-2-10">RUC Cli.</th>
                                 <th class="uk-width-2-10">Cliente</th>
                                 <th class="uk-width-1-10">Equipo</th>
-                                <th class="uk-width-1-10">Fecha Programada</th>
+                                <th class="uk-width-1-10">Fecha Creacion</th>
+                                <th class="uk-width-1-10">Fecha Prometida</th>
+                                <th class="uk-width-1-10">Fecha Entrega</th>
                                 <th class="uk-width-1-10">Num Cotizacion.</th>
                                 <th class="uk-width-1-10">Num Fact Cotizacion.</th>
                                 <th class="uk-width-1-10">Estado</th>
