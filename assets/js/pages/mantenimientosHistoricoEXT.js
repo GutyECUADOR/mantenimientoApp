@@ -137,7 +137,7 @@ app = {
                 <td> ${row.serieModelo} </td>
                 <td> ${row.fechaCreacion.slice(0,10)} </td>
                 <td> ${row.fechaPrometida.slice(0,10)} </td>
-                <td> ${row.fechaEntrega.slice(0,10)} </td>
+                <td> ${row.fechaEntrega} </td>
                 <td> ${ app.isnullvalue(row.numRELCOT) } </td>
                 <td> ${ app.isnullvalue(row.facturaCOT) } </td>
                 <td> <span class="uk-badge ${ app.getColorBadge(codEstado) }"> ${ app.getDescStatus(codEstado) } </span></td>
