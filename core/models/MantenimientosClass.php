@@ -160,11 +160,13 @@ class MantenimientosClass {
         $filtroRUC = $this->getFiltroRUC($rucCliente);
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
-        SELECT 
+        SELECT TOP $cantidad 
             Compra.ID as CodigoFac,
             Mant.codMantenimiento as CodMNT,
             Mant.codOrdenFisica as CodOrdenFisica,
             Mant.codEquipo as CodProducto,
+            Mant.responsable as rucResponsable,
+            SBIO.Apellido + SBIO.Nombre as nombreResponsable,
             Producto.Nombre as NombreProducto,
             Cliente.NOMBRE as Cliente,
             Cliente.RUC,
@@ -175,8 +177,8 @@ class MantenimientosClass {
             Mant.estado as Estado,
             MOV_MNT.codVENCAB as numRELCOT,
             cobro.ID as facturaCOT,
-	        cobro.TOTAL as totalFactura       
-                            
+            cobro.TOTAL as totalFactura       
+                                    
         FROM
             dbo.VEN_CAB as Compra
             INNER JOIN KAO_wssp.dbo.mantenimientosEQ as Mant ON Mant.codFactura COLLATE Modern_Spanish_CI_AS = Compra.ID
@@ -184,7 +186,8 @@ class MantenimientosClass {
             INNER JOIN dbo.INV_ARTICULOS as Producto on Producto.Codigo COLLATE Modern_Spanish_CI_AS = Mant.codEquipo
             LEFT JOIN dbo.VEN_CAB as CAB on CAB.ID = Compra.ID
             LEFT JOIN KAO_wssp.dbo.mov_mantenimientosEQ as MOV_MNT on MOV_MNT.codMantenimiento = Mant.codMantenimiento
-            LEFT JOIN dbo.VEN_CAB as cobro on cobro.NUMREL COLLATE Modern_Spanish_CI_AS = MOV_MNT.codVENCAB      
+            LEFT JOIN dbo.VEN_CAB as cobro on cobro.NUMREL COLLATE Modern_Spanish_CI_AS = MOV_MNT.codVENCAB
+            INNER JOIN SBIOKAO.dbo.Empleados as SBIO on SBIO.Cedula = Mant.responsable      
         WHERE 
             Mant.codEmpresa = '$codEmpresa'
             AND Mant.fechaInicio BETWEEN '$fechaINI' AND '$fechaFIN'   
@@ -232,12 +235,14 @@ class MantenimientosClass {
             cliente.RUC,
             cliente.NOMBRE  as ClienteName,
             Mant.*,
+            SBIO.Apellido + SBIO.Nombre as nombreTecnico,
             MOV_MNT.codVENCAB as numRELCOT,
             cobro.ID as facturaCOT,
-		    cobro.TOTAL as totalFac
+            cobro.TOTAL as totalFac
         FROM 
             dbo.COB_CLIENTES as Cliente
             INNER JOIN KAO_wssp.dbo.mantExternosEQ_CAB as Mant  on Mant.cliente COLLATE Modern_Spanish_CI_AS = Cliente.RUC
+            INNER JOIN SBIOKAO.dbo.Empleados as SBIO ON SBIO.Cedula = Mant.tecnico
             LEFT JOIN KAO_wssp.dbo.mov_mantenimientosEQ as MOV_MNT on MOV_MNT.codMantenimiento = Mant.codMantExt
             LEFT JOIN dbo.VEN_CAB as cobro on cobro.NUMREL COLLATE Modern_Spanish_CI_AS = MOV_MNT.codVENCAB
         WHERE 
@@ -577,13 +582,14 @@ class MantenimientosClass {
             Bodega.NOMBRE as Bodega,
             SBIO.Apellido + SBIO.Nombre as Encargado,
             WSSP.fechaInicio,
-            WSSP.fechaFin
+            WSSP.fechaFin,
+            WSSP.comentario
             
         FROM dbo.VEN_MOV as Compra 
-            INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE = Cliente.CODIGO 
-            INNER JOIN dbo.INV_ARTICULOS as Producto on Compra.CODIGO = Producto.CODIGO 
-            INNER JOIN dbo.INV_BODEGAS as Bodega on Compra.BODEGA = Bodega.CODIGO
             INNER JOIN KAO_wssp.dbo.mantenimientosEQ as WSSP on Compra.ID COLLATE Modern_Spanish_CI_AS = WSSP.codFactura
+            INNER JOIN dbo.COB_CLIENTES as Cliente on Compra.CLIENTE = Cliente.CODIGO 
+            INNER JOIN dbo.INV_ARTICULOS as Producto on Producto.CODIGO COLLATE Modern_Spanish_CI_AS = WSSP.codEquipo 
+            INNER JOIN dbo.INV_BODEGAS as Bodega on Compra.BODEGA = Bodega.CODIGO
             INNER JOIN SBIOKAO.dbo.Empleados as SBIO on WSSP.responsable = SBIO.Cedula
         
         WHERE 
@@ -604,7 +610,8 @@ class MantenimientosClass {
             SBIO.Apellido,
             SBIO.Nombre,
             WSSP.fechaInicio,
-            WSSP.fechaFin
+            WSSP.fechaFin,
+            WSSP.comentario
 	
 
 
@@ -846,7 +853,8 @@ class MantenimientosClass {
             ->setCellValue('H1', 'Fecha Agendada')
             ->setCellValue('I1', 'Tipo')
             ->setCellValue('J1', 'Estado')
-            ->setCellValue('K1', 'Comentario');
+            ->setCellValue('K1', 'Tecnico')
+            ->setCellValue('L1', 'Comentario');
 
             $cont = 2;
             foreach($equiposHistorico as $row){
@@ -861,7 +869,8 @@ class MantenimientosClass {
                 ->setCellValue('H'.$cont, $this->pipeFormatDate($row["FechaINI"]))
                 ->setCellValue('I'.$cont, $this->getDescTipoMant(trim($row["TipoMant"])))
                 ->setCellValue('J'.$cont, $this->getDescStatus($row["Estado"]))
-                ->setCellValue('K'.$cont, $row["Comentario"]);
+                ->setCellValue('K'.$cont, $row['nombreResponsable'])
+                ->setCellValue('L'.$cont, $row["Comentario"]);
               
                 $cont++;
             }
@@ -890,7 +899,8 @@ class MantenimientosClass {
             ->setCellValue('J1', 'Num Factura Cotizacion')
             ->setCellValue('K1', 'Valor Factura')
             ->setCellValue('L1', 'Comentario')
-            ->setCellValue('M1', 'Estado');
+            ->setCellValue('M1', 'Tecnico')
+            ->setCellValue('N1', 'Estado');
          
             $cont = 2;
             foreach($equiposHistorico as $row){
@@ -907,7 +917,8 @@ class MantenimientosClass {
                 ->setCellValue('J'.$cont, $row['facturaCOT'])
                 ->setCellValue('K'.$cont, $row['totalFac'])
                 ->setCellValue('L'.$cont, $row['comentario'])
-                ->setCellValue('M'.$cont, $this->getDescStatus($row["estado"]));
+                ->setCellValue('M'.$cont, $row['nombreTecnico'])
+                ->setCellValue('N'.$cont, $this->getDescStatus($row["estado"]));
                
                 $cont++;
             }

@@ -19,8 +19,8 @@ class ajax{
         return $this->ajaxController->agendarMantenimiento($data);
     }
 
-    public function anularAction($codMNT){
-      return $this->ajaxController->anularMantenimiento($codMNT);
+    public function anularAction($codMNT, $razon){
+      return $this->ajaxController->anularMantenimiento($codMNT, $razon);
     }
 
     public function anularExternoAction($codMNT){
@@ -213,8 +213,9 @@ class ajax{
             /* Establece estado ANULADO (2) en la tabla mantenimientosEQ*/
             if (isset($_GET["codigoMNT"])) {
                 $codigoMNT = $_GET["codigoMNT"];
+                $razon = $_GET["razon"];
             
-                $respuesta = $ajax->anularAction($codigoMNT);
+                $respuesta = $ajax->anularAction($codigoMNT, $razon);
                 if($respuesta){
                 $response = array('status' => 'OK'
                             , 'mensaje' => 'Mantenimiento establecido como anulado');

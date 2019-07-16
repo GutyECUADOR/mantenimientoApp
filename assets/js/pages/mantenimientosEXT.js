@@ -53,19 +53,9 @@ $(function() {
         let htmlElement = event.currentTarget;
         let codigoMNT = htmlElement.getAttribute("data-mantenimiento");
 
-        $.ajax({
-            url: 'reportes/hojaMantenimientoByID.php',
-            method: 'GET',
-            data: 'codigoMNT=' + codigoMNT,
-
-            success: function() {
-                alert('Generando reporte con ID : ' + codigoMNT);
-                window.open('reportes/hojaMantenimientoByID.php?codigoMNT=' + codigoMNT);
-            },error: function(error) {
-                alert('No se pudo completar la operación, informe a sistemas. #' + error.status + ' ' + error.statusText);
-            }
-
-        });
+        alert('Generando reporte con ID : ' + codigoMNT);
+        window.open('reportes/hojaMantenimientoExternosByID.php?codigoMNT=' + codigoMNT);
+        
     });
 
    

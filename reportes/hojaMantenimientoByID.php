@@ -4,20 +4,18 @@
     session_start();
     require_once '../vendor/autoload.php';
 
-   use PHPMailer\PHPMailer\Exception;
     //Seteo de PDF
         $fecha = date ("Y-n-j");
-      
       
         $css = file_get_contents('style.css');
         $destino = 'I';
     
-        $codigoMNT = filter_input(INPUT_GET,'codigoMNT'); 
-        $empresa_select = '002';
-        $doc_sinespacios = str_replace(" ", "", $codigoMNT); //Quitar espacios en blanco
-        $name_doc = 'mantenimientoEQ_'.$doc_sinespacios.'.pdf';
+        $codigoMNT = filter_input(INPUT_GET,'codigoMNT');
+        $codEmpresa = trim($_SESSION["empresaAUTH"]);  // Nombre de la db asiganda en el login 
 
-        $codEmpresa = trim($_SESSION["empresaAUTH"]);  // Nombre de la db asiganda en el login
+        $doc_sinespacios = str_replace(" ", "", $codigoMNT); //Quitar espacios en blanco
+        $name_doc = 'mantenimiento_'.$doc_sinespacios.'.pdf';
+
         $mantenimientos = new models\MantenimientosClass();
         $arrayMantenimiento = $mantenimientos->getDataMantenimiento($codEmpresa, $codigoMNT); //Devuelve array de mantenimientos
         
@@ -26,20 +24,23 @@
 
         $dateTimeFIN = new DateTime($arrayMantenimiento[0]['fechaFin']);
         $horaFIN = date_format($dateTimeFIN, "H:i");
+
+        $ajaxController = new \controllers\ajaxController();
+        $empresaData = $ajaxController->getInfoEmpresaController();
      
     $html = '
       
     <body>
       <header class="clearfix">
         <div id="logo">
-          <img src="logo.png" height="60" width="110">
+          <img src="../assets/img/logo_dark.png" height="30px">
         </div>
-        <h1>INFORME - MANTENIMIENTO DE EQUIPOS</h1>
+        <h1>MANTENIMIENTO DE EQUIPOS - ORDEN DE TRABAJO</h1>
         <div id="contenedor_info">
               <div id="company" class="clearfix">
-                <div>KAO Sport Center</div>
-                <div>Av. de los Shyris y Naciones Unidas Edificio Nuñez Vela<br /> Quito, Ecuador</div>
-                <div>(593-2)-2550005</div>
+                <div>'. $empresaData["NomCia"] .'</div>
+                <div>'.$empresaData["DirCia"].'</div>
+                <div>'.$empresaData["TelCia"].'</div>
                 <div><a href="mailto:info@kaosport.com">info@kaosport.com</a></div>
               </div>
               <div id="datos1">
@@ -56,111 +57,54 @@
           <table>
               <thead>
                   <tr>
-                    <th class="title-row">Equipos</th>
-                  
+                    <th class="title-row" colspan="2" style="font-size:12px;">EQUIPO</th>
                 </tr>
               </thead>
+
               <tboby>
               <tr>
-                  <td class="service">'. $arrayMantenimiento[0]['Producto'] .'</td>
+                  <td class="service rownormal" colspan="2" style="font-size:20px;">'. $arrayMantenimiento[0]['Producto'] .'</td>
               </tr>
-                                      
-              </tbody>
-          </table>
-        </div>
 
-        <div>
-          <table>
-              <thead>
-                  <tr>
-                    <th class="title-row" colspan="2">ACTIVIDADES DE MANTENIMIENTO PREVENTIVO </th>
-                  
-                </tr>
-              </thead>
-              <tboby>
               <tr>
-                  <td class="service">Verificación de estado de funcionamiento equipo</td>
-                  <td class="service">
-                    <input type="checkbox" height="50" width="50">Si
-                    <input type="checkbox" height="50" width="50">No
-                    <input type="checkbox" height="50" width="50">No aplica
-                  </td>
+                <td class="service rownormal"><img src="../assets/img/bicicleta.png" height="250px"></td>
+                <td class="service rownormal"><img src="../assets/img/multifuerza.jpg" height="250px"></td>
               </tr>
+
               <tr>
-                  <td class="service">Limpieza de estructura interna y externa del equipo </td>
-                  <td class="service">
-                    <input type="checkbox" height="50" width="50">Si
-                    <input type="checkbox" height="50" width="50">No
-                    <input type="checkbox" height="50" width="50">No aplica
+                <td class="service rownormal"><img src="../assets/img/estatica.jpg" height="250px"></td>
+                <td class="service rownormal"><img src="../assets/img/caminadora.png" height="250px"></td>
+              </tr>
+
+              <tr>
+                  <th class="title-row" colspan="2" style="font-size:12px;"> OBSERVACIONES </th>
+              </tr>
+
+              <tr>
+                  <td class="service rownormal" colspan="2" style="font-size:12px;">
+                    '. 
+                    $arrayMantenimiento[0]['comentario'] 
+                    
+                    .'
                   </td>
               </tr>
 
               <tr>
-                <td class="service">Limpieza de sensores</td>
-                <td class="service">
-                  <input type="checkbox" height="50" width="50">Si
-                  <input type="checkbox" height="50" width="50">No
-                  <input type="checkbox" height="50" width="50">No aplica
-                </td>
+                  <th class="title-row" colspan="2" style="font-size:12px;"> CONDICIONES DE RETIRO Y ENTREGA </th>
               </tr>
 
               <tr>
-                  <td class="service">Limpieza del mecanismo interno</td>
-                  <td class="service">
-                    <input type="checkbox" height="50" width="50">Si
-                    <input type="checkbox" height="50" width="50">No
-                    <input type="checkbox" height="50" width="50">No aplica
-                  </td>
-              </tr>
-              <tr>
-                  <td class="service">Limpieza de panel y revisión de funcionamiento</td>
-                  <td class="service">
-                    <input type="checkbox" height="50" width="50">Si
-                    <input type="checkbox" height="50" width="50">No
-                    <input type="checkbox" height="50" width="50">No aplica
-                  </td>
-              </tr>
-              <tr>
-                  <td class="service">Limpieza de las cubiertas plásticas</td>
-                  <td class="service">
-                    <input type="checkbox" height="50" width="50">Si
-                    <input type="checkbox" height="50" width="50">No
-                    <input type="checkbox" height="50" width="50">No aplica
-                  </td>
-              </tr>
-              <tr>
-                  <td class="service">Ajuste interno </td>
-                  <td class="service">
-                    <input type="checkbox" height="50" width="50">Si
-                    <input type="checkbox" height="50" width="50">No
-                    <input type="checkbox" height="50" width="50">No aplica
-                  </td>
-              </tr>
-
-              <tr>
-                  <td class="service">Ajuste externo</td>
-                  <td class="service">
-                    <input type="checkbox" height="50" width="50">Si
-                    <input type="checkbox" height="50" width="50">No
-                    <input type="checkbox" height="50" width="50">No aplica
-                  </td>
-              </tr>
-
-              <tr>
-                  <td class="service">Lubricación y calibración</td>
-                  <td class="service">
-                    <input type="checkbox" height="50" width="50">Si
-                    <input type="checkbox" height="50" width="50">No
-                    <input type="checkbox" height="50" width="50">No aplica
-                  </td>
-              </tr>
-
-              <tr>
-                  <td class="service">Encendido, pruebas de funcionamiento.</td>
-                  <td class="service">
-                    <input type="checkbox" height="50" width="50">Si
-                    <input type="checkbox" height="50" width="50">No
-                    <input type="checkbox" height="50" width="50">No aplica
+                  <td colspan="2" style="font-size:12px;  text-align: left;">
+                    <ul>
+                      <li>Si la garantia de la bicicleta no esta vigente, el costo de la revision sera asumido por el cliente.</li>
+                      <li>La presente autorizacion expresa que: Siendo el propietario o actuando como representante de la misma, estoy en condiciones de autorizar los servicios anotados, asi como el reembolso de las piezas que fueren necesarias para la ejecucion de los mismos.</li>
+                      <li>La empresa queda facultada para retener la bicicleta o mercaderia mientras este pendiente la cancelacion de la factura.</li>
+                      <li>El cliente proveera las facilidades necesarias para el retiro y entrega de la bicicleta o equipo.</li>
+                      <li>Por motivos de logistica y por servirles mejor no se podra ofrecer una hora exacta. </li>
+                      <li>Se entregara la bicicleta o equipo reparado, probada por el tecnicopara satisfaccion del cliente. </li>
+                      <li>El mantenimiento debera ser realizado por el personal de la empresa, encaso de ser revisado por terceras personas la empresa no se responsabiliza</li>
+                      <li><strong>Tiene un lapso de tres meses laborables para retirar la bicicleta a partir de la fecha de recepcion. Pasado este periodo el local no se responsabiliza por la bicicleta olvidada</strong></li>
+                    </ul>  
                   </td>
               </tr>
 
@@ -170,8 +114,11 @@
           </table>
         </div>
 
+      
+
         <div id="cont_firmas">
-          <div id="firmasola">Firma de Cliente</div>
+          <div id="firma1">Firma de Cliente</div>
+          <div id="firma2">Firma Servicio Tecnico</div>
         </div>
 
       </main>

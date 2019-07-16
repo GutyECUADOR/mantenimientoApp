@@ -278,6 +278,32 @@
             </div>
         </div>
 
+        <div id="modal_razonOmitir" class="uk-modal">
+            <div class="uk-modal-dialog">
+                <h2 class="heading_a">Razon de anulacion <i class="material-icons">&#xE8FD;</i></h2>
+                <p>Indique la razon para proceder a la anulacion/omision del equipo.</p>
+                <div class="uk-overflow-container">
+                    <form action="" class="uk-form-stacked">
+                        <div class="uk-form-row">
+                            <select id="select_razonAnulacion" class="md-input">
+                                <option value="INFOIN">Informacion de contacto del cliente es incorrecta</option>
+                                <option value="NODESE">El cliente no muestra interes en el servicio</option>
+                                <option value="VINTER">Venta a intermediarios</option>
+                                <option value="NOTACR">Nota de credito</option>
+                               
+                            </select>
+                        </div>
+                    </form>
+                    
+                   
+                </div>
+
+                <div class="uk-modal-footer uk-text-right">
+                    <button type="button" id="btnAnulaOmite" class="md-btn md-btn-flat md-btn-flat-primary">Registrar</button>
+                </div>
+            </div>
+    </div>
+
     </div> <!-- Fin page content-->
 
   

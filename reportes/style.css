@@ -41,15 +41,14 @@ header {
 }
 
 h1 {
-  border-top: 1px solid  #5D6975;
-  border-bottom: 1px solid  #5D6975;
-  color: #5D6975;
+  border-top: 1px solid  #000000;
+  border-bottom: 1px solid  #000000;
+  color: #000000;
   font-size: 1.25em;
   line-height: 1.4em;
   font-weight: normal;
   text-align: center;
   margin: 0 0 5px 0;
-  background: url(dimension.png);
 }
 
 #contenedor_info{
@@ -119,7 +118,7 @@ table td {
 
 table th {
   padding: 5px 5px;
-  color: #5D6975;
+  color: #000000;
   border-bottom: 1px solid #C1CED9;
   white-space: nowrap;  
   font-size: 10px;
@@ -130,10 +129,7 @@ table .desc {
   text-align: center;
 }
 
-table .desc {
-  text-align: center;
-  
-}
+
 
 .espacio{
     margin-left: 50%;
@@ -146,7 +142,6 @@ table .desc {
 
 table td {
   padding: 5px;
-  text-align: right;
 }
 
 table td.service,
@@ -157,19 +152,7 @@ table td.desc {
   width: 15%;
 }
 
-table td.desc {
-  vertical-align: top;
-  text-align: center;
-  font-size: 10px;
-  width: 50%;
-}
 
-table td.ptn {
-  vertical-align: top;
-  text-align: center;
-  font-size: 10px;
-  width: 10%;
-}
 
 
 table td.unit,
@@ -179,11 +162,11 @@ table td.total {
 }
 
 table td.grand {
-  border-top: 1px solid #5D6975;;
+  border-top: 1px solid rgb(0, 0, 0);
 }
 
 #notices .notice {
-  color: #5D6975;
+  color: rgb(0, 0, 0);
   font-size: 1.2em;
 }
 
@@ -210,13 +193,8 @@ table td.grand {
   position: relative;
   bottom: 0;
   border-top: 1px solid #001028;
-  
-  padding-bottom: 5px;
-  padding-bottom: 30px;
   margin-right: 10px;
-  
   margin-left: 10px;
- 
   text-align: center;
 }
 
@@ -228,7 +206,6 @@ table td.grand {
   position: relative;
   bottom: 0;
   border-top: 1px solid #001028;
-  padding: 8px 0;
   text-align: center;
 }
 
@@ -247,6 +224,7 @@ table td.grand {
 
 table .rownormal {
   color:#001028;
+  background: #FFFFFF;
   text-align: left;
   font-size: 0.9em;
   
@@ -264,12 +242,4 @@ footer {
   border-top: 1px solid #C1CED9;
   padding: 8px 0;
   text-align: center;
-}
-
-
-.datorow {
-  color:#001028;
-  text-align: center;
-  font-size: 0.9em;
-  
 }

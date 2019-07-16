@@ -12,7 +12,7 @@ define("EDOCS_MAIL","facturae-impkao@kaosportcenter.com"); //Configurar para env
 define("VIEWS_PATH","/views");
 define("PATH_FROM_INDEX","./core/resources/");
 define("CONFIG_FILE","./config/configuraciones.xml");
-define("BODY_EMAIL_TEXT","- Favor comuníquese a los teléfonos indicados, para más detalles o reagendar el mismo, gracias. ");
+define("BODY_EMAIL_TEXT"," ");
 define("LOGO_ONLINE","http://kaosport.com/logokao.png");
 define("SITIOWEB_ONLINE","http://www.kaosportcenter.com");
 define("DEFAULT_SMTP","smtp-mail.outlook.com");

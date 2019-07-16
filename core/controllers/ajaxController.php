@@ -583,15 +583,60 @@ class ajaxController  {
                                         <p>Estimado, <b> '.$VEN_CAB["NOMBRE"].'</b> dueño de :<b>'.$VEN_CAB["NombreArticulo"].'</b>, le recordamos que:  </p>
 
                                         <p>
-                                            - Dentro de los 4 primeros meses posteriores a la compra, el cliente tiene derecho a 1 chequeo de garantía sin costo alguno en nuestros locales de servicio técnico; en Quito: Av. Amazonas N31-161 y Calle Moreno Bellido, Teléfono: 2239543; en Guayaquil: Piazza Samborondón Local 5AK1 vía Samborondón Teléfono 042833054. 
+                                            <strong> Por favor verifique el tipo de garantia que aplica a su producto  </strong>
+                                        <p>
+                                        <h3> Garantía de Equipos </h3>
+                                        <p>
+                                            La vigencia de la garantía es la siguiente:
+                                            <ul>
+                                                <li>En estructuras metálicas, un año posterior a la fecha de compra. </li>
+                                                <li>En motores y componentes eléctricos, seis meses posteriores a la fecha de compra</li>
+                                                <li>Los accesorios como las partes y piezas no están garantizados contra roturas, rayaduras producidas por el mal uso, después de la entrega del equipo.</li>
+                                            </ul>
+                                        
+                                        <p>
+                                            El uso inadecuado del producto, como la manipulación indebida y reparaciones por técnicos no autorizados por KAO Sport invalida la garantía.
                                         </p>
 
                                         <p>
-                                            - Terminado el tiempo de garantía el servicio técnico tendrá un costo por servicio, mantenimiento y repuestos.
+                                        Para hacer valida la presente garantía se requiere: 
                                         </p>
+                                        
+                                        <ul>
+                                            <li> Presentar el título de propiedad y la respectiva factura de compra. </li>
+                                            <li> Que los defectos de fabrica sean debidamente comprobados por el departamento técnico de KAO Sport. </li>
+                                            <li> Terminado el tiempo de garantía el servicio técnico tendrá un costo por mantenimiento y repuestos. </li>
+                                            <li> Recibe el 10% de descuento en todo tipo de repuestos, con la presentación del título de propiedad o factura. </li>
+                                            <li> No se acepta cambio ni devoluciones del equipo, ni reembolsos, luego de entregada la mercadería en funcionamiento. </li>
+                                        </ul>
+                                        
+                                        <h3> Garantía de Bicicletas </h3>
+                                       
                                         <p>
-                                            - Esta garantía no se aplica en ningún caso, a cualquiera de las fallas que se deban al mal manejo, uso inadecuado del producto, manipulación indebida y reparación por técnicos no autorizados por Kao Sport Center.
+                                        La vigencia de la garantía es la siguiente:
+                                            <ul>
+                                                <li> En cuadro, 3 años posterior a la fecha de compra. KAO Sport garantiza su correcto desempeño en condiciones de uso normal. </li>
+                                                <li> En componentes y accesorios, 1 año posterior a la fecha de compra. </li>
+                                            </ul>
                                         </p>
+                                        
+                                        <p>
+                                            Esta garantía no se aplica en ningún caso, a quiera de las fallas que se deban al manejo, uso inadecuado, manipulación indebida y reparaciones por técnicos no autorizados por KAO Sport.
+                                        </p>
+
+                                        <p>
+                                            Para hacer válida la presente garantía se requiere:
+                                            <ul>
+                                            <li> Presentar el título de propiedad y la respectiva factura de compra. </li>
+                                            <li> Que los defectos de fabrica sean debidamente comprobados por el Departamento Técnico de KAO Sport. </li>
+                                            <li> 
+                                                Dentro de los 4 primeros meses posteriores a la compra, el cliente tiene derecho a 1 chequeo de garantía sin costo alguno. 
+                                                Terminado el tiempo de garantía el servicio técnico tendrá un costo por mantenimiento y repuestos.
+                                            </li>
+                                            <li> Recibe el 10% de descuento en todo tipo de repuestos con la presentación del título de propiedad o factura. </li>
+                                            <ul>
+                                        </p>
+
                                         <p>
                                         '. $customMesagge .'
                                         </p>
@@ -739,8 +784,8 @@ class ajaxController  {
     }
 
     /* Realiza peticion al modelo para agregar registro a la tabla mantenimientosEQ*/
-     public function anularMantenimiento($data){
-        $response = $this->ajaxModel->anulaMantenimientoByCod($data);
+     public function anularMantenimiento($codigo, $razon){
+        $response = $this->ajaxModel->anulaMantenimientoByCod($codigo, $razon);
         return $response;
     }
 

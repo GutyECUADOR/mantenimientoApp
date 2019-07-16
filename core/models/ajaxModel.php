@@ -130,7 +130,7 @@ class ajaxModel  {
         
     }
    
-    public function anulaMantenimientoByCod($codMNT, $dataBaseName='KAO_wssp'){
+    public function anulaMantenimientoByCod($codMNT, $razon='', $dataBaseName='KAO_wssp'){
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX();
 
@@ -140,7 +140,8 @@ class ajaxModel  {
             UPDATE 
                 dbo.mantenimientosEQ 
             SET 
-                estado = '2'
+                estado = '2',
+                comentario = '$razon'
             WHERE 
                 codMantenimiento = '$codMNT' 
                 AND codEmpresa ='$codEmpresa'

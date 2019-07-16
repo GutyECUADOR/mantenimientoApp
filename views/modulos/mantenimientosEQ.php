@@ -85,7 +85,7 @@
     <div id="modal_razonOmitir" class="uk-modal">
             <div class="uk-modal-dialog">
                 <h2 class="heading_a">Razon de anulacion <i class="material-icons">&#xE8FD;</i></h2>
-                <p>Indique la razon para proceder a la anulacion/omision del equipo.</p>
+                <p>Indique la razon para proceder a la anulacion del agendamiento.</p>
                 <div class="uk-overflow-container">
                     <form action="" class="uk-form-stacked">
                         <div class="uk-form-row">

@@ -1,11 +1,11 @@
 <?php 
 
-    require_once '../core/models/EstadisticasClass.php';
-    require_once '../core/models/conexion.php';
+    session_start();
+    require_once  '../vendor/autoload.php';
 
-
-    $model = new models\EstadisticasClass();
+    $codEmpresa = trim($_SESSION["empresaAUTH"]);  // Nombre de la db asiganda en el login 
+    $mantenimientos = new models\MantenimientosClass();
+    $arrayMantenimiento = $mantenimientos->getMantenimientoExternoByCod($codEmpresa, 'MNE00031'); //Devuelve array de mantenimientos
     
-    $result = $model->getCountMantenimientos();
-    var_dump($result);
+    var_dump($arrayMantenimiento);
     

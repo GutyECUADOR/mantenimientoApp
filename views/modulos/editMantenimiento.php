@@ -32,6 +32,7 @@
     }
 
     
+    
 ?>
 
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
@@ -156,10 +157,18 @@
                                         </div>
                                         <div class="uk-form-row">
                                             <label for="product_edit_tecnico" class="uk-form-label">Técnico Asignado</label>
-                                            <select id="product_edit_tecnico" name="product_edit_tecnico" data-md-selectize>
+                                            <select id="product_edit_tecnico" name="product_edit_tecnico" class="md-input">
                                                 <?php
+                                                   
+
                                                      foreach ($arrayTecnicos as $opcion) {
+                                                        if (trim($arrayMantenimiento["CIEncargado"]) == trim($opcion['Value']) ) {
+                                                        echo' <option selected value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
+                                                        }else {
                                                         echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
+                                                        
+                                                        }
+                                                        
                                                      }
                                                 ?>
                                                 
@@ -168,11 +177,11 @@
 
                                          <div class="uk-form-row">
                                             <label for="product_edit_bodega" class="uk-form-label">Bodega</label>
-                                            <select id="product_edit_bodega" name="product_edit_bodega" data-md-selectize>
+                                            <select id="product_edit_bodega" name="product_edit_bodega" class="md-input">
                                                 <?php
-                                                     foreach ($arrayBodegas as $opcion) {
-                                                        echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
-                                                     }
+                                                    foreach ($arrayBodegas as $opcion) {
+                                                    echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
+                                                    }
                                                 ?>
                                                 
                                             </select>

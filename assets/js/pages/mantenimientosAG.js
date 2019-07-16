@@ -15,39 +15,52 @@ $(function() {
     $('.anularCita').on('click', function(event) {
         let htmlElement = event.currentTarget;
         let codigoMNT = htmlElement.getAttribute("data-mantenimiento");
+      
 
         UIkit.modal.confirm('Está seguro que desea anular el mantenimiento ' + codigoMNT + ' ?', function() {
-            $.ajax({
-                url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=anular',
-                method: 'GET',
-                data: 'codigoMNT=' + codigoMNT,
+            var customModal = UIkit.modal($('#modal_razonOmitir'), { modal: false, keyboard: false, bgclose: false, center: true });
+            customModal.show();
 
-                success: function( response ) {
-                    response = JSON.parse(response);
-                    if (response.status == 'OK') {
-
-                        UIkit.modal.alert(response.mensaje, {center: true, labels: {'Ok': 'Ok'}}).on('hide.uk.modal', function() {
-                            modalAgendar.hide();
-                            location.reload();
-                        });
-                       
-                    }else{
-                        UIkit.modal.alert(response.mensaje, {center: true, labels: {'Ok': 'Ok'}}).on('hide.uk.modal', function() {
-                            modalAgendar.hide();
-                            location.reload();
-                        });
+            $('#btnAnulaOmite').click(function() {
+                let opcionSelected = $('#select_razonAnulacion option:selected').text();
+                console.log(opcionSelected);
+        
+                $.ajax({
+                    url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=anular',
+                    method: 'GET',
+                    data: { codigoMNT: codigoMNT, razon: opcionSelected },
+        
+                    success: function( response ) {
+                        response = JSON.parse(response);
+                        if (response.status == 'OK') {
+        
+                            UIkit.modal.alert(response.mensaje, {center: true, labels: {'Ok': 'Ok'}}).on('hide.uk.modal', function() {
+                                modalAgendar.hide();
+                                customModal.hide();
+                                location.reload();
+                            });
+                           
+                        }else{
+                            UIkit.modal.alert(response.mensaje, {center: true, labels: {'Ok': 'Ok'}}).on('hide.uk.modal', function() {
+                                modalAgendar.hide();
+                                location.reload();
+                            });
+                        }
+                        
+                    },
+                    error: function(error) {
+                        alert('No se pudo completar la operación. #' + error.status + ' ' + error.statusText);
                     }
-                    
-                },
-                error: function(error) {
-                    alert('No se pudo completar la operación. #' + error.status + ' ' + error.statusText);
-                }
-
+        
+                });
+        
             });
+            
         },  {labels: {'Ok': 'Si', 'Cancel': 'Cancelar'}});
 
-
     });
+
+    
 
     $('.aprobarCita').on('click', function (event) {
         let htmlElement = event.currentTarget;
