@@ -40,7 +40,7 @@ $(function() {
 
             if(contItems == 0){
                 totalScore = 0;
-            }else if (arrayItems1xmes.includes(tipoItem) && contItems == 1) {
+            }else if (arrayItems1xmes.includes(tipoItem) && contItems >= 1) {
                 totalScore = 20;
             }else if (arrayItems2xmes.includes(tipoItem) && contItems == 1) { 
                 totalScore = 10;
@@ -72,7 +72,7 @@ $(function() {
                     });
 
                     
-                    //console.log('Items1xmes:', arrayItems1xmes);
+                    console.log('Items1xmes:', arrayItems1xmes);
                     app.loadCodItems2XMes();
                      
                 }else{
@@ -96,7 +96,7 @@ $(function() {
                     });
     
                    
-                    //console.log('Items2xmes:', arrayItems2xmes);
+                    console.log('Items2xmes:', arrayItems2xmes);
                     app.loadCodItems3XMes();
                    
                 }else{
@@ -118,7 +118,7 @@ $(function() {
                         arrayItems3xmes.push(element.Codigo.trim());
                     });
     
-                    //console.log('Items3xmes:', arrayItems3xmes);
+                    console.log('Items3xmes:', arrayItems3xmes);
                     app.countTotalScores();
                     
                 }else{
