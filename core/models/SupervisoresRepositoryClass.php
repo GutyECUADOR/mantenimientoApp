@@ -18,7 +18,7 @@ class SupervisoresRepositoryClass {
        
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
-        SELECT 
+        SELECT TOP 100
             CAB.supervisor as Cedula,
             SBIO.Apellido + SBIO.Nombre as NombreEvaluado,
             CAB.fechaCreacion as fecha,
@@ -38,6 +38,8 @@ class SupervisoresRepositoryClass {
             SBIO.Nombre,
             SBIO2.Apellido,
             SBIO2.Nombre
+        
+        ORDER BY fecha DESC
 
         ";  // Final del Query SQL 
 

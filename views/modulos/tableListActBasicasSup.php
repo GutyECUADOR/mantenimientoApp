@@ -32,7 +32,7 @@
                 <div class="uk-container-center">
                     <div class="md-card-list">
                         
-                        <ul class="hierarchical_slide">
+                        <ul class="">
 
                                 <?php
                                     if (is_array($arraylistReportesSupervisores)) {
@@ -59,7 +59,7 @@
                                     </div>
                                     
                                     <div class="md-card-list-item-subject">
-                                        <span>Evaluado por <?php echo substr($item['NombreEvaluador'], 0, 20)?> a <?php echo $item['NombreEvaluado']?></span>
+                                        <span>Evaluado por <?php echo $item['NombreEvaluador']?> a <?php echo $item['NombreEvaluado']?></span>
                                     </div>
                                     
                                     
