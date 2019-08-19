@@ -147,10 +147,16 @@
                                             <label for="product_edit_sn_control">Dirección</label>
                                             <input type="text" class="md-input" id="product_cliente_direccion" name="product_cliente_direccion" value="<?php echo trim($arrayMantenimiento["Direccion"])?>" readonly/>
                                         </div>
-                                         <div class="uk-form-row">
+                                        <div class="uk-form-row">
                                             <label for="product_edit_sn_control">Orden Fisica <span class="uk-badge uk-badge-danger uk-badge-notification">Obligatorio</span></label>
                                             <input type="number" class="md-input" id="product_ordenFisica" name="product_ordenFisica" min="1" max="99999999" maxlength="8" value="<?php echo trim($arrayMantenimiento["codOrdenFisica"])?>"/>
                                         </div>
+
+                                        <div class="uk-form-row">
+                                            <label for="product_edit_sn_control">Codigo de Vendedor <span class="uk-badge uk-badge-danger uk-badge-notification">Obligatorio</span></label>
+                                            <input type="number" class="md-input" id="codVendedor" name="codVendedor" min="1" max="9999" maxlength="4" value="001"/>
+                                        </div>
+
                                         <div class="uk-form-row">
                                             <label for="uk_dp_start">Fecha del Mantenimiento</label>
                                             <input class="md-input label-fixed" type="date" id="uk_dp_start" name="uk_dp_fecha"  value="<?php echo date("Y-m-d", strtotime($arrayMantenimiento["fechaInicio"]))?>">

@@ -164,10 +164,16 @@ altair_product_edit = {
         $product_edit_submit_btn.on('click', function(e) {
             e.preventDefault();
             let codigoMNT = document.getElementById("codMantenimiento").innerHTML;
+            let codigoVendedor = $('#codVendedor').val();
             let productosArray = JSON.stringify(getProductos());
             var form_serialized = JSON.stringify($product_edit_form.serializeObject(), null, 2);
             //UIkit.modal.alert('<p>Producto data:</p><pre>' + form_serialized + '</pre>');
             console.log(getProductos());
+
+            if (codigoVendedor == '') {
+                UIkit.modal.alert('Codigo de vendedor vacio', {labels: {'Ok': 'Ok'}});
+                return;
+            }
             
             /*Validacion de codigo de mantenimiento fisico sea unico*/
             /* Verificamos que el codigo de la orden fisica este disponible*/

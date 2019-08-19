@@ -9,6 +9,7 @@ class venMovClass {
     public $cliente;
     public $bodega;
     public $codProducto;
+    public $codVendedor;
     public $cantidad;
     public $precioProducto;
     public $porcentajeDescuentoProd;
@@ -62,6 +63,10 @@ class venMovClass {
         return $this->codProducto;
     }
 
+    function getCodVendedor() {
+        return $this->codVendedor;
+    }
+
     function getPrecioProducto() {
         return $this->precioProducto;
     }
@@ -112,6 +117,10 @@ class venMovClass {
 
     function setCodProducto($codProducto) {
         $this->codProducto = $codProducto;
+    }
+
+    function setCodVendedor($codVendedor) {
+        $this->codVendedor = $codVendedor;
     }
 
     function setPrecioProducto($precioProducto) {

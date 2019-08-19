@@ -969,6 +969,7 @@ class ajaxController  {
                     $VEN_MOV->setFecha(date('Ymd h:i:s'));
                     $VEN_MOV->setBodega($formData->product_edit_bodega);
                     $VEN_MOV->setCodProducto(strtoupper($producto->codigo));
+                    $VEN_MOV->setCodVendedor($formData->codVendedor);
                     $VEN_MOV->setCantidad($producto->cantidad);
                     $VEN_MOV->setPrecioProducto($producto->precio);
                     $VEN_MOV->setPorcentajeDescuentoProd($producto->descuento);
@@ -1074,6 +1075,7 @@ class ajaxController  {
                     $VEN_MOV->setFecha(date('Ymd h:i:s'));
                     $VEN_MOV->setBodega($formData->product_edit_bodega);
                     $VEN_MOV->setCodProducto(strtoupper($producto->codigo));
+                    $VEN_MOV->setCodVendedor($formData->codVendedor);
                     $VEN_MOV->setCantidad($producto->cantidad);
                     $VEN_MOV->setPrecioProducto($producto->precio);
                     $VEN_MOV->setPorcentajeDescuentoProd($producto->descuento);

@@ -73,49 +73,6 @@
                             </div>
                         </div>
 
-                        <!-- <div class="md-card">
-                            <div class="md-card-toolbar">
-                                <h3 class="md-card-toolbar-heading-text">
-                                    Información del producto
-                                </h3>
-                            </div>
-                            <div class="md-card-content">
-                                <div class="uk-form-row">
-                                    <div class="uk-input-group">
-                                        <span class="uk-input-group-addon">
-                                            <i class="uk-icon-usd"></i>
-                                        </span>
-                                        <label for="product_edit_price_control">Precio</label>
-                                        <input type="text" class="md-input" name="product_edit_price_control" id="product_edit_price_control" value="0" />
-                                    </div>
-                                </div>
-                                <div class="uk-form-row">
-                                    <div class="uk-input-group">
-                                        <span class="uk-input-group-addon">%</span>
-                                        <label for="product_edit_tax_control">Impuesto</label>
-                                        <input type="text" class="md-input" name="product_edit_tax_control" id="product_edit_tax_control" value="0" />
-                                    </div>
-                                </div>
-                                <div class="uk-form-row">
-                                    <div class="uk-input-group">
-                                        <span class="uk-input-group-addon">
-                                            <i class="uk-icon-cubes"></i>
-                                        </span>
-                                        <label for="product_edit_quantity_control">Cantidad</label>
-                                        <input type="text" class="md-input" name="product_edit_quantity_control" id="product_edit_quantity_control" value="0" />
-                                    </div>
-                                </div>
-                                <div class="uk-form-row">
-                                    <div class="uk-input-group">
-                                        <span class="uk-input-group-addon">
-                                            <i class="uk-icon-barcode"></i>
-                                        </span>
-                                        <label for="product_edit_sku_control">Serie</label>
-                                        <input type="text" class="md-input" name="product_edit_sku_control" id="product_edit_sku_control" value="0" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                     <div class="uk-width-xLarge-8-10  uk-width-large-7-10">
                         <div class="md-card">
@@ -147,6 +104,10 @@
                                          <div class="uk-form-row">
                                             <label for="product_edit_sn_control">Orden Fisica <span class="uk-badge uk-badge-danger uk-badge-notification">Obligatorio</span></label>
                                             <input type="number" class="md-input" id="product_ordenFisica" name="product_ordenFisica" min="1" max="99999999" maxlength="8" value="<?php echo trim($arrayMantenimiento["codOrdenFisica"])?>"/>
+                                        </div>
+                                        <div class="uk-form-row">
+                                            <label for="product_edit_sn_control">Codigo de Vendedor <span class="uk-badge uk-badge-danger uk-badge-notification">Obligatorio</span></label>
+                                            <input type="number" class="md-input" id="codVendedor" name="codVendedor" min="1" max="9999" maxlength="4" value="001"/>
                                         </div>
                                         <div class="uk-form-row">
                                             <label for="uk_dp_start">Fecha de entrega prometida</label>
