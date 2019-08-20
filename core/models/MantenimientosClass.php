@@ -121,8 +121,8 @@ class MantenimientosClass {
 
             FROM 
                 dbo.COB_CLIENTES as Cliente
-            INNER JOIN KAO_wssp.dbo.mantExternosEQ_CAB as WSSP on Cliente.RUC COLLATE DATABASE_DEFAULT = WSSP.cliente 
-            INNER JOIN SBIOKAO.dbo.Empleados as SBIO on WSSP.tecnico COLLATE DATABASE_DEFAULT = SBIO.Cedula
+            INNER JOIN KAO_wssp.dbo.mantExternosEQ_CAB as WSSP on Cliente.RUC COLLATE Modern_Spanish_CI_AS = WSSP.cliente 
+            INNER JOIN SBIOKAO.dbo.Empleados as SBIO on WSSP.tecnico COLLATE Modern_Spanish_CI_AS = SBIO.Cedula
 
             WHERE 
                 WSSP.empresa = '$codEmpresa'
