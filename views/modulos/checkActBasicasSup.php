@@ -11,11 +11,12 @@
     $arrayBodegas = $ajaxController->getAllBodegas();
     $arraySupervisores = $ajaxController->getSupervisoresEvaluarBy($_SESSION["usuarioRUC"]);
     
-    $day = date('w');
-    $week_start = date('Y-m-d', strtotime('-'.($day-1).' days'));
-    $week_end = date('Y-m-d', strtotime('+'.(7-$day).' days'));
+    $week_start = date('Y-m-d', strtotime('monday this week'));
+    $week_end = date('Y-m-d', strtotime( "sunday this week")); 
 
+    echo date('Y-m-d h:i:s'); 
    
+    
 ?>
 
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
@@ -31,6 +32,8 @@
     <!-- CONTENIDO DE LA SECCION -->    
     <div id="page_content">
         
+      
+
         <div id="page_content_inner">
 
             <h3 class="heading_a uk-margin-bottom">Registro semanal</h3>
