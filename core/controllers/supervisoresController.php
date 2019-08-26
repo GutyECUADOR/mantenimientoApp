@@ -32,7 +32,7 @@ class supervisoresController  {
     /* Retorna la cantidad de evaluaciones para ese evaluador, evaluado en el mes */
     public function countEvaluacionesSupController($evaluador, $evaluado, $fechaMesActual, $semana){
        
-        return $this->ajaxModel->countEvaluacionesSupModel($evaluador, $evaluado, $fechaMesActual);
+        return $this->ajaxModel->countEvaluacionesSupModel($evaluador, $evaluado, $fechaMesActual, $semana);
     }
 
     /* Retorna informacion sobre si la evaluacion es posible en la semana */

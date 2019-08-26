@@ -132,7 +132,7 @@ class supervisoresModel  {
     /*
        - Retorna la cantidad de evaluaciones que existen de X supervisor a y evaluado en z mes
     */
-    public function countEvaluacionesSupModel($evaluador, $supervisorEvaluado, $fechaMesActual, $dataBaseName='KAO_wssp') {
+    public function countEvaluacionesSupModel($evaluador, $supervisorEvaluado, $fechaMesActual, $semana, $dataBaseName='KAO_wssp') {
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX();
         
@@ -146,6 +146,7 @@ class supervisoresModel  {
                 CAB.evaluador = '$evaluador' 
                 AND CAB.supervisor = '$supervisorEvaluado'
                 AND CAB.fechaCreacion = '$fechaMesActual'
+                AND CAB.semana = '$semana'
 
 
 
