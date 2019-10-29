@@ -268,7 +268,7 @@ altair_product_edit = {
                         modalBlocked.show();
                     $.ajax({
                         url: 'views/modulos/ajax/API_mantenimientosEQ.php?action=updateOrden',
-                        method: 'GET',
+                        method: 'POST',
                         data: { formData: form_serialized, productosArray: productosArray },
     
                         success: function(response) {

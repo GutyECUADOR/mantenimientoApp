@@ -294,9 +294,9 @@ class ajax{
             break;
 
         case 'updateOrden':
-            if(isset($_GET["formData"]) && isset($_GET["productosArray"])){
-                $dataDecode = json_decode($_GET["formData"]);
-                $productosArray = json_decode($_GET["productosArray"]);
+            if(isset($_POST["formData"]) && isset($_POST["productosArray"])){
+                $dataDecode = json_decode($_POST["formData"]);
+                $productosArray = json_decode($_POST["productosArray"]);
 
                 $updateCorrecto = $ajax->updateMantenimiento($dataDecode, $productosArray);
             
@@ -309,9 +309,9 @@ class ajax{
             break;
 
         case 'updateOrdenExterna':
-            if(isset($_GET["formData"]) && isset($_GET["productosArray"])){
-                $dataDecode = json_decode($_GET["formData"]);
-                $productosArray = json_decode($_GET["productosArray"]);
+            if(isset($_POST["formData"]) && isset($_POST["productosArray"])){
+                $dataDecode = json_decode($_POST["formData"]);
+                $productosArray = json_decode($_POST["productosArray"]);
 
                 $updateCorrecto = $ajax->updateMantenimientoExterno($dataDecode, $productosArray);
             
