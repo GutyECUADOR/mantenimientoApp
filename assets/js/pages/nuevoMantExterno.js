@@ -99,35 +99,39 @@ $(function() {
         validaSolicitud: function () {
             if (solicitud.cliente === null) {
                 UIkit.modal.alert('Indique un cliente por favor.');
-                return;
+                return false;
             }
     
             if (solicitud.tipoEquipo === null) {
                 UIkit.modal.alert('Seleccione tipo de equipo por favor.');
-                return;
+                return false;
             }
     
             if (solicitud.tipoMantenimiento === null) {
                 UIkit.modal.alert('Seleccione tipo de mantenimiento por favor.');
-                return;
+                return false;
             }
 
             if (solicitud.tecnico === null) {
                 UIkit.modal.alert('Seleccione tecnico por favor.');
-                return;
+                return false;
             }
 
             if (solicitud.serieModelo === null) {
                 UIkit.modal.alert('Indique una serie o modelo del equipo.');
-                return;
+                return false;
+            }
+
+            if (solicitud.bodega === null) {
+                UIkit.modal.alert('Indique un local/bodega.');
+                return false;
             }
 
             if (solicitud.fechaPrometida === null) {
                 UIkit.modal.alert('Indique la fecha de entrega del equipo.');
-                return;
+                return false;
             }
-            
-            
+
             return true;
            
         },
@@ -212,6 +216,12 @@ $(function() {
         solicitud.tecnico = valor;
     });
 
+    // De select tipoEquipo
+    $('#select_bodega').on('change', function(event){
+        let valor = this.value;
+        solicitud.bodega = valor;
+    });
+
     // De input fecha
     $('#uk_dp_fecha').on('change', function(event){
         let valor = this.value;
@@ -233,6 +243,7 @@ $(function() {
     /*Accions */
     $('#save_form_submit').on('click', function(e) {
         e.preventDefault();
+        console.log(solicitud);
         if (app.validaSolicitud()) {
             UIkit.modal.confirm(`Confirme, desea registrar el documento ?` , function() {
                 console.log(JSON.stringify(solicitud));
@@ -252,6 +263,7 @@ class Solicitud {
         this.cliente = null,
         this.tipoMantenimiento = null,
         this.tecnico = null,
+        this.bodega = null,
         this.serieModelo = null,
         this.tipoEquipo = null,
         this.fecha = new Date(),

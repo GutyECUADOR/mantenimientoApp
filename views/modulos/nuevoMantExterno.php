@@ -9,6 +9,7 @@
     $arrayEquipos = $ajaxController->getAllTiposEquiposBy('EQUI');
     $arrayMantenimientosBici = $ajaxController->getAllTiposEquiposBy('MANTB');
     $arrayMantenimientosEquipos = $ajaxController->getAllTiposEquiposBy('MANTE');
+    $arrayBodegas = $ajaxController->getAllBodegas();
 
 ?>
 
@@ -179,6 +180,23 @@
                                         ?>
                                         
                                     </select>
+                                </div>
+
+                                <div class="uk-width-medium-4-4">
+                                
+                                    <div class="uk-input-group">
+                                        <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-database"></i></span>
+
+                                        <select id="select_bodega" name="select_bodega" class="md-input" data-uk-tooltip="{pos:'top'}" title="Seleccione un local">
+                                            <option value="" disabled="" selected="" hidden="">Seleccione un local/bodega</option>
+                                            <?php
+                                                    foreach ($arrayBodegas as $opcion) {
+                                                    echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
+                                                    }
+                                            ?>
+                                            
+                                        </select>
+                                    </div>
                                 </div>
                                     
                                

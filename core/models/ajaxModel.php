@@ -1146,7 +1146,7 @@ class ajaxModel  {
             INSERT INTO 
                 dbo.mantExternosEQ_CAB
             VALUES
-                ('$newCod', '0' , '$usuarioActivo', '$codEmpresa','$fechaActual','$fechaPrometida', null,'$cliente->RUC','$formDataObject->tecnico','$formDataObject->tipoEquipo','$formDataObject->tipoMantenimiento','$formDataObject->serieModelo','$formDataObject->comentario', 0) 
+                ('$newCod', '0' , '$usuarioActivo', '$codEmpresa','$fechaActual','$fechaPrometida', null,'$cliente->RUC','$formDataObject->tecnico','$formDataObject->bodega','$formDataObject->tipoEquipo','$formDataObject->tipoMantenimiento','$formDataObject->serieModelo','$formDataObject->comentario', 0) 
         ";
 
         try{
