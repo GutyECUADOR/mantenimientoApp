@@ -27,8 +27,8 @@ class ajax{
       return $this->mantenimientosClass->generaInformeMantInternosPDF($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, $codEmpresa, 'I');
     }
 
-    public function generaInformeMantExternosPDF($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, $codEmpresa) {
-      return $this->mantenimientosClass->generaInformeMantExternosPDF($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, $codEmpresa, 'I');
+    public function generaInformeMantExternosPDF($fechaINI, $fechaFIN, $tiposDocs, $bodega, $rucCliente, $codEmpresa) {
+      return $this->mantenimientosClass->generaInformeMantExternosPDF($fechaINI, $fechaFIN, $tiposDocs, $bodega, $rucCliente, $codEmpresa, 'I');
     }
 
     
@@ -43,9 +43,9 @@ class ajax{
       $writer->save('php://output');
     }
 
-    public function generaInformeMantExternosExcel($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, $codEmpresa) {
+    public function generaInformeMantExternosExcel($fechaINI, $fechaFIN, $tiposDocs, $bodega, $rucCliente, $codEmpresa) {
    
-      $spreadsheet = $this->mantenimientosClass->generaInformeMantExternosExcel($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, $codEmpresa);
+      $spreadsheet = $this->mantenimientosClass->generaInformeMantExternosExcel($fechaINI, $fechaFIN, $tiposDocs, $bodega, $rucCliente, $codEmpresa);
       
       header('Content-Type: application/vnd.ms-excel');
       header('Content-Disposition: attachment;filename="'. 'reporteEquiposExternos' . date('Y-m-d') .'.xls"'); 
@@ -109,11 +109,12 @@ class ajax{
             $codEmpresa = $_SESSION["empresaAUTH"];
             $tiposDocs = $_GET['tiposDocs'];
             $rucCliente = $_GET["rucCliente"];
+            $bodega = $_GET["bodega"];
            
             $fechaFormatINI = date('Ymd', strtotime($fechaINI));
             $fechaFormatFIN = date('Ymd', strtotime($fechaFIN));
           
-            $PDFDocument = $ajax->generaInformeMantExternosPDF($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $rucCliente, $codEmpresa);
+            $PDFDocument = $ajax->generaInformeMantExternosPDF($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $bodega, $rucCliente, $codEmpresa);
             echo $PDFDocument;
             
           }else{
@@ -151,11 +152,12 @@ class ajax{
             $codEmpresa = $_SESSION["empresaAUTH"];
             $tiposDocs = $_GET['tiposDocs'];
             $rucCliente = $_GET["rucCliente"];
-           
+            $bodega = $_GET["bodega"];
+
             $fechaFormatINI = date('Ymd', strtotime($fechaINI));
             $fechaFormatFIN = date('Ymd', strtotime($fechaFIN));
            
-            $ajax->generaInformeMantExternosExcel($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $rucCliente, $codEmpresa);
+            $ajax->generaInformeMantExternosExcel($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $bodega, $rucCliente, $codEmpresa);
            
             
           }else{

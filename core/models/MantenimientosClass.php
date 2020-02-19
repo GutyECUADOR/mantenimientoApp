@@ -219,7 +219,7 @@ class MantenimientosClass {
         Recupera los registros de la tabla mantenimientosEQ en KAO_wssp
         - Indicar base de datos (empresa) de la cual realizar la consulta o retornara false de encontrar dicho nombre de DB
     */
-    public function getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, $rucCliente='', $cantidad=1000, $dataBaseName='KAO_wssp') {
+    public function getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, $bodega='all', $rucCliente='', $cantidad=1000, $dataBaseName='KAO_wssp') {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
@@ -228,6 +228,7 @@ class MantenimientosClass {
 
         $filtroDOC = $this->getFiltroTiposDoc($tiposDocs);
         $filtroRUC = $this->getFiltroRUC($rucCliente);
+        $filtroBODEGA = $this->getFiltroBodega($bodega);
 
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
@@ -235,6 +236,7 @@ class MantenimientosClass {
             cliente.RUC,
             cliente.NOMBRE  as ClienteName,
             Mant.*,
+            bodegas.NOMBRE as nombreBodega,
             SBIO.Apellido + SBIO.Nombre as nombreTecnico,
             MOV_MNT.codVENCAB as numRELCOT,
             cobro.ID as facturaCOT,
@@ -243,6 +245,7 @@ class MantenimientosClass {
             dbo.COB_CLIENTES as Cliente
             INNER JOIN KAO_wssp.dbo.mantExternosEQ_CAB as Mant  on Mant.cliente COLLATE Modern_Spanish_CI_AS = Cliente.RUC
             INNER JOIN SBIOKAO.dbo.Empleados as SBIO ON SBIO.Cedula = Mant.tecnico
+            LEFT JOIN dbo.INV_BODEGAS as Bodegas on Bodegas.CODIGO collate Modern_Spanish_CI_AS = Mant.bodega
             LEFT JOIN KAO_wssp.dbo.mov_mantenimientosEQ as MOV_MNT on MOV_MNT.codMantenimiento = Mant.codMantExt
             LEFT JOIN dbo.VEN_CAB as cobro on cobro.NUMREL COLLATE Modern_Spanish_CI_AS = MOV_MNT.codVENCAB
         WHERE 
@@ -250,6 +253,7 @@ class MantenimientosClass {
             AND fechaCreacion BETWEEN '$fechaINI' AND '$fechaFIN'
             ".$filtroDOC."
             ".$filtroRUC."
+            ".$filtroBODEGA."
         
         ORDER BY Mant.codMantExt DESC
         ";  // Final del Query SQL 
@@ -737,9 +741,9 @@ class MantenimientosClass {
  
     }
 
-    public function generaInformeMantExternosPDF($fechaINI, $fechaFIN, $tiposDocs, $ruc, $codEmpresa, $outputMode = 'S'){
+    public function generaInformeMantExternosPDF($fechaINI, $fechaFIN, $tiposDocs, $bodega, $ruc, $codEmpresa, $outputMode = 'S'){
 
-        $equiposHistorico = $this->getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, $ruc, $cantidad=1000, $codEmpresa);
+        $equiposHistorico = $this->getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, $bodega, $ruc, $cantidad=1000, $codEmpresa);
         
          $html = '
              
@@ -881,9 +885,9 @@ class MantenimientosClass {
  
     }
 
-    public function generaInformeMantExternosExcel($fechaINI, $fechaFIN, $tiposDocs, $ruc, $codEmpresa){
+    public function generaInformeMantExternosExcel($fechaINI, $fechaFIN, $tiposDocs, $bodega, $ruc, $codEmpresa){
 
-        $equiposHistorico = $this->getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, $ruc, $cantidad=1000, $codEmpresa);
+        $equiposHistorico = $this->getMantenimientosHistoricoEXT($fechaINI, $fechaFIN, $tiposDocs, $bodega, $ruc, $cantidad=1000, $codEmpresa);
         
         $spreadsheet = new Spreadsheet();
         $worksheet = $spreadsheet->getActiveSheet();
@@ -900,14 +904,23 @@ class MantenimientosClass {
             ->setCellValue('K1', 'Valor Factura')
             ->setCellValue('L1', 'Comentario')
             ->setCellValue('M1', 'Tecnico')
-            ->setCellValue('N1', 'Estado');
+            ->setCellValue('N1', 'Local')
+            ->setCellValue('O1', 'Estado');
+        
+            $spreadsheet->getActiveSheet()->setAutoFilter('A1:N1');
+		
+            /* Config Sheet */
+            foreach(range('A','W') as $columnID) {
+                $spreadsheet->getActiveSheet()->getColumnDimension($columnID)
+                    ->setAutoSize(true);
+            }
          
             $cont = 2;
             foreach($equiposHistorico as $row){
 
                 $worksheet->setCellValue('A'.$cont, $row['RUC'])
-                ->setCellValue('B'.$cont, $row['ClienteName'])
-                ->setCellValue('C'.$cont, $row['serieModelo'])
+                ->setCellValue('B'.$cont, trim($row['ClienteName']))
+                ->setCellValue('C'.$cont, trim($row['serieModelo']))
                 ->setCellValue('D'.$cont, $row['codMantExt'])
                 ->setCellValue('E'.$cont, $row['codOrdenFisica'])
                 ->setCellValue('F'.$cont, $this->pipeFormatDate($row["fechaCreacion"]))
@@ -916,9 +929,10 @@ class MantenimientosClass {
                 ->setCellValue('I'.$cont, $row['numRELCOT'])
                 ->setCellValue('J'.$cont, $row['facturaCOT'])
                 ->setCellValue('K'.$cont, $row['totalFac'])
-                ->setCellValue('L'.$cont, $row['comentario'])
-                ->setCellValue('M'.$cont, $row['nombreTecnico'])
-                ->setCellValue('N'.$cont, $this->getDescStatus($row["estado"]));
+                ->setCellValue('L'.$cont, trim($row['comentario']))
+                ->setCellValue('M'.$cont, trim($row['nombreTecnico']))
+                ->setCellValue('N'.$cont, $row['nombreBodega'])
+                ->setCellValue('O'.$cont, $this->getDescStatus($row["estado"]));
                
                 $cont++;
             }
@@ -949,6 +963,14 @@ class MantenimientosClass {
             default:
                 return 'AND Mant.estado IN(0,1,2,3)';
                 break;
+        }
+    }
+
+    private function getFiltroBodega($bodega){
+        if ($bodega == 'all') {
+            return '';
+        }else{
+            return "AND Mant.bodega = '$bodega'";
         }
     }
 
