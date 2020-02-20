@@ -149,7 +149,7 @@ class MantenimientosClass {
         Recupera los registros de la tabla mantenimientosEQ en KAO_wssp
         - Indicar base de datos (empresa) de la cual realizar la consulta o retornara false de encontrar dicho nombre de DB
     */
-    public function getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $rucCliente='', $cantidad=1000, $dataBaseName='KAO_wssp') {
+    public function getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $bodega='all', $rucCliente='', $cantidad=1000, $dataBaseName='KAO_wssp') {
 
         $this->instanciaDB->setDbname($dataBaseName); // Indicamos a que DB se realizará la consulta por defecto sera KAO_wssp
         $this->db = $this->instanciaDB->getInstanciaCNX(); // Devolvemos instancia con la nueva DB seteada
@@ -158,6 +158,7 @@ class MantenimientosClass {
 
         $filtroDOC = $this->getFiltroTiposDoc($tiposDocs);
         $filtroRUC = $this->getFiltroRUC($rucCliente);
+        $filtroBODEGA = $this->getFiltroBodega($bodega);
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
         SELECT TOP $cantidad 
@@ -166,6 +167,9 @@ class MantenimientosClass {
             Mant.codOrdenFisica as CodOrdenFisica,
             Mant.codEquipo as CodProducto,
             Mant.responsable as rucResponsable,
+            Mant.codEmpresa as codEmpresa,
+            Mant.bodega as codBodega,
+            bodegas.NOMBRE as nombreBodega,
             SBIO.Apellido + SBIO.Nombre as nombreResponsable,
             Producto.Nombre as NombreProducto,
             Cliente.NOMBRE as Cliente,
@@ -177,7 +181,7 @@ class MantenimientosClass {
             Mant.estado as Estado,
             MOV_MNT.codVENCAB as numRELCOT,
             cobro.ID as facturaCOT,
-            cobro.TOTAL as totalFactura       
+            cobro.TOTAL as totalFactura    
                                     
         FROM
             dbo.VEN_CAB as Compra
@@ -187,14 +191,15 @@ class MantenimientosClass {
             LEFT JOIN dbo.VEN_CAB as CAB on CAB.ID = Compra.ID
             LEFT JOIN KAO_wssp.dbo.mov_mantenimientosEQ as MOV_MNT on MOV_MNT.codMantenimiento = Mant.codMantenimiento
             LEFT JOIN dbo.VEN_CAB as cobro on cobro.NUMREL COLLATE Modern_Spanish_CI_AS = MOV_MNT.codVENCAB
-            INNER JOIN SBIOKAO.dbo.Empleados as SBIO on SBIO.Cedula = Mant.responsable      
+            LEFT JOIN dbo.INV_BODEGAS as bodegas on bodegas.CODIGO COLLATE Modern_Spanish_CI_AS = mant.bodega
+            LEFT JOIN SBIOKAO.dbo.Empleados as SBIO on SBIO.Cedula = Mant.responsable    
         WHERE 
             Mant.codEmpresa = '$codEmpresa'
             AND Mant.fechaInicio BETWEEN '$fechaINI' AND '$fechaFIN'   
             ".$filtroDOC."
             ".$filtroRUC."
-            
-
+            ".$filtroBODEGA."
+           
         ORDER BY CodMNT DESC
 
         ";  // Final del Query SQL 
@@ -639,9 +644,9 @@ class MantenimientosClass {
    
     }
 
-    public function generaInformeMantInternosPDF($fechaINI, $fechaFIN, $tiposDocs, $ruc, $codEmpresa, $outputMode = 'S'){
+    public function generaInformeMantInternosPDF($fechaINI, $fechaFIN, $tiposDocs, $bodega, $ruc, $codEmpresa, $outputMode = 'S'){
 
-        $equiposHistorico = $this->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $ruc, $cantidad=1000, $codEmpresa);
+        $equiposHistorico = $this->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $bodega, $ruc, $cantidad=1000, $codEmpresa);
         
          $html = '
              
@@ -841,9 +846,9 @@ class MantenimientosClass {
  
     }
 
-    public function generaInformeMantInternosExcel($fechaINI, $fechaFIN, $tiposDocs, $ruc, $codEmpresa){
+    public function generaInformeMantInternosExcel($fechaINI, $fechaFIN, $tiposDocs, $bodega, $ruc, $codEmpresa){
 
-        $equiposHistorico = $this->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $ruc, $cantidad=1000, $codEmpresa);
+        $equiposHistorico = $this->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $bodega, $ruc, $cantidad=1000, $codEmpresa);
         
         $spreadsheet = new Spreadsheet();
         $worksheet = $spreadsheet->getActiveSheet();
@@ -950,18 +955,18 @@ class MantenimientosClass {
     private function getFiltroTiposDoc($tipoDOC){
         switch ($tipoDOC) {
             case 'ALL':
-                return 'AND Mant.estado IN(0,1,2,3)';
+                return 'AND Mant.estado IN(0,1,2,3) ';
                 break;
             case 'PND':
-                return 'AND Mant.estado IN(0)';
+                return 'AND Mant.estado IN(0) ';
                 break;
 
             case 'ANUL':
-                return 'AND Mant.estado IN(2,3)';
+                return 'AND Mant.estado IN(2,3) ';
                 break;    
             
             default:
-                return 'AND Mant.estado IN(0,1,2,3)';
+                return 'AND Mant.estado IN(0,1,2,3) ';
                 break;
         }
     }

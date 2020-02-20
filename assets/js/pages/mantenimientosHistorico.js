@@ -3,7 +3,7 @@ $(function() {
     
     app.date_range();
     fechaActual = new Date().toISOString().slice(0, 10);
-    app.searchHistorico(fechaActual, fechaActual, null, '');
+    app.searchHistorico(fechaActual, fechaActual, null, '', 'all');
 
     /* Funcion busca que despliega resultados de busqueda*/
     $('#btn_search, #btn_search_advanced').on('click', function (event) {
@@ -11,15 +11,17 @@ $(function() {
         let fechaInicial = $('#uk_dp_start').val();
         let fechaFinal = $('#uk_dp_end').val();
         let tiposDocs = $('#select_tiposDoc').val();
+        let bodega = $('#select_bodegas').val();
         let rucAdvanced = $('#advanced_cedula').val();
 
         /* Comprobacion de parametros no sean nullos y asignacion de valores si lo son*/
         if (fechaInicial == null || fechaInicial == "" || fechaFinal == null || fechaFinal == "") {
             fechaInicial = new Date().toISOString().slice(0, 10);
             fechaFinal = new Date().toISOString().slice(0, 10);
+            return;
         }
 
-        app.searchHistorico(fechaInicial, fechaFinal, tiposDocs, rucAdvanced);
+        app.searchHistorico(fechaInicial, fechaFinal, tiposDocs, rucAdvanced, bodega);
 
         console.log(fechaInicial);
         console.log(fechaFinal);
@@ -55,13 +57,14 @@ $(function() {
         let fechaFinal = $('#uk_dp_end').val();
         let tiposDocs = $('#select_tiposDoc').val();
         let rucAdvanced = $('#advanced_cedula').val();
+        let bodega = $('#select_bodegas').val();
 
         /* Comprobacion de parametros no sean nullos y asignacion de valores si lo son*/
         if (fechaInicial == null || fechaInicial == "" || fechaFinal == null || fechaFinal == "") {
             fechaInicial = new Date().toISOString().slice(0, 10);
             fechaFinal = new Date().toISOString().slice(0, 10);
         }
-        window.open(`views/modulos/ajax/API_documentos.php?action=generaInformeMantInternosPDF&fechaINI=${fechaInicial}&fechaFIN=${fechaFinal}&tiposDocs=${tiposDocs}&rucCliente=${rucAdvanced}`);
+        window.open(`views/modulos/ajax/API_documentos.php?action=generaInformeMantInternosPDF&fechaINI=${fechaInicial}&fechaFIN=${fechaFinal}&tiposDocs=${tiposDocs}&rucCliente=${rucAdvanced}&bodega=${bodega}`);
           
     });
     
@@ -70,13 +73,14 @@ $(function() {
         let fechaFinal = $('#uk_dp_end').val();
         let tiposDocs = $('#select_tiposDoc').val();
         let rucAdvanced = $('#advanced_cedula').val();
+        let bodega = $('#select_bodegas').val();
 
         /* Comprobacion de parametros no sean nullos y asignacion de valores si lo son*/
         if (fechaInicial == null || fechaInicial == "" || fechaFinal == null || fechaFinal == "") {
             fechaInicial = new Date().toISOString().slice(0, 10);
             fechaFinal = new Date().toISOString().slice(0, 10);
         }
-        window.open(`views/modulos/ajax/API_documentos.php?action=generaInformeMantInternosExcel&fechaINI=${fechaInicial}&fechaFIN=${fechaFinal}&tiposDocs=${tiposDocs}&rucCliente=${rucAdvanced}`);
+        window.open(`views/modulos/ajax/API_documentos.php?action=generaInformeMantInternosExcel&fechaINI=${fechaInicial}&fechaFIN=${fechaFinal}&tiposDocs=${tiposDocs}&rucCliente=${rucAdvanced}&bodega=${bodega}`);
           
     });
 
@@ -134,6 +138,7 @@ app = {
                 <td> ${row.CodOrdenFisica} </td>
                 <td> ${row.Cliente} </td>
                 <td> ${row.CodProducto} </td>
+                <td> (${row.codBodega})${row.nombreBodega} </td>
                 <td> ${row.FechaINI.slice(0,10)} </td>
                 <td> ${ app.isnullvalue(row.numRELCOT)}</td>
                 <td> ${ app.isnullvalue(row.facturaCOT)}</td>
@@ -219,7 +224,7 @@ app = {
         }
        
     },
-    searchHistorico: function (fechaINI, fechaFIN, tiposDocs, rucCliente) {
+    searchHistorico: function (fechaINI, fechaFIN, tiposDocs, rucCliente, bodega) {
 
         var modalBlocked = UIkit.modal.blockUI('<div class=\'uk-text-center\'>Realizando, espere por favor...<br/><img class=\'uk-margin-top\' src=\'assets/img/spinners/spinner.gif\' alt=\'\'>');
         modalBlocked.show();
@@ -227,7 +232,7 @@ app = {
         $.ajax({
             url: 'views/modulos/ajax/API_estadisticas.php?action=getHistorico',
             method: 'GET',
-            data: { fechaINI: fechaINI, fechaFIN:fechaFIN, tiposDocs:tiposDocs, rucCliente:rucCliente },
+            data: { fechaINI: fechaINI, fechaFIN:fechaFIN, tiposDocs:tiposDocs, rucCliente:rucCliente, bodega:bodega },
     
             success: function (response) {
                 console.log(response);

@@ -14,7 +14,6 @@ $(function() {
         let bodega = $('#select_bodegas').val();
         let rucAdvanced = $('#advanced_cedula').val();
         
-
         /* Comprobacion de parametros no sean nullos y asignacion de valores si lo son*/
         if (fechaInicial == null || fechaInicial == "" || fechaFinal == null || fechaFinal == "") {
             fechaInicial = new Date().toISOString().slice(0, 10);

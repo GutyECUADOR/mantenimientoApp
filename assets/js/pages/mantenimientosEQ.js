@@ -293,6 +293,12 @@ altair_crud_table = {
                     list: false,
                     edit: true
                 },
+                Bodega: {
+                    title: 'Bodega',
+                    options: 'views/modulos/ajax/API_mantenimientosEQ.php?action=listBodegas',
+                    list: false,
+                    edit: true
+                },
                 HoraInicio: {
                     title: 'Hora de Inicio',
                     list: false,

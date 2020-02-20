@@ -17,8 +17,8 @@ class ajax{
         return $this->ajaxController->getCountMantenimientosController($codEmpresa);
     }
 
-    public function getHistorico($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, $codEmpresa) {
-      return $this->mantenimientosClass->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $rucCliente, 1000, $codEmpresa );
+    public function getHistorico($fechaINI, $fechaFIN, $tiposDocs, $bodega, $rucCliente, $codEmpresa) {
+      return $this->mantenimientosClass->getMantenimientosHistorico($fechaINI, $fechaFIN, $tiposDocs, $bodega, $rucCliente, 1000, $codEmpresa );
     }
 
     public function getHistoricoExternos($fechaINI, $fechaFIN, $tiposDocs, $bodega, $rucCliente, $codEmpresa) {
@@ -42,17 +42,18 @@ class ajax{
 
         case 'getHistorico':
 
-          if (isset($_GET["fechaINI"]) && isset($_GET["fechaFIN"]) && isset($_GET["tiposDocs"]) && isset($_GET["rucCliente"]) ) {
+          if (isset($_GET["fechaINI"]) && isset($_GET["fechaFIN"]) && isset($_GET["tiposDocs"]) && isset($_GET["rucCliente"]) && isset($_GET["bodega"]) ) {
             $fechaINI = $_GET["fechaINI"];
             $fechaFIN = $_GET["fechaFIN"];
             $tiposDocs = $_GET["tiposDocs"];
             $rucCliente = $_GET["rucCliente"];
+            $bodega = $_GET["bodega"];
   
             $fechaFormatINI = date('Ymd', strtotime($fechaINI));
             $fechaFormatFIN = date('Ymd', strtotime($fechaFIN));
   
             $codEmpresa = $_SESSION["empresaAUTH"];
-            $respuesta = $ajax->getHistorico($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $rucCliente, $codEmpresa);
+            $respuesta = $ajax->getHistorico($fechaFormatINI, $fechaFormatFIN, $tiposDocs, $bodega, $rucCliente, $codEmpresa);
             $rawdata = array('status' => 'OK', 
                             'mensaje' => $fechaFormatINI, 
                             'horaINI' => 'recuperado historico', 

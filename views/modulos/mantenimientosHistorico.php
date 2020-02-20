@@ -3,6 +3,8 @@
            header("Location:index.php?&action=login");  
         }   
 
+        $ajaxController = new controllers\ajaxController();
+        $arrayBodegas = $ajaxController->getAllBodegas();
 ?>
 
 
@@ -40,7 +42,7 @@
                 <div class="md-card-content">
                     <h3 class="heading_a">Filtros de busqueda</h3>
                     <div class="uk-grid" data-uk-grid-margin="">
-                        <div class="uk-width-large-3-10 uk-row-first">
+                        <div class="uk-width-large-2-10 uk-row-first">
                             <div class="uk-input-group">
                                 <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
                                 <div class="md-input-wrapper md-input-filled">
@@ -50,7 +52,7 @@
 
                             </div>
                         </div>
-                        <div class="uk-width-medium-3-10">
+                        <div class="uk-width-medium-2-10">
                             <div class="uk-input-group">
                                 <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
                                 <div class="md-input-wrapper md-input-filled">
@@ -60,6 +62,21 @@
 
                             </div>
                         </div>
+
+                        <div class="uk-width-medium-2-10">
+                            <div class="md-input-wrapper md-input-filled">
+                                <label>Locales/Bodegas</label>
+                                <select id="select_bodegas" data-md-selectize>
+                                    <option value='all'>Todos</option>
+                                    <?php
+                                        foreach ($arrayBodegas as $opcion) {
+                                            echo' <option value="'.trim($opcion['Value']).'"> '.$opcion['DisplayText'].' </option>';
+                                        }
+                                    ?>
+                                </select>
+                                </span></div>
+                        </div>
+
 
                         <div class="uk-width-medium-2-10">
                             <div class="md-input-wrapper md-input-filled">
@@ -109,6 +126,7 @@
                                 <th class="uk-width-1-10">Mant Fisico.</th>
                                 <th class="uk-width-2-10">Cliente</th>
                                 <th class="uk-width-1-10">Equipo</th>
+                                <th class="uk-width-1-10">Local</th>
                                 <th class="uk-width-1-10">Fecha Programada</th>
                                 <th class="uk-width-1-10">Num Cotizacion.</th>
                                 <th class="uk-width-1-10">Num Fact Cotizacion.</th>

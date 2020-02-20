@@ -53,6 +53,10 @@ class ajax{
       return $this->ajaxController->getAllTecnicos();
     }
 
+    public function lisBodegasAction(){
+        return $this->ajaxController->getAllBodegas();
+      }
+
     public function validaProducto($codProducto){
       return $this->ajaxController->getProductoByCod($codProducto);
     }
@@ -149,13 +153,14 @@ class ajax{
             $horaFin = trim($_POST['mantenimientoTimeFIN']);
             $TipoMantenimiento = trim($_POST['TipoMantenimiento']);
             $Tecnico = trim($_POST['Tecnico']);
+            $Bodega = trim($_POST['Bodega']);
             $Email = trim($_POST['Email']);
 
             // Combinacion de fecha y hora para registro en DB
             $fechaHoraINI = date('Ymd H:i:s', strtotime("$fechaINIup $horaInicio"));
             $fechaHoraFIN = date('Ymd H:i:s', strtotime("$fechaINIup $horaFin"));
 
-            //Array que es enviado para el envio
+            //Array que es creado para el envio a registro en DB
             $data = array(
                 'CodigoFac' => $CodigoFac,
                 'CodProducto' => $CodProducto,
@@ -166,6 +171,7 @@ class ajax{
                 'fechaHoraFIN' => $fechaHoraFIN,
                 'TipoMantenimiento' => $TipoMantenimiento,
                 'Tecnico' => $Tecnico,
+                'Bodega' => $Bodega,
                 'Email' => $Email,
             );
 
@@ -264,6 +270,14 @@ class ajax{
 
         case 'listTecnicos':
             $resultset = $ajax->lisTecnicosAction();
+
+            $jTableResult['Result'] = "OK";
+            $jTableResult['Options'] = $resultset;
+            echo json_encode($jTableResult);
+            break;
+        
+        case 'listBodegas':
+            $resultset = $ajax->lisBodegasAction();
 
             $jTableResult['Result'] = "OK";
             $jTableResult['Options'] = $resultset;
