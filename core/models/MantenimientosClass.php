@@ -161,28 +161,33 @@ class MantenimientosClass {
         $filtroBODEGA = $this->getFiltroBodega($bodega);
         //Query de consulta con parametros para bindear si es necesario.
         $query = "
-        SELECT TOP $cantidad 
-            Compra.ID as CodigoFac,
+            SELECT TOP $cantidad 
+            Mant.fechaInicio as FechaINI,
             Mant.codMantenimiento as CodMNT,
             Mant.codOrdenFisica as CodOrdenFisica,
+            Cliente.NOMBRE as Cliente,
             Mant.codEquipo as CodProducto,
-            Mant.responsable as rucResponsable,
-            Mant.codEmpresa as codEmpresa,
+            Producto.Nombre as NombreProducto,
+            Mant.cantidad as Cantidad,
             Mant.bodega as codBodega,
             bodegas.NOMBRE as nombreBodega,
-            SBIO.Apellido + SBIO.Nombre as nombreResponsable,
-            Producto.Nombre as NombreProducto,
-            Cliente.NOMBRE as Cliente,
-            Cliente.RUC,
-            Mant.tipo as TipoMant,
-            Mant.fechaInicio as FechaINI,
-            CAB.NUMREL as NUMREL,
+            Cliente.DIRECCION1 as Direccion,
             Mant.comentario as Comentario,
-            Mant.estado as Estado,
+            Mant.fechaInicio as fechaVisita,
+            Mant.tipo as TipoMant,
+            Compra.ID as CodigoFac,
+            Compra.TOTAL as TotalFactura,
+            SBIO.Apellido + SBIO.Nombre as nombreResponsable,
+            Mant.codOrdenFisica as CodOrdenFisica,
+            Mant.responsable as rucResponsable,
+            Mant.codEmpresa as codEmpresa,
+            Cliente.RUC,
+            CAB.NUMREL as NUMREL,
             MOV_MNT.codVENCAB as numRELCOT,
             cobro.ID as facturaCOT,
-            cobro.TOTAL as totalFactura    
-                                    
+            cobro.TOTAL as totalFactura,
+            Mant.estado as Estado
+                                   
         FROM
             dbo.VEN_CAB as Compra
             INNER JOIN KAO_wssp.dbo.mantenimientosEQ as Mant ON Mant.codFactura COLLATE Modern_Spanish_CI_AS = Compra.ID
@@ -852,34 +857,44 @@ class MantenimientosClass {
         
         $spreadsheet = new Spreadsheet();
         $worksheet = $spreadsheet->getActiveSheet();
-        $worksheet->setCellValue('A1', '#')
-            ->setCellValue('B1', 'Factura')
-            ->setCellValue('C1', 'Cod. Mantenimiento')
-            ->setCellValue('D1', 'Mant. Fisico')
-            ->setCellValue('E1', 'Cod. Equipo')
+        $worksheet->setCellValue('A1', 'Item')
+            ->setCellValue('B1', 'Fecha de Orden')
+            ->setCellValue('C1', 'Orden de Trabajo N°')
+            ->setCellValue('D1', 'Orden de Trabajo Física N°')
+            ->setCellValue('E1', 'Cliente')
             ->setCellValue('F1', 'Equipo')
-            ->setCellValue('G1', 'Cliente')
-            ->setCellValue('H1', 'Fecha Agendada')
-            ->setCellValue('I1', 'Tipo')
-            ->setCellValue('J1', 'Estado')
-            ->setCellValue('K1', 'Tecnico')
-            ->setCellValue('L1', 'Comentario');
+            ->setCellValue('G1', 'Cantidad')
+            ->setCellValue('H1', 'Local')
+            ->setCellValue('I1', 'Direccion')
+            ->setCellValue('J1', 'Lugar de Trabajo')
+            ->setCellValue('K1', 'Fecha de Visita')
+            ->setCellValue('L1', 'Observacion')
+            ->setCellValue('M1', 'Garantia')
+            ->setCellValue('N1', 'Estatus')
+            ->setCellValue('O1', 'Factura')
+            ->setCellValue('P1', 'Valor')
+            ->setCellValue('Q1', 'Responsable');
 
             $cont = 2;
             foreach($equiposHistorico as $row){
 
                 $worksheet->setCellValue('A'.$cont, '')
-                ->setCellValue('B'.$cont, $row['CodigoFac'])
+                ->setCellValue('B'.$cont, $this->pipeFormatDate($row["FechaINI"]))
                 ->setCellValue('C'.$cont, $row['CodMNT'])
                 ->setCellValue('D'.$cont, $row['CodOrdenFisica'])
-                ->setCellValue('E'.$cont, $row['CodProducto'])
+                ->setCellValue('E'.$cont, $row['Cliente'])
                 ->setCellValue('F'.$cont, $row['NombreProducto'])
-                ->setCellValue('G'.$cont, $row['Cliente'])
-                ->setCellValue('H'.$cont, $this->pipeFormatDate($row["FechaINI"]))
-                ->setCellValue('I'.$cont, $this->getDescTipoMant(trim($row["TipoMant"])))
-                ->setCellValue('J'.$cont, $this->getDescStatus($row["Estado"]))
-                ->setCellValue('K'.$cont, $row['nombreResponsable'])
-                ->setCellValue('L'.$cont, $row["Comentario"]);
+                ->setCellValue('G'.$cont, $row['Cantidad'])
+                ->setCellValue('H'.$cont, $row['nombreBodega'])
+                ->setCellValue('I'.$cont, $row['Direccion'])
+                ->setCellValue('J'.$cont, '')
+                ->setCellValue('K'.$cont, $this->pipeFormatDate($row["FechaINI"]))
+                ->setCellValue('L'.$cont, $row["Comentario"])
+                ->setCellValue('M'.$cont, $row["TipoMant"])
+                ->setCellValue('N'.$cont, $this->getDescStatus($row["Estado"]))
+                ->setCellValue('O'.$cont,  $row["CodigoFac"])
+                ->setCellValue('P'.$cont,  $row["TotalFactura"])
+                ->setCellValue('Q'.$cont,  $row["nombreResponsable"]);
               
                 $cont++;
             }
