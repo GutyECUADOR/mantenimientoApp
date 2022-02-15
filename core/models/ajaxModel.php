@@ -57,10 +57,10 @@ class ajaxModel  {
             AND Compra.TIPO IN (SELECT CODIGO FROM VEN_TIPOS WHERE TIPODOC IN ('F', 'D'))
             AND Cliente.RUC NOT IN('1792190851001', '1790417581001', '0992720301001', '1792585155001', '1706388335001')
             AND Compra.ANULADO = '0'
-			AND Producto.GarantiaCli != '0'
+			
             AND fecha BETWEEN '".$fechaInicial."' AND '".$fechaFinal."' 
             AND Bodega.CODIGO = '$codigoBodega'
-        ORDER BY Producto, NombreCliente ASC
+        ORDER BY FechaCompra, Producto, NombreCliente ASC
 
         ";  // Final del Query SQL 
 

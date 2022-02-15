@@ -122,7 +122,7 @@ class ajax{
                 $fechaFinal = date('Ymd');
                 $bodega = '014';
                 $start = 1;
-                $pageSize = 10;
+                $pageSize = 100;
             }
 
             /* Comentar estas 2 lineas  de fechas para produccion*/
