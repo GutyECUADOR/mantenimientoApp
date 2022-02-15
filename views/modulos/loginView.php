@@ -45,7 +45,8 @@
                 </div>
 
                 <div class="uk-margin-medium-top">
-                    <button type="submit" class="md-btn md-btn-primary md-btn-block md-btn-large">Ingresar</a>
+                    <button type="submit" class="md-btn md-btn-primary md-btn-block">Ingresar </button>
+                    <a href="../" class="md-btn md-btn-danger md-btn-block">Regresar al menú</a>
                 </div>
                
             </form>

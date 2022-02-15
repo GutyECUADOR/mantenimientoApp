@@ -2,6 +2,7 @@
 
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
+    use Mpdf\Mpdf;
    
 class ajaxController  {
 
@@ -1274,7 +1275,7 @@ class ajaxController  {
          //==============================================================
  
          /* require_once '../../../vendor/autoload.php'; */
-         $mpdf = new \Mpdf\Mpdf();
+         $mpdf = new mPDF();
  
          // LOAD a stylesheet
          $stylesheet = file_get_contents('../../../assets/css/reportesStyles.css');
