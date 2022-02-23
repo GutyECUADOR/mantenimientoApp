@@ -90,7 +90,6 @@ class ajaxController  {
             //Recipients
             $mail->setFrom($userEmail, 'Administrador KAO');
             $mail->addAddress($correoCliente, 'Cliente KAO');     // Add a recipient
-            $mail->addAddress('soporteweb@sudcompu.net', 'Sistemas');
             $mail->addAddress('mantenimiento@kaosportcenter.com', 'Administrador KAO');
            
             //Content
