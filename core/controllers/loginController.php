@@ -119,8 +119,9 @@ class loginController  {
 
         foreach ($opciones as $opcion) {
             $codigo = $opcion['Codigo'];
+            $NameDataBase = $opcion['NameDataBase'];
             $texto = $opcion['Nombre'];
-            echo "<option value='$codigo'>$texto</option>";
+            echo "<option value='$codigo'>$NameDataBase</option>";
     
         }
     }
